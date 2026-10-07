@@ -51,3 +51,5 @@
 - Added "Side Projects" and "Connect" sections and a bigger tilt/grow on card 1.
 - Reviewed the file with Claude and found a deleted spotlight rule, a nav tab that couldn't activate, and leftover colors from the old theme.
 - Found a formatting error: stray code-fence markers in the HTML file made IntelliJ flag an error. Removed them.
+- Pushed the first full version of the site (about section, artifact cards, side projects, footer icons, and the interactive effects) to main for a live check, before filling in card ideas.
+- Added a double-line divider between sections, a soft drop shadow under each card, and an animated underline on the Artifact 1 link (lift plus a line that sweeps from the center). All of it is plain CSS.

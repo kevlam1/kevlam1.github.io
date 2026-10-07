@@ -119,6 +119,7 @@
             background:var(--panel);border:1px solid var(--line);border-radius:14px;
             padding:24px 20px;
             position:relative;overflow:hidden;
+            box-shadow:0 12px 24px -8px rgba(0,0,0,.6),0 2px 6px rgba(0,0,0,.3);
         }
         .card::before{
             content:"";
@@ -142,10 +143,13 @@
         /* Card 1: tilts toward the cursor, grows a few pixels, and has a spotlight */
         .card.live{
             --mx:50%;--my:50%;
-            transition:transform 400ms cubic-bezier(.03,.98,.52,.99);
+            transition:transform 400ms cubic-bezier(.03,.98,.52,.99),box-shadow 400ms ease;
             will-change:transform;
         }
-        .card.live:hover{z-index:2}
+        .card.live:hover{
+            z-index:2;
+            box-shadow:0 22px 36px -10px rgba(0,0,0,.7),0 4px 10px rgba(0,0,0,.35);
+        }
         .card.live::after{
             content:"";position:absolute;inset:-1px;z-index:0;
             background:radial-gradient(600px circle at var(--mx) var(--my),rgba(255,255,255,.08),transparent 40%);
@@ -166,6 +170,33 @@
             .tabs{padding:0 4px}
             .tabs a{padding:0 7px;font-size:.78rem;letter-spacing:.02em}
         }
+
+        /* Section divider: one thin line that fade out at both ends */
+        .divider{
+            width:min(1250px,90%);height:4px;margin:0 auto;opacity:.6;
+            background:
+                    linear-gradient(90deg,transparent,var(--accent),transparent) top/100% 1px no-repeat;
+        }
+
+        /* Link hover: text lifts slightly and a thick line sweeps out from the center */
+        .hover-link{
+            position:relative;display:inline-block;padding:0 4px 6px;
+            color:var(--text);text-decoration:none;letter-spacing:-.01em;
+            transition:transform .5s cubic-bezier(.22,1,.36,1);
+            will-change:transform;
+        }
+        .hover-link:hover,.hover-link:focus-visible{transform:translateY(-2px)}
+        .hover-link::before{
+            content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;
+            background:currentColor;opacity:.25;pointer-events:none;
+        }
+        .hover-link::after{
+            content:"";position:absolute;left:50%;bottom:-1px;width:0;height:3px;
+            border-radius:999px;background:var(--accent);transform:translateX(-50%);
+            transition:width .5s cubic-bezier(.22,1,.36,1);pointer-events:none;
+        }
+        .hover-link:hover::after,.hover-link:focus-visible::after{width:100%}
+        @media (prefers-reduced-motion:reduce){.hover-link,.hover-link::after{transition:none}}
     </style>
 </head>
 <body>
@@ -200,6 +231,7 @@
             </div>
         </div>
     </section>
+    <div class="divider" aria-hidden="true"></div>
 
     <!-- ABOUT: -->
     <section id="about">
@@ -212,6 +244,7 @@
                 This portfolio is where I'm keeping track of what I build along the way!</p>
         </div>
     </section>
+    <div class="divider" aria-hidden="true"></div>
 
     <!-- ARTIFACTS: one card per artifact. To fill in a card later, edit its title,
          link, and reflection. Delete the "todo" idea text when the artifact is done. -->
@@ -226,7 +259,7 @@
                 <article class="card live" id="artifact-1">
                     <h3>Artifact 1: Personal Portfolio</h3>
                     <p class="tag">Due Oct 11</p>
-                    <p><a href="https://kevlam1.github.io/">This site</a></p>
+                    <p><a class="hover-link" href="https://kevlam1.github.io/">This site</a></p>
                     <p class="reflection">Went successful, learned how to utilize Claude
                         to implement ideas while also ensuring quality additions.</p>
                 </article>
@@ -262,7 +295,7 @@
             </div>
         </div>
     </section>
-
+    <div class="divider" aria-hidden="true"></div>
 
     <!-- SIDE PROJECTS -->
     <section id="side-projects">
