@@ -159,3 +159,13 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 - [ ] Optionally rewrite the intro headline and subtitle in my own words.
 - [ ] Push the latest changes and check the live site in a private window and on my phone.
 - [ ] Submit the link on Canvas by Sunday, Oct 11 at 11:59 PM.
+
+- Added my Cardex project to the Side Projects section, with a description and reflection.
+- Added my side projects to the portfolio since both are deployed and live.
+- Added PokéGuess as my second side project, with a reflection.
+- Added toolkit pills to active cards to show what skills were used.
+- Fixed a little bug causing the animated tab to twitch when clicked on.
+- Tried to add sliding cards that faded in when opening the site. Used ChatGPT since Claude limits were hit and had a difficult time with ChatGPT. It kept spewing out code and going back on it in the same message creating tons of confusion despite telling it to not do that. It also was unhelpful and unclear unlike Claude who continuously makes sure you know which part of the code to change.
+- After 20 minutes of back and forth, ChatGPT finally got the addition I wanted.
+- Added placeholder images from non-active artifacts to show its coming soon.
+- Rewrote headline and subtitles
