@@ -344,13 +344,13 @@
             <div class="cards">
 
                 <article class="card live" id="artifact-1">
-                    <div class="media"><img src="images/artifact-1.png" alt="Image coming soon"></div>                    <div class="card-body">
+                    <div class="media"><img src="images/artifact-1.jpg" alt="Image coming soon"></div>                    <div class="card-body">
                         <div class="meta"><span>Artifact 1 &middot; Due Oct 11</span><span class="status live">Live</span></div>
                         <h3>Personal Portfolio</h3>
                         <p class="desc">A single-page portfolio with a card for each artifact in the course, built with plain HTML, CSS, and JavaScript.</p>
                     <p class="reflection">I built this portfolio with Claude's web chat and deployed it on GitHub Pages, which I had never set up before.
-                        Early on Claude jumped ahead and built a theme-comparison page before I understood hosting, so I stopped it
-                        and we learned the deployment steps first. I also had to clarify my card layout a few times before it
+                        Early on Claude jumped ahead and built a theme-comparison page before I understood hosting, so I stopped it and
+                        we learned the deployment steps first. I also had to clarify my card layout a few times before it
                         matched what I pictured. The biggest thing I learned is to describe the exact layout I want,
                         and to check what the AI tells me against the real documentation instead of trusting it.</p>
                         <p class="links"><a class="hover-link" href="https://kevlam1.github.io/">This site</a></p>
@@ -358,7 +358,7 @@
                 </article>
 
                 <article class="card" id="artifact-2">
-                    <div class="media"><img src="images/artifact-2.png" alt="Image coming soon"></div>                    <div class="card-body">
+                    <div class="media"><img src="images/artifact-2.jpg" alt="Image coming soon"></div>                    <div class="card-body">
                         <div class="meta"><span>Artifact 2 &middot; Due Oct 18</span><span class="status">Coming soon</span></div>
                         <h3>Personal Utility</h3>
                         <p class="desc">Idea: TBA.</p>
@@ -367,7 +367,7 @@
                 </article>
 
                 <article class="card" id="artifact-3">
-                    <div class="media"><img src="images/artifact-3.png" alt="Image coming soon"></div>                    <div class="card-body">
+                    <div class="media"><img src="images/artifact-3.jpg" alt="Image coming soon"></div>                    <div class="card-body">
                         <div class="meta"><span>Artifact 3 &middot; Due Oct 25</span><span class="status">Coming soon</span></div>
                         <h3>AI Agent Integration</h3>
                         <p class="desc">Idea: TBA.</p>
@@ -376,7 +376,7 @@
                 </article>
 
                 <article class="card" id="artifact-4">
-                    <div class="media"><img src="images/artifact-4.png" alt="Image coming soon"></div>                    <div class="card-body">
+                    <div class="media"><img src="images/artifact-4.jpg" alt="Image coming soon"></div>                    <div class="card-body">
                         <div class="meta"><span>Artifact 4 &middot; Due Nov 8</span><span class="status">Coming soon</span></div>
                         <h3>Client Focused</h3>
                         <p class="desc">Idea: TBA.</p>
@@ -385,7 +385,7 @@
                 </article>
 
                 <article class="card" id="artifact-5">
-                    <div class="media"><img src="images/artifact-5.png" alt="Image coming soon"></div>                    <div class="card-body">
+                    <div class="media"><img src="images/artifact-5.jpg" alt="Image coming soon"></div>                    <div class="card-body">
                         <div class="meta"><span>Artifact 5 &middot; Due Dec 13</span><span class="status">Coming soon</span></div>
                         <h3>The Moonshot</h3>
                         <p class="desc">Idea: TBA.</p>
@@ -407,12 +407,21 @@
             <div class="cards">
 
                 <article class="card">
-                    <div class="media"><img src="images/side-project-1.png" alt="Image coming soon"></div>                    <div class="card-body">
-                        <div class="meta"><span>Side project</span><span class="status">Coming soon</span></div>
+                    <div class="media"><img src="images/side-project-1.jpg" alt="Image coming soon"></div>                    <div class="card-body">
+                        <div class="meta"><span>Pokémon TCG Database</span><span class="status">Coming soon</span></div>
                         <h3>Project coming soon</h3>
-                        <p class="desc">Something I'm building outside of class.</p>
+                        <p class="desc">Something I built outside of class.</p>
                         <p class="reflection">Details and links coming.</p>
                     </div>
+                </article>
+
+                <article class="card">
+                    <div class="media"><img src="images/side-project-2.jpg" alt="Image coming soon"></div>                    <div class="card-body">
+                    <div class="meta"><span>PokéGuess</span><span class="status">Coming soon</span></div>
+                    <h3>Project coming soon</h3>
+                    <p class="desc">Something I built outside of class.</p>
+                    <p class="reflection">Details and links coming.</p>
+                </div>
                 </article>
 
             </div>
@@ -533,7 +542,7 @@
         const float SPEED = 0.05;                      // lower = slower
         const float ZOOM  = 3.2;                       // higher = more zoomed out, more waves on screen
         const float SWIRL = 2.3;                       // higher = tighter spiral (0 = no spiral)
-        const float SPIN  = 0.3;                       // how fast the whole thing slowly turns (0 = still)
+        const float SPIN  = 0.4;                       // how fast the whole thing slowly turns (0 = still)
 
         void main(){
             vec2 uv = gl_FragCoord.xy / uRes;
