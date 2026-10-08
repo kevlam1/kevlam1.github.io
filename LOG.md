@@ -169,3 +169,19 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 - After 20 minutes of back and forth, ChatGPT finally got the addition I wanted.
 - Added placeholder images from non-active artifacts to show its coming soon.
 - Rewrote headline and subtitles
+- Wrapped the cards in an entrance container so they slide in without breaking the tilt. Added toolkit pills for my side projects and extended the tilt and spotlight to every card.
+- Made Artifacts 2-5 non-clickable and non-tilting until each artifact is finished. I'll unlock a card by switching its class from locked to live when I fill it in.
+- Added toolkit pills to the Artifact 1 card (HTML, CSS, JavaScript, WebGL, GitHub Pages, Claude) to match the side-project cards.
+- Made every card reserve the same space for the description and two rows of toolkit pills, widened the card area, and gave placeholder cards a "Toolkit: TBA" pill so the rows line up.
+- Rewrote the Cardex description to cover its main features in three lines.
+- Updated the toolkit pills on Cardex and PokéGuess to include backend runtime and hosting, using their READMEs as the source.
+- Finalized the Cardex description to include the Pokédex and set tracking along with the search, wishlist, prices, and collection value features.
+- Rewrote the PokéGuess description around its room flow and chat, based on its README.
+- Added four small stars that orbit the mouse cursor (mouse devices only, off for reduced motion). I also had to make them move into the card popup while it's open, since the popup would otherwise cover them.
+- Changed the cursor stars from a constant orbit to a click-triggered burst of stars (works on taps too), since a constant effect would be distracting. They also carry into the card popup so they aren't hidden behind it.
+- Fixed 17 editor errors caused by a block of CSS pasted inside a script tag. Removed the duplicate, since the styles were already in the style section.
+- Made the click stars brighter by switching them to white with a stronger glow.
+- Read the Artifact 2 spec and brainstormed ideas. Found that it doesn't need to be a web app or be deployed, and that a repo link works for the card.
+- Looked into building an Artifact 2 around the Riot API. Learned that a development key is for testing and personal use, a public product needs a production key, and the key must stay out of a public repo.
+- Learned the difference between chat Claude (web fetch only, no network in the sandbox) and Claude Code (runs on my machine and can inspect real API responses). Plan to ask it to show raw data and put key decisions in CLAUDE.md.
+- 

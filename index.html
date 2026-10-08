@@ -13,7 +13,7 @@
             --line:#334155;
             --text:#e2e8f0;
             --muted:#94a3b8;
-            --accent:#cbd5e1;
+            --accent: #ffffff;
         }
 
         *{box-sizing:border-box}
@@ -232,7 +232,12 @@
         /* Cards */
         #artifacts .wrap,
         #side-projects .wrap{
-            max-width:1240px;
+            max-width:1400px;
+        }
+
+        :root{
+            --desc-lines:3;     /* lines of description to reserve space for */
+            --card-h:300px;     /* minimum card height, so every card matches */
         }
 
         /* Extra space between Side Projects and footer */
@@ -254,12 +259,15 @@
          * The actual .card is free to use transform for tilt.
          */
         .card-entrance{
+            display:flex;
             flex:0 1 calc(50% - 10px);
             opacity:0;
             transform:translateX(-60px);
+            will-change:transform,opacity;
+        }
+        .card-entrance.in-view{
             animation:cardSlideIn .8s cubic-bezier(.22,1,.36,1) forwards;
             animation-delay:calc(var(--card-i) * .15s);
-            will-change:transform,opacity;
         }
 
         @keyframes cardSlideIn{
@@ -279,14 +287,18 @@
             display:grid;
             grid-template-columns:42% 58%;
             width:100%;
-            min-height:250px;
+            min-height:var(--card-h,300px);
             overflow:hidden;
             border:1px solid var(--line);
             border-radius:14px;
             background:rgba(30,41,59,.82);
             text-align:center;
             cursor:pointer;
+            box-shadow:0 12px 24px -8px rgba(0,0,0,.6),0 2px 6px rgba(0,0,0,.3);
         }
+
+        .card.locked{cursor:default}
+        .card.locked{opacity:.5}
 
         .card::before{
             content:"";
@@ -335,9 +347,9 @@
             z-index:2;
             background:
                     radial-gradient(
-                            800px circle at var(--mx) var(--my),
-                            rgba(255,255,255,.08),
-                            transparent 90%
+                            700px circle at var(--mx) var(--my),
+                            rgba(203,213,225,.08),
+                            transparent 80%
                     );
             opacity:0;
             transition:opacity 300ms;
@@ -420,6 +432,7 @@
 
         .card .desc{
             font-size:.92rem;
+            min-height:calc(var(--desc-lines) * 1.6 * .92rem);
         }
 
         .card .reflection{
@@ -439,7 +452,7 @@
             align-content:center;
             gap:6px;
             flex-wrap:wrap;
-            min-height:42px;
+            min-height:54px;   /* two rows of pills */
             margin-top:2px;
         }
 
@@ -686,6 +699,10 @@
             overflow:hidden;
         }
 
+        .card.modal-card{min-height:0}
+        .modal-card .desc,
+        .modal-card .toolkit{min-height:0}
+
         /* Footer */
         footer{
             padding:40px 20px 60px;
@@ -778,6 +795,18 @@
             .card.modal-card{
                 transition:none;
             }
+        }
+
+        /* Click stars: a small burst of stars pops from wherever you click */
+        #click-stars{
+            position:fixed;top:0;left:0;width:0;height:0;
+            z-index:99999;pointer-events:none;
+        }
+        #click-stars svg{
+            position:absolute;top:0;left:0;
+            fill:var(--accent);
+            filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 10px var(--accent));
+            will-change:transform,opacity;
         }
     </style>
 </head>
@@ -887,6 +916,15 @@
                                 built with plain HTML, CSS, and JavaScript.
                             </p>
 
+                            <div class="toolkit" aria-label="Toolkit">
+                                <span class="toolkit-pill">HTML</span>
+                                <span class="toolkit-pill">CSS</span>
+                                <span class="toolkit-pill">JavaScript</span>
+                                <span class="toolkit-pill">WebGL</span>
+                                <span class="toolkit-pill">GitHub Pages</span>
+                                <span class="toolkit-pill">Claude</span>
+                            </div>
+
                             <p class="reflection">
                                 I built this portfolio with Claude's web chat and deployed it on GitHub Pages,
                                 which I had never set up before. Early on Claude jumped ahead and built a
@@ -909,7 +947,7 @@
 
                 <!-- Artifact 2 -->
                 <div class="card-entrance" style="--card-i:1">
-                    <article class="card live" id="artifact-2">
+                    <article class="card locked" id="artifact-2">
 
                         <div class="media">
                             <img src="images/artifact-2.jpg" alt="Image coming soon">
@@ -928,6 +966,10 @@
                                 Idea: TBA.
                             </p>
 
+                            <div class="toolkit" aria-label="Toolkit">
+                                <span class="toolkit-pill">Toolkit: TBA</span>
+                            </div>
+
                             <p class="reflection">
                                 Link and reflection coming soon.
                             </p>
@@ -938,7 +980,7 @@
 
                 <!-- Artifact 3 -->
                 <div class="card-entrance" style="--card-i:2">
-                    <article class="card live" id="artifact-3">
+                    <article class="card locked" id="artifact-3">
 
                         <div class="media">
                             <img src="images/artifact-3.jpg" alt="Image coming soon">
@@ -957,6 +999,10 @@
                                 Idea: TBA.
                             </p>
 
+                            <div class="toolkit" aria-label="Toolkit">
+                                <span class="toolkit-pill">Toolkit: TBA</span>
+                            </div>
+
                             <p class="reflection">
                                 Link and reflection coming soon.
                             </p>
@@ -967,7 +1013,7 @@
 
                 <!-- Artifact 4 -->
                 <div class="card-entrance" style="--card-i:3">
-                    <article class="card live" id="artifact-4">
+                    <article class="card locked" id="artifact-4">
 
                         <div class="media">
                             <img src="images/artifact-4.jpg" alt="Image coming soon">
@@ -986,6 +1032,10 @@
                                 Idea: TBA.
                             </p>
 
+                            <div class="toolkit" aria-label="Toolkit">
+                                <span class="toolkit-pill">Toolkit: TBA</span>
+                            </div>
+
                             <p class="reflection">
                                 Link and reflection coming soon.
                             </p>
@@ -996,7 +1046,7 @@
 
                 <!-- Artifact 5 -->
                 <div class="card-entrance" style="--card-i:4">
-                    <article class="card live" id="artifact-5">
+                    <article class="card locked" id="artifact-5">
 
                         <div class="media">
                             <img src="images/artifact-5.jpg" alt="Image coming soon">
@@ -1014,6 +1064,10 @@
                             <p class="desc">
                                 Idea: TBA.
                             </p>
+
+                            <div class="toolkit" aria-label="Toolkit">
+                                <span class="toolkit-pill">Toolkit: TBA</span>
+                            </div>
 
                             <p class="reflection">
                                 Link and reflection coming soon.
@@ -1060,14 +1114,19 @@
                             <h3>Cardex</h3>
 
                             <p class="desc">
-                                A site used to search and track your card collection.
+                                A Pokémon TCG collection companion. Search cards, track and wishlist what you own,
+                                and see TCGPlayer prices and your collection's total value, with a Pokédex and set tracking.
                             </p>
 
                             <div class="toolkit" aria-label="Toolkit">
                                 <span class="toolkit-pill">Next.js</span>
                                 <span class="toolkit-pill">React</span>
+                                <span class="toolkit-pill">Node.js</span>
                                 <span class="toolkit-pill">Supabase</span>
                                 <span class="toolkit-pill">REST API</span>
+                                <span class="toolkit-pill">OpenAPI</span>
+                                <span class="toolkit-pill">Vercel</span>
+                                <span class="toolkit-pill">Render</span>
                             </div>
 
                             <p class="reflection">
@@ -1112,7 +1171,9 @@
                             <h3>PokéGuess</h3>
 
                             <p class="desc">
-                                A recreation of the popular board game Guess Who but with Pokémon.
+                                A multiplayer Pokémon take on the board game Guess Who.
+                                Create a room, share the link with a friend, ready up,
+                                and play with live chat once the game starts.
                             </p>
 
                             <div class="toolkit" aria-label="Toolkit">
@@ -1121,6 +1182,9 @@
                                 <span class="toolkit-pill">Express</span>
                                 <span class="toolkit-pill">WebSockets</span>
                                 <span class="toolkit-pill">AWS DynamoDB</span>
+                                <span class="toolkit-pill">Docker</span>
+                                <span class="toolkit-pill">AWS EC2</span>
+                                <span class="toolkit-pill">Vercel</span>
                             </div>
 
                             <p class="reflection">
@@ -1910,7 +1974,7 @@
         );
 
         document
-            .querySelectorAll('.card')
+            .querySelectorAll('.card:not(.locked)')
             .forEach(card => {
 
                 card.tabIndex = 0;
@@ -1964,6 +2028,114 @@
 
     })();
 </script>
+<script>
+    /* Cards slide in when they scroll into view */
+    (() => {
+        const items = document.querySelectorAll('.card-entrance');
+        if (!('IntersectionObserver' in window)) {
+            items.forEach(el => el.classList.add('in-view'));   // fallback: just show them
+            return;
+        }
+        const io = new IntersectionObserver((entries, obs) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) { e.target.classList.add('in-view'); obs.unobserve(e.target); }
+            });
+        }, { threshold: 0.15 });
+        items.forEach(el => io.observe(el));
+    })();
+</script>
+<script>
+    /* Click stars: each click pops a small burst of four-pointed stars from the pointer. */
+    (() => {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+        const COUNT   = 7;            // stars per click
+        const SPEED   = [110, 210];   // launch speed range, px per second
+        const SIZE    = [9, 17];      // star size range, px
+        const LIFE    = [350, 550];   // how long each star lasts, ms
+        const GRAVITY = 90;           // how much the stars drift downward, px per second squared
+        const MAX     = 90;           // cap on stars on screen, so rapid clicking can't pile up
+
+        const NS = 'http://www.w3.org/2000/svg';
+        const PATH = 'M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z';
+        const rand = (a, b) => a + Math.random() * (b - a);
+
+        const layer = document.createElement('div');
+        layer.id = 'click-stars';
+        layer.setAttribute('aria-hidden', 'true');
+
+        // The card popup sits in the browser's top layer, which covers normal page content,
+        // so while it is open the stars live inside it to stay visible.
+        function ensureHost() {
+            const host = document.querySelector('dialog.modal[open]') || document.body;
+            if (layer.parentNode !== host) host.appendChild(layer);
+        }
+
+        let particles = [];
+        let raf = 0;
+        let last = 0;
+
+        function spawn(x, y) {
+            ensureHost();
+            const now = performance.now();
+            for (let i = 0; i < COUNT && particles.length < MAX; i++) {
+                const angle = (i / COUNT) * Math.PI * 2 + rand(-0.35, 0.35);
+                const speed = rand(SPEED[0], SPEED[1]);
+                const size = rand(SIZE[0], SIZE[1]);
+
+                const svg = document.createElementNS(NS, 'svg');
+                svg.setAttribute('viewBox', '0 0 24 24');
+                svg.setAttribute('width', size);
+                svg.setAttribute('height', size);
+                const path = document.createElementNS(NS, 'path');
+                path.setAttribute('d', PATH);
+                svg.appendChild(path);
+                layer.appendChild(svg);
+
+                particles.push({
+                    el: svg, size, x, y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed - 30,   // small upward kick
+                    rot: rand(0, 360),
+                    spin: rand(-360, 360),
+                    born: now,
+                    life: rand(LIFE[0], LIFE[1])
+                });
+            }
+            if (!raf) { last = now; raf = requestAnimationFrame(tick); }
+        }
+
+        function tick(now) {
+            const dt = Math.min((now - last) / 1000, 0.05);
+            last = now;
+            ensureHost();
+
+            particles = particles.filter(p => {
+                const age = (now - p.born) / p.life;
+                if (age >= 1) { p.el.remove(); return false; }
+
+                const drag = Math.pow(0.05, dt);    // slows the burst down smoothly
+                p.vx *= drag;
+                p.vy = p.vy * drag + GRAVITY * dt;
+                p.x += p.vx * dt;
+                p.y += p.vy * dt;
+                p.rot += p.spin * dt;
+
+                const scale = 1 - age * age;        // shrinks faster near the end
+                p.el.style.opacity = 1 - age;
+                p.el.style.transform =
+                    `translate3d(${p.x - p.size / 2}px,${p.y - p.size / 2}px,0) rotate(${p.rot}deg) scale(${scale})`;
+                return true;
+            });
+
+            raf = particles.length ? requestAnimationFrame(tick) : 0;
+        }
+
+        document.addEventListener('pointerdown', e => {
+            if (e.pointerType === 'mouse' && e.button !== 0) return;   // left clicks and taps only
+            spawn(e.clientX, e.clientY);
+        }, { passive: true });
+    })();
+</script>
 </body>
 </html>
