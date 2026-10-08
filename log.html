@@ -165,9 +165,23 @@
             #toc{display:block}
         }
 
-        #status{
-            text-align:center;
-            color:var(--muted);
+        /* Wide screens: the log is centered on the page, the contents menu sits at the left edge */
+        @media (min-width:1360px){
+            .layout{
+                max-width:none;
+                padding-left:28px;
+                padding-right:28px;
+                grid-template-columns:minmax(210px,1fr) minmax(0,860px) minmax(210px,1fr);
+                column-gap:28px;
+            }
+
+            #toc{
+                grid-column:1;
+                justify-self:start;
+                width:min(260px,100%);
+            }
+
+            #log{grid-column:2}
         }
 
         /* Title area */
@@ -662,7 +676,139 @@
             details.log-section > summary,
             .log-static > h2{padding:14px 18px;font-size:1.1rem}
         }
+
+        /* Loading animation: a glowing star spins inside dashed rings while log.md loads */
+        .loader{
+            position:fixed;
+            inset:0;
+            z-index:4;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            gap:20px;
+            color:var(--muted);
+            font-size:.9rem;
+            letter-spacing:.08em;
+            pointer-events:none;
+            opacity:0;
+            animation:loaderIn .4s ease .05s forwards;
+        }
+
+        .loader.is-leaving{animation:loaderOut .35s ease forwards}
+        .loader.is-failed{opacity:1;animation:none;pointer-events:auto}
+        .loader-text{margin:0}
+
+        @keyframes loaderIn{to{opacity:1}}
+        @keyframes loaderOut{
+            from{opacity:1;transform:scale(1)}
+            to{opacity:0;transform:scale(.94)}
+        }
+
+        .loader-art{
+            position:relative;
+            width:132px;
+            height:132px;
+        }
+
+        /* soft white glow behind the stars */
+        .loader-art::before{
+            content:"";
+            position:absolute;
+            inset:-30px;
+            background:radial-gradient(circle,rgba(255,255,255,.14),transparent 62%);
+            animation:loaderGlow 2.4s ease-in-out infinite;
+        }
+
+        /* The spinning parts are HTML elements, so the browser can keep them turning
+           smoothly even while the page is busy building the log */
+        .loader-ring,
+        .loader-core{
+            position:absolute;
+            inset:0;
+            will-change:transform;
+            filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 9px rgba(255,255,255,.55));
+        }
+
+        .loader-ring{animation:loaderSpin 8s linear infinite}
+        .loader-ring--inner{animation-duration:12s;animation-direction:reverse}
+
+        .loader-ring svg{
+            display:block;
+            width:100%;
+            height:100%;
+            overflow:visible;
+            fill:#fff;
+        }
+
+        .loader-dash{
+            fill:none;
+            stroke:#fff;
+            stroke-opacity:.55;
+            stroke-width:1.4;
+            stroke-linecap:round;
+            stroke-dasharray:2 8;      /* 24 even dashes around the outer ring */
+        }
+
+        .loader-dash--inner{
+            stroke-opacity:.35;
+            stroke-dasharray:1 5;      /* 20 even dashes around the inner ring */
+        }
+
+        .loader-core{
+            display:grid;
+            place-items:center;
+            animation:loaderSpin 5s linear infinite;
+        }
+
+        .loader-core svg{
+            width:38px;
+            height:38px;
+            fill:#fff;
+            animation:loaderPulse 1.4s ease-in-out infinite;
+        }
+
+        @keyframes loaderSpin{to{transform:rotate(360deg)}}
+
+        @keyframes loaderPulse{
+            0%,100%{transform:scale(.8);opacity:.85}
+            50%{transform:scale(1.1);opacity:1}
+        }
+
+        @keyframes loaderGlow{
+            0%,100%{opacity:.55}
+            50%{opacity:1}
+        }
+
+        /* Keep the page from collapsing while it loads, so the footer doesn't jump */
+        #log:has(> .loader){min-height:70vh}
+
+        /* The title area eases in once the log appears */
+        .intro,
+        .controls{animation:logFadeUp .7s cubic-bezier(.22,1,.36,1) both}
+
+        @keyframes logFadeUp{
+            from{opacity:0;transform:translateY(12px)}
+            to{opacity:1;transform:none}
+        }
+
+        @media (prefers-reduced-motion:reduce){
+            .loader{animation:none;opacity:1}
+            .loader-art::before,
+            .loader-ring,
+            .loader-core,
+            .loader-core svg,
+            .intro,
+            .controls{animation:none}
+        }
+
+        /* Smooth open/close: while a box is closing it still has [open], so keep its arrow and border looking closed */
+        details.log-section{transition:border-color .3s ease}
+        details.log-section.is-closing{border-color:var(--line)}
+        details.log-section.is-closing > summary::after{transform:rotate(45deg)}
     </style>
+
+    <noscript><style>.loader{display:none}</style></noscript>
 </head>
 
 <body>
@@ -674,7 +820,7 @@
         <div class="tabs">
             <span class="tab-pill"></span>
             <a href="index.html">&larr; Portfolio</a>
-            <a href="https://github.com/kevlam1/kevlam1.github.io/blob/main/LOG.md" target="_blank" rel="noopener">View on GitHub</a>
+            <a href="https://github.com/kevlam1/kevlam1.github.io/blob/main/log.md" target="_blank" rel="noopener">View on GitHub</a>
         </div>
     </nav>
 </header>
@@ -683,17 +829,42 @@
     <aside id="toc" aria-label="Contents"></aside>
 
     <div id="log">
-        <p id="status">Loading the log&hellip;</p>
+        <div id="status" class="loader" role="status" aria-live="polite">
+            <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+                <defs><path id="loader-star" d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z"/></defs>
+            </svg>
+
+            <div class="loader-art" aria-hidden="true">
+                <div class="loader-ring">
+                    <svg viewBox="-60 -60 120 120">
+                        <circle class="loader-dash" r="46" pathLength="240"/>
+                        <g transform="translate(46 0) scale(.55) translate(-12 -12)"><use href="#loader-star"/></g>
+                        <g transform="translate(-23 39.8) scale(.55) translate(-12 -12)"><use href="#loader-star"/></g>
+                        <g transform="translate(-23 -39.8) scale(.55) translate(-12 -12)"><use href="#loader-star"/></g>
+                    </svg>
+                </div>
+                <div class="loader-ring loader-ring--inner">
+                    <svg viewBox="-60 -60 120 120">
+                        <circle class="loader-dash loader-dash--inner" r="30" pathLength="120"/>
+                    </svg>
+                </div>
+                <div class="loader-core">
+                    <svg viewBox="0 0 24 24"><use href="#loader-star"/></svg>
+                </div>
+            </div>
+
+            <p class="loader-text">Loading the log&hellip;</p>
+        </div>
     </div>
 
     <noscript>
         <p style="text-align:center">This page needs JavaScript to display the log.
-            <a href="https://github.com/kevlam1/kevlam1.github.io/blob/main/LOG.md">View it on GitHub</a>.</p>
+            <a href="https://github.com/kevlam1/kevlam1.github.io/blob/main/log.md">View it on GitHub</a>.</p>
     </noscript>
 </main>
 
 <footer>
-    Rendered live from <code>LOG.md</code> in the repository.
+    Rendered live from <code>log.md</code> in the repository.
 </footer>
 
 <!-- Markdown renderer. Pinned to major version 12 so a future release can't change the page. -->
@@ -703,8 +874,9 @@
         const root = document.getElementById('log');
         const toc = document.getElementById('toc');
         const status = document.getElementById('status');
-        const GITHUB = 'https://github.com/kevlam1/kevlam1.github.io/blob/main/LOG.md';
+        const GITHUB = 'https://github.com/kevlam1/kevlam1.github.io/blob/main/log.md';
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const MIN_SHOW = 1000;   // ms the loader stays up once shown, so it reads as intentional instead of flashing. Set to 0 to remove the wait.
 
         // Sections with these titles are shown as plain always-open cards: not collapsible,
         // and left out of the content's menu.
@@ -721,7 +893,57 @@
         ];
 
         function fail(message) {
-            status.innerHTML = message + ' <a href="' + GITHUB + '">View the log on GitHub</a>.';
+            if (!status.isConnected) root.prepend(status);
+            status.classList.remove('is-leaving');
+            status.classList.add('is-failed');
+            status.innerHTML = '<p class="loader-text">' + message +
+                ' <a href="' + GITHUB + '">View the log on GitHub</a>.</p>';
+        }
+
+        /* ---------- Smooth open and close for the collapsible boxes ---------- */
+        function snapshot(body) {
+            const cs = getComputedStyle(body);
+            return {
+                height: body.getBoundingClientRect().height + 'px',
+                paddingTop: cs.paddingTop,
+                paddingBottom: cs.paddingBottom,
+                borderTopWidth: cs.borderTopWidth,
+                opacity: cs.opacity
+            };
+        }
+
+        const COLLAPSED = { height: '0px', paddingTop: '0px', paddingBottom: '0px', borderTopWidth: '0px', opacity: '0' };
+
+        function toggleSection(details, open) {
+            const body = details.querySelector('.section-body');
+            if (details.open === open && !details._anim) return;
+            details._wantOpen = open;
+
+            if (!body || reduceMotion) {
+                details.open = open;
+                return;
+            }
+
+            const from = details.open ? snapshot(body) : COLLAPSED;   // where the box is right now
+            if (details._anim) details._anim.cancel();
+
+            details.classList.toggle('is-closing', !open);
+            if (open) details.open = true;                            // it has to render before it can be measured
+            const to = open ? snapshot(body) : COLLAPSED;
+
+            body.style.overflow = 'hidden';
+            const anim = body.animate([from, to], {
+                duration: open ? 450 : 350,
+                easing: 'cubic-bezier(.4, 0, .2, 1)'
+            });
+            details._anim = anim;
+
+            anim.onfinish = () => {
+                body.style.overflow = '';
+                details._anim = null;
+                details.classList.remove('is-closing');
+                if (!open) details.open = false;
+            };
         }
 
         /* ---------- Branched contents menu ---------- */
@@ -872,7 +1094,7 @@
             return { nav, setActive, reveal };
         }
 
-        /* ---------- Render LOG.md ---------- */
+        /* ---------- Render log.md ---------- */
         function render(markdown) {
             marked.setOptions({ gfm: true, breaks: true });
 
@@ -907,6 +1129,10 @@
                         const summary = document.createElement('summary');
                         summary.textContent = title;
                         details.append(summary, body);
+                        summary.addEventListener('click', e => {
+                            e.preventDefault();   // stop the browser's instant toggle
+                            toggleSection(details, !(details._anim ? details._wantOpen : details.open));
+                        });
                         collapsibles.push(details);
                     }
                 } else if (body) {
@@ -952,7 +1178,7 @@
                 button.type = 'button';
                 button.textContent = label;
                 button.addEventListener('click', () => {
-                    root.querySelectorAll('details').forEach(d => { d.open = open; });
+                    root.querySelectorAll('details').forEach(d => { toggleSection(d, open); });
                 });
                 controls.append(button);
             });
@@ -1002,7 +1228,7 @@
             const menu = buildMenu(usable, id => {
                 const target = document.getElementById(id);
                 if (!target) return;
-                target.open = true;
+                toggleSection(target, true);
                 lockUntil = Date.now() + 900;
                 target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
             });
@@ -1037,14 +1263,31 @@
             return;
         }
 
-        // 'no-cache' makes the browser check for a newer LOG.md instead of reusing an old copy.
-        fetch('LOG.md', { cache: 'no-cache' })
+        // 'no-cache' makes the browser check for a newer log.md instead of reusing an old copy.
+        const shownAt = performance.now();
+
+// 'no-cache' makes the browser check for a newer log.md instead of reusing an old copy.
+        fetch('log.md', { cache: 'no-cache' })
             .then(response => {
                 if (!response.ok) throw new Error('HTTP ' + response.status);
                 return response.text();
             })
-            .then(render)
-            .catch(() => fail('Could not load LOG.md.'));
+            .then(markdown => {
+                // Let the loader finish its minimum time, fade it out, and only then do the heavy rendering
+                const remaining = Math.max(0, MIN_SHOW - (performance.now() - shownAt));
+                setTimeout(() => {
+                    status.classList.add('is-leaving');
+                    setTimeout(() => {
+                        try {
+                            render(markdown);
+                        } catch (error) {
+                            console.error(error);
+                            fail('Could not display the log.');
+                        }
+                    }, reduceMotion ? 0 : 350);
+                }, remaining);
+            })
+            .catch(() => fail('Could not load log.md.'));
     })();
 </script>
 

@@ -1,11 +1,11 @@
 # Build log: Artifact 1 (Portfolio)
 
 **Chat AIs:** Claude (main), ChatGPT (a few sessions when I hit Claude's limit), Gemini (brainstorming only) | **Editor:** IntelliJ IDEA Ultimate | **Host:** GitHub Pages (`kevlam1.github.io`)
-**Stack:** plain HTML, CSS, and JavaScript in a single `index.html`, no build step. Lenis (smooth scrolling) loads from a CDN.
+**Stack:** plain HTML, CSS, and JavaScript with no build step: `index.html` for the portfolio, `log.html` for this log page, and `log.md` for the log text. Lenis (smooth scrolling) and marked (Markdown rendering) load from a CDN.
 
 ## What I set out to build
 
-A small front-end portfolio with a card for each of the five course artifacts. Only card 1 is real (it is this site). Cards 2-5 hold placeholder ideas until I finish those artifacts. The site is also how I hand in every artifact, so it has to stay at one stable link all quarter. Overtime I will add more elements to it such as UX and UI to make sure this is the best work I would be satisfied with.
+A small front-end portfolio with a card for each of the five course artifacts. Only card 1 is real (it is this site). Cards 2-5 hold placeholder ideas until I finish those artifacts. The site is also how I hand in every artifact, so it has to stay at one stable link all quarter. Over time I will add more elements to it, such as UX and UI, to make sure this is the best work I would be satisfied with.
 
 ---
 
@@ -66,11 +66,11 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 **What changed**
 - Wrote my About section from my own details (Computer Science and Systems senior at UW Tacoma, likes building usable tools and optimization, learning to bring AI into my workflow).
 - Rewrote the intro: headline "Building with AI. Learning by making. One artifact at a time." and subtitle "Building optimized systems."
-- Added GitHub and LinkedIn icon links to the footer.
+- Added GitHub and LinkedIn icon links to the footer. Later I hid the LinkedIn icon for now, since it only linked to the generic LinkedIn home page.
 - Added more tabs to the top bar: Intro, About, Artifacts, Side Projects, Connect. Renamed "Work" to "Artifacts".
 - Added a Side Projects section with Cardex and PokéGuess, both live. Descriptions come from their READMEs, and the PokéGuess reflection is adapted from my LinkedIn post.
 - Added toolkit pills to the active cards to show the tools used. For the side projects I used their READMEs as the source. Artifact 1's pills are HTML, CSS, JavaScript, WebGL, GitHub Pages, and Claude.
-- Drafted my Artifact 1 reflection with Claude's help and edited it to match what happened.
+- Drafted my Artifact 1 reflection with Claude's help and edited it to match what happened. Later I added a few lines about moving to ChatGPT and Gemini when I hit Claude's limits, since the assignment says switching is worth a line in the reflection.
 - Added placeholder images to the non-active artifact cards to show they are coming soon.
 
 ---
@@ -84,7 +84,7 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 - Dividers: one thin line that fades out at both ends, with a soft glow. Added a matching line above the footer.
 - Soft drop shadows under every card, deeper on active cards while hovered.
 - Artifact 1 link: the text lifts slightly and a thick line sweeps out from the center.
-- Background: a slow-moving navy wave pattern drawn by a small WebGL shader. I liked the look of Balatro's background shader, but it was much busier than I wanted, and Shadertoy code is licensed by default in ways that limit reuse. I could not check this one's terms, so Claude wrote an original shader instead of porting it.
+- Background: a slow-moving navy wave pattern drawn by a small WebGL shader. I liked the look of Balatro's background, but it was much busier than I wanted, Claude wrote an original shader instead of copying it.
 - I asked for it to be busier and to swirl around the center like the original. Claude zoomed the pattern out, added a coordinate warp and a ripple layer, and added a twist around the screen center, with `ZOOM`, `SWIRL`, and `SPIN` settings I can tune.
 - It pauses when the tab is hidden, shows a still frame when reduced motion is on, and falls back to plain navy if WebGL is unavailable.
 
@@ -134,7 +134,7 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ## 9. Gradual blur and smooth scrolling
 
-### First attempt (ChatGPT, after hitting Claude's limit)
+**First attempt (ChatGPT, after hitting Claude's limit)**
 - Tried adding a gradual blur effect to the bottom of the page.
 - The first version used CSS custom properties for the blur values, and my editor flagged them as unresolved.
 - After fixing the errors, the effect looked more like a fade or mosaic than a smooth blur.
@@ -142,41 +142,105 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 - It also kept changing the implementation instead of building on the code I had already given it, which made this more frustrating and slower than it needed to be.
 - I eventually removed the unresolved variables and `-webkit-` properties and simplified the code.
 
-### Back to Claude
+**Rebuilding it with Claude**
 - Once my Claude limit reset, it fixed the problems and got close to what I pictured.
 - I tried the React Bits Gradual Blur effect. At first it looked off, with visible seams and a muddy dark tint.
 - Claude could not pull the component's source because React Bits renders in the browser. The component is React-only, so it had to be ported to plain JavaScript for my site anyway.
 - Cause of the seams: each blur layer was a hard-edged band with no mask. Claude rebuilt it so each layer has its own soft gradient mask and the blur builds up toward the bottom edge.
 - Compared with the React Bits demo, mine was less gradual and stretched images. Retuned to 8 layers over a taller band, with a lower peak blur that ramps up on a curve.
+
+**Scroll performance**
 - The scroll felt heavy. Backdrop blur over an animated WebGL background gets re-rendered every frame, which is expensive.
 - Fixes: capped the background at about 30fps, removed a blur on the header that did nothing because its background was opaque, and throttled the nav's scroll handler to once per frame.
-- Learned that `scroll-behavior: smooth` only smooths anchor jumps, not normal scrolling. Added Lenis for smooth wheel scrolling, routed the nav tabs through it, and paused it while the card popup is open.
-- Made the blur fade out over the last 250px of scroll so the footer stays readable. It is hidden once fully faded, so it stops rendering too. The fade is applied to each layer, because opacity on the parent would have stopped the layers from seeing the page behind them.
-- Fixed a typo in the Artifacts intro ("build" to "building").
+
+**Smooth scrolling**
+- Learned that `scroll-behavior: smooth` only smooths anchor jumps, not normal scrolling.
+- Added Lenis for smooth wheel scrolling, routed the nav tabs through it, and paused it while the card popup is open.
+
+**Keeping the footer readable**
+- Made the blur fade out over the last 250px of scroll so the footer stays readable. It is hidden once fully faded, so it stops rendering too.
+- The fade is applied to each layer, because opacity on the parent would have stopped the layers from seeing the page behind them.
 
 ---
 
 ## 10. Planning Artifacts 2-5
 
+**What I did**
 - Read the Artifact 2 spec on the course site. It does not have to be a web app or be deployed, a repo link works for the card, and it is my first build with Claude Code.
 - While my Claude session was locked, I brainstormed with Gemini. It explained AI image parsing as if Claude Code lived inside the finished app. I questioned it, and it admitted it had blurred the line between the tool that builds the software and the AI the finished app might call.
-- Back in Claude, I brainstormed more ideas. Looked into the Riot API: a development key is for testing and personal use, a public product needs a production key, and the key must stay out of a public repo. Also researched Data Dragon and Community Dragon, which cover champion and item data but are documented as inaccurate in places.
-- Learned the difference between chat Claude (can fetch some web pages, but its sandbox has no network) and Claude Code (runs on my machine and can inspect real API responses). Plan: ask it to show raw data before trusting it, and put key decisions in `CLAUDE.md`.
-- Current placeholder ideas (I will not be held to them):
-    - **Artifact 2, MIDI Visualizer:** a browser-based MIDI player and Synthesia-style visualizer that loads MIDI files, shows notes falling in real time, and lets me play along on a connected piano keyboard.
-    - **Artifact 3, README.md Architect:** a Claude Code skill that analyzes a project's codebase and generates a README from its real structure, technologies, and functionality.
-    - **Artifact 4, Service Booking Tool:** a booking system for a service provider to manage availability, appointments, and customer requests.
-    - **Artifact 5, Game Reference Tool:** a fast, no-bloat reference for League of Legends, then Valorant and Overwatch.
+- Back in Claude, I brainstormed more ideas.
+
+**What I learned**
+- Riot API: a development key is for testing and personal use, a public product needs a production key, and the key must stay out of a public repo.
+- Data Dragon and Community Dragon cover champion and item data but are documented as inaccurate in places.
+- Chat Claude can fetch some web pages, but its sandbox has no network. Claude Code runs on my machine and can inspect real API responses.
+- Plan: ask Claude Code to show raw data before trusting it, and put key decisions in `CLAUDE.md`.
+
+**Current placeholder ideas (I will not be held to them)**
+- **Artifact 2, MIDI Visualizer:** a browser-based MIDI player and Synthesia-style visualizer that loads MIDI files, shows notes falling in real time, and lets me play along on a connected piano keyboard.
+- **Artifact 3, README.md Architect:** a Claude Code skill that analyzes a project's codebase and generates a README from its real structure, technologies, and functionality.
+- **Artifact 4, Service Booking Tool:** a booking system for a service provider to manage availability, appointments, and customer requests.
+- **Artifact 5, Game Reference Tool:** a fast, no-bloat reference for League of Legends, then Valorant and Overwatch.
 - The game reference tool started as my Artifact 2 idea. I wrote a scoped plan for it (`PLAN.md`), and it is now the Artifact 5 idea.
 
 ---
 
 ## 11. Reviews and fixes
 
+**Editor warnings**
 - IntelliJ flagged a few CSS warnings (`--mx` and `--my` unresolved, `.gradual-blur-layer` never used, `--fade` unresolved). All were false alarms because JavaScript creates those layers and sets those values at runtime. I added default values to quiet some of them.
-- Claude reviewed the whole file more than once and found: a deleted spotlight rule, a nav tab that could not become active by scrolling, leftover colors from the old theme, a missing footer rule, placeholder image paths with no files behind them, and a Cardex link that pointed to my own portfolio. I fixed each.
 - 17 editor errors came from a block of CSS I had pasted inside a script tag. I removed the duplicate.
+
+**Claude's reviews of the file**
+- Claude reviewed the whole file more than once and found: a deleted spotlight rule, a nav tab that could not become active by scrolling, leftover colors from the old theme, a missing footer rule, placeholder image paths with no files behind them, and a Cardex link that pointed to my own portfolio. I fixed each.
+- Fixed a typo in the Artifacts intro ("build" to "building").
+
+**Going live**
 - Pushed the first full version of the site to `main` for a live check, then pushed later changes as I went.
+
+---
+
+## 12. The log page
+
+**What I asked for**
+- A page on the site that shows this `log.md`, so the Markdown file stays the single source and I only edit the text in one place.
+- A header that matches the main page (same bar color and pill buttons), and a background that fits the main page's theme.
+- "What I set out to build" as a plain box instead of a collapsible one, and no menu entry that just scrolls back to the top.
+- Reflection boxes separated from the build boxes, with the same dividers as the main page.
+- The sidebar menu to drop down when the page opens, and the boxes to slide in on scroll like the cards on the main page.
+- A slower, smoother menu drop-down, with Reflection expanded too.
+- The boxes to open smoothly instead of popping open.
+- The main text centered on the page, with the menu more to the left.
+- Something to cover the brief jank while the log renders.
+- This `.md` reorganized so it reads in order on the site, with my newer notes folded in.
+
+**What changed: the page and its content**
+- Added `log.html`, which loads `log.md` in the browser, renders it with the marked library, and turns each `##` heading into a collapsible box with checklists shown. The footer on the main page links to it.
+- "What I set out to build" is now an always-open box and is left out of the menu.
+- The boxes are grouped under centered "The build" and "Reflection" headings, separated by the same glowing divider as the main page. "Still to do" stays inside Reflection for now.
+- Renamed `LOG.md` to `log.md` so every file name is lowercase, and pointed the footer link at `log.html` to match.
+- Reorganized `log.md`: regrouped the sections, made the labels consistent, folded the notes I had parked at the bottom into this section, and turned finished to-dos into checked items.
+
+**What changed: the contents menu**
+- Added a branched contents menu, a plain JavaScript port of a React Bits component. It groups the sections, follows my scroll position, and jumps to a section on click.
+- Sidebar drop-down: the rail and group titles fade in one after another, then both groups unfold with each item fading into place. The first version seemed choppy, so I gave Claude more specific instructions. It switched to a gentler ease-in-out curve, slowed the unfold to about a second, and staggered the items, which worked well.
+
+**What changed: motion**
+- Boxes slide in from the left as they scroll into view, like the cards on the main page. They trigger when a box's top edge enters the screen, so tall boxes still show up.
+- Boxes now open and close smoothly instead of popping. The height, padding, and fade animate together, and it also applies to Expand all, Collapse all, and clicks from the contents menu. It is instant for visitors who prefer reduced motion.
+- Loading animation: a glowing star spinning inside dashed rings, using the same star as the click effect, to cover the brief jank when the log renders. It holds the page height open so the footer does not jump, stays up for at least a second so it does not flash, and fades out before the page builds.
+
+**What changed: look and layout**
+- Header: same dark bar as the main page, with a pill-shaped container and a highlight that slides to whichever button I hover.
+- Background: Claude ported the React Bits Gradient Waves component, which is written in React with the OGL library, to plain WebGL2. Claude recolored it to my navy palette and made it quieter. It renders at half resolution and is capped at about 30fps to keep scrolling smooth.
+- On wide screens (1360px and up) the log text is centered on the page and the contents menu sits at the left edge. Narrower windows keep the menu beside the text, because there is not room to do both.
+
+**Decisions**
+- Keep `log.md` as the only copy of the text. The page renders it live instead of duplicating it.
+- Lowercase file names everywhere (`log.md`, `log.html`), since GitHub Pages is case-sensitive.
+- Port components to plain JavaScript instead of adding React or OGL to a site that has no build step.
+- Dropped the wave component's mouse parallax and its built-in grain. The page already has a grain overlay, and the background should stay quiet behind the text.
+- All the log page's motion switches off for visitors who prefer reduced motion.
 
 ---
 
@@ -187,8 +251,9 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 - **Accent color:** using #0f172a as the accent would have made links and buttons nearly invisible, so it became the background color.
 - **Card layout took three tries:** I asked for "two columns inside one, stacked." Claude read that as one narrower column, then gave me two cards per row with the image on top. I meant wide rectangles (image left, text right), two per row. I learned to describe the layout precisely.
 - **Background shader:** the first version was too zoomed in, and it drifted in every direction. The original I liked spirals around the center, so Claude added zoom and swirl controls.
-- **Pages it could not open:** it could not read the Shadertoy page or some course guides, so I had to paste or describe what I wanted.
+- **Pages it could not open:** it could not read the css reference pages or some course guides, so I had to paste or describe what I wanted.
 - **Checking sources:** I asked Claude to double-check sources. It checked the assignment against the course site and the hosting steps against GitHub's docs, and it flagged what it could not verify instead of guessing.
+- **Log page menu:** the first version of the log page listed "What I set out to build" in the Reflection part of the menu, so clicking it just scrolled back to the top. I asked for it to be a plain box and removed it from the menu.
 
 **ChatGPT**
 - Twice (the card entrance and the first blur), it wrote code and then reversed itself in the same message, and ignored my instruction to stop. I found Claude clearer about exactly which part of the code to change.
@@ -210,11 +275,14 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 - Considered Tailwind or a framework. Chose plain HTML, CSS, and JavaScript.
 - Considered making the repo private. Pages on a free account needs a public repo, and the site is public anyway.
 - Started with a two-line divider and cut it down to one line.
-- Dropped the idea of copying the Shadertoy shader's code.
+- Dropped the idea of copying css shader code.
 - Dropped a photo of myself from the intro.
 - Dropped the constant orbiting stars in favor of click bursts.
 - Dropped the blur on the header, since it did nothing.
 - Not putting the whole game reference tool into Artifact 2, since three games is far more than the 8-12 hour scope.
+- Log page: made "What I set out to build" a plain box instead of a collapsible one.
+- Log page: dropped the wave background's mouse parallax and built-in grain.
+- Log page: kept "Still to do" inside Reflection instead of giving it its own group. It is a one-line change if I want to split it out later.
 
 ---
 
@@ -222,23 +290,20 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 - Testing on a phone and a small window: nav fit with five tabs, card layout, popup sizing, and background performance.
 - Whether the gradual blur and Lenis scrolling feel good on a slower computer or a phone.
-- Whether `LOG.md` displays well when linked from the live site's footer.
 - Whether the Lenis script loads reliably from the CDN, and that nothing breaks without it.
+- Whether the log page opens from the live site's footer link, and whether it finds `log.md` after the rename. The file names and every link and fetch must match exactly, because GitHub Pages is case-sensitive.
+- How the log page looks on a phone (its contents menu is hidden below 1100px wide by design), and whether its wave background, loading animation, and menu animation run smoothly on a slower computer.
 
 ---
 
 ## Still to do
 
-- [ ] Add a line to the Artifact 1 reflection about switching chat AIs (ChatGPT, Gemini). The assignment says switching is worth a line in the reflection.
-- [ ] Replace the generic LinkedIn link with my profile URL, or remove it.
+**Open**
 - [ ] Swap the placeholder images and alt text on cards 2-5 as I finish each artifact.
-- [ ] Push the latest changes and check the live site in a private window and on my phone.
+- [ ] Push the latest changes and check the live site, including the log page, in a private window and on my phone.
 - [ ] Submit the link on Canvas by Sunday, Oct 11 at 11:59 PM.
 
-
-## Extra logs to fix later
-- Added log.html, a themed page that loads and renders LOG.md in the browser (collapsible sections, checklists), so the Markdown file stays the single source. Footer now links to it.
-- Added a branched contents menu to the log page (a plain JavaScript port of a React Bits component). It groups the sections, follows my scroll position, and jumps to a section on click.
-- Asked Claude to fix up the header to be in line with the main index. Change up how the buttons worked too.
-- Have it so the sidebar drops down when the page is loaded, including the boxes just like index.html cards.
-- Animation for the sidebar seemed choppy. Asked Claude to improve upon it after giving it more specific instruction. Went successful.
+**Done**
+- [x] Add a line to the Artifact 1 reflection about switching chat AIs (ChatGPT, Gemini). The assignment says switching is worth a line in the reflection.
+- [x] Replace the generic LinkedIn link with my profile URL, or remove it. I hid the LinkedIn icon for now.
+- [x] Make the footer link and the log page's file name match. The footer now links to `log.html`.
