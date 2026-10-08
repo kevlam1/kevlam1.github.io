@@ -707,10 +707,10 @@
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         // Sections with these titles are shown as plain always-open cards: not collapsible,
-        // and left out of the contents menu.
+        // and left out of the content's menu.
         const STATIC_TITLES = [/^what i set out to build$/i];
 
-        // How the collapsible sections are grouped, both on the page and in the contents menu.
+        // How the collapsible sections are grouped, both on the page and in the content's menu.
         // The first rule that matches wins. "## 1. Something" style headings go under "The build";
         // everything else goes under "Reflection".
         const GROUPS = [
