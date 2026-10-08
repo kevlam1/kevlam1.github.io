@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Build Log | Kevin Lam</title>
+    <meta name="description" content="Build log for Artifact 1: how this portfolio was planned, built, and revised.">
+
+    <style>
+        :root{
+            --bg:#0f172a;
+            --panel:#1e293b;
+            --line:#334155;
+            --text:#e2e8f0;
+            --muted:#94a3b8;
+            --accent:#ffffff;
+            --grain:.13;
+            --noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)'/%3E%3C/svg%3E");
+        }
+
+        *{box-sizing:border-box}
+
+        body{
+            margin:0;
+            color:var(--text);
+            font-family:Georgia,"Times New Roman",serif;
+            line-height:1.7;
+            background-color:var(--bg);
+            background-image:radial-gradient(1100px circle at 50% -5%,#18244a 0%,var(--bg) 62%);
+            background-repeat:no-repeat;
+        }
+
+        /* Grain, same as the portfolio */
+        body::before{
+            content:"";
+            position:fixed;
+            inset:0;
+            z-index:0;
+            background-image:var(--noise);
+            background-repeat:repeat;
+            background-size:182px;
+            opacity:var(--grain);
+            pointer-events:none;
+        }
+
+        /* Animated waves background (WebGL2, see the script at the bottom) */
+        #bg{
+            position:fixed;
+            inset:0;
+            width:100%;
+            height:100%;
+            z-index:-1;
+            display:block;
+            pointer-events:none;
+        }
+
+        a{color:var(--accent)}
+
+        :focus-visible{
+            outline:2px solid var(--accent);
+            outline-offset:3px;
+        }
+
+        /* Top bar, same look as the portfolio */
+        .topbar{
+            position:sticky;
+            top:0;
+            z-index:10;
+            background:rgb(24,24,24);
+            border-bottom:1px solid var(--line);
+        }
+
+        .topbar nav{
+            display:flex;
+            justify-content:center;
+            padding:12px;
+        }
+
+        .tabs{
+            position:relative;
+            display:flex;
+            height:44px;
+            padding:0 6px;
+            border:1px solid var(--line);
+            border-radius:999px;
+            background:rgba(255,255,255,.03);
+        }
+
+        /* Highlight pill that slides to whichever button you hover */
+        .tab-pill{
+            position:absolute;
+            top:6px;
+            bottom:6px;
+            left:0;
+            width:0;
+            border-radius:999px;
+            background:rgba(255,255,255,.12);
+            opacity:0;
+            pointer-events:none;
+            transition:left .3s ease,width .3s ease,opacity .2s ease;
+        }
+
+        .tabs.hovering .tab-pill{opacity:1}
+
+        .tabs a{
+            position:relative;
+            display:flex;
+            align-items:center;
+            padding:0 18px;
+            color:var(--muted);
+            text-decoration:none;
+            font-size:.95rem;
+            letter-spacing:.04em;
+            transition:color .2s;
+        }
+
+        .tabs a:hover,
+        .tabs a:focus-visible{
+            color:var(--accent);
+        }
+
+        @media (max-width:520px){
+            .topbar nav{padding:10px 8px}
+            .tabs{padding:0 4px}
+            .tabs a{
+                padding:0 12px;
+                font-size:.82rem;
+                letter-spacing:.02em;
+            }
+        }
+
+        @media (prefers-reduced-motion:reduce){
+            .tab-pill{transition:none}
+        }
+
+        /* Layout: contents menu on the left (wide screens only), log on the right */
+        .layout{
+            position:relative;
+            z-index:1;
+            max-width:1220px;
+            margin:0 auto;
+            padding:56px 20px 100px;
+            display:grid;
+            grid-template-columns:minmax(0,860px);
+            justify-content:center;
+        }
+
+        #toc{
+            display:none;
+            position:sticky;
+            top:84px;
+            align-self:start;
+            max-height:calc(100vh - 110px);
+            overflow:auto;
+            padding-top:6px;
+        }
+
+        #log{min-width:0}
+
+        @media (min-width:1100px){
+            .layout{
+                grid-template-columns:260px minmax(0,860px);
+                gap:48px;
+            }
+            #toc{display:block}
+        }
+
+        #status{
+            text-align:center;
+            color:var(--muted);
+        }
+
+        /* Title area */
+        .intro{
+            text-align:center;
+            margin-bottom:8px;
+        }
+
+        .intro h1{
+            margin:0 0 14px;
+            font-weight:400;
+            font-size:clamp(2rem,6vw,3rem);
+            line-height:1.15;
+            letter-spacing:-.01em;
+        }
+
+        .intro p{
+            margin:0 auto 10px;
+            max-width:62ch;
+            color:var(--muted);
+            font-size:.95rem;
+        }
+
+        .controls{
+            display:flex;
+            justify-content:center;
+            gap:10px;
+            margin:22px 0 26px;
+        }
+
+        .controls button{
+            font:inherit;
+            font-size:.85rem;
+            letter-spacing:.04em;
+            padding:7px 16px;
+            border:1px solid var(--line);
+            border-radius:999px;
+            background:rgba(255,255,255,.03);
+            color:var(--muted);
+            cursor:pointer;
+            transition:color .2s,border-color .2s;
+        }
+
+        .controls button:hover{
+            color:var(--accent);
+            border-color:var(--accent);
+        }
+
+        /* Sections */
+        details.log-section{
+            margin:14px 0;
+            scroll-margin-top:84px;
+            border:1px solid var(--line);
+            border-radius:14px;
+            background:rgba(30,41,59,.82);
+            box-shadow:0 12px 24px -8px rgba(0,0,0,.6),0 2px 6px rgba(0,0,0,.3);
+            overflow:hidden;
+        }
+
+        details.log-section[open]{
+            border-color:rgba(255,255,255,.35);
+        }
+
+        details.log-section > summary{
+            list-style:none;
+            cursor:pointer;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:14px;
+            padding:16px 22px;
+            font-size:1.2rem;
+            transition:color .2s;
+        }
+
+        details.log-section > summary::-webkit-details-marker{display:none}
+
+        details.log-section > summary:hover{color:var(--accent)}
+
+        details.log-section > summary::after{
+            content:"";
+            flex:none;
+            width:9px;
+            height:9px;
+            border-right:2px solid var(--muted);
+            border-bottom:2px solid var(--muted);
+            transform:rotate(45deg);
+            transition:transform .2s;
+        }
+
+        details.log-section[open] > summary::after{
+            transform:rotate(-135deg);
+        }
+
+        /* Always-open card (not collapsible), e.g. "What I set out to build" */
+        .log-static{
+            margin:14px 0;
+            border:1px solid var(--line);
+            border-radius:14px;
+            background:rgba(30,41,59,.82);
+            box-shadow:0 12px 24px -8px rgba(0,0,0,.6),0 2px 6px rgba(0,0,0,.3);
+            overflow:hidden;
+        }
+
+        .log-static > h2{
+            margin:0;
+            padding:16px 22px;
+            font-size:1.2rem;
+            font-weight:400;
+        }
+
+        .section-body{
+            padding:2px 24px 22px;
+            text-align:left;
+            border-top:1px solid var(--line);
+        }
+
+        .section-body > :first-child{margin-top:18px}
+
+        .section-body p{margin:.7em 0}
+
+        .section-body strong{color:var(--text)}
+
+        .section-body h3{
+            margin:26px 0 6px;
+            font-size:.8rem;
+            font-weight:400;
+            letter-spacing:.12em;
+            text-transform:uppercase;
+            color:var(--muted);
+        }
+
+        .section-body ul,
+        .section-body ol{
+            margin:.4em 0 .9em;
+            padding-left:1.4em;
+        }
+
+        .section-body li{margin:.4em 0}
+
+        .section-body li > ul,
+        .section-body li > ol{margin:.3em 0}
+
+        /* Checklist items from "- [ ]" */
+        .section-body li:has(> input[type="checkbox"]){
+            list-style:none;
+            margin-left:-1.4em;
+        }
+
+        .section-body input[type="checkbox"]{
+            accent-color:#ffffff;
+            margin-right:.6em;
+            transform:translateY(1px);
+        }
+
+        code{
+            font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+            font-size:.86em;
+            padding:.1em .4em;
+            border-radius:6px;
+            background:rgba(255,255,255,.08);
+        }
+
+        pre{
+            overflow-x:auto;
+            padding:14px 16px;
+            border:1px solid var(--line);
+            border-radius:10px;
+            background:rgba(0,0,0,.25);
+        }
+
+        pre code{
+            padding:0;
+            background:none;
+        }
+
+        /* =========================================================
+           Branched contents menu
+           Folding groups, a rail, curved branches, and an accent line
+           that is drawn to the section you are reading.
+           ========================================================= */
+        .branched-menu{
+            --bm-ink:var(--text);
+            --bm-accent:#ffffff;
+            --bm-line:#334155;
+            --bm-font:14px;
+            --bm-row:36px;
+            --bm-indent:40px;
+            --bm-line-w:1.5;
+            --bm-draw:400ms;
+            --bm-fold:300ms;
+            --bm-ease:cubic-bezier(.23,1,.32,1);
+            --bm-muted:color-mix(in srgb,var(--bm-ink) 55%,transparent);
+
+            position:relative;
+            display:flex;
+            flex-direction:column;
+            width:100%;
+            padding-left:14px;
+            color:var(--bm-ink);
+            font-size:var(--bm-font);
+            line-height:1.2;
+            text-align:left;
+        }
+
+        .branched-menu::before{
+            content:"";
+            position:absolute;
+            top:8px;
+            bottom:0;
+            left:0;
+            width:2px;
+            border-radius:1px;
+            background:linear-gradient(to bottom,var(--bm-line) 0%,var(--bm-line) 55%,transparent 100%);
+        }
+
+        .bm-marker{
+            position:absolute;
+            top:-1px;
+            left:0;
+            z-index:1;
+            width:2px;
+            height:16px;
+            border-radius:1px;
+            background:var(--bm-accent);
+            opacity:0;
+            transition:top 220ms var(--bm-ease),opacity 150ms ease;
+        }
+
+        .bm-marker[data-on]{opacity:1}
+
+        .bm-section{
+            display:flex;
+            flex-direction:column;
+        }
+
+        .bm-head{
+            display:block;
+            margin:0;
+            padding:9px 0;
+            border:0;
+            background:none;
+            color:var(--bm-muted);
+            font:inherit;
+            font-size:calc(var(--bm-font) + 1px);
+            font-weight:500;
+            text-align:left;
+            cursor:pointer;
+            outline:none;
+            transition:color 200ms ease;
+        }
+
+        .bm-head:focus-visible,
+        .bm-item:focus-visible{
+            outline:2px solid var(--accent);
+            outline-offset:2px;
+            border-radius:6px;
+        }
+
+        .bm-section[data-open] .bm-head{color:var(--bm-ink)}
+
+        @media (hover:hover) and (pointer:fine){
+            .bm-head:hover{color:var(--bm-ink)}
+        }
+
+        .bm-body{
+            display:grid;
+            grid-template-rows:0fr;
+            transition:grid-template-rows var(--bm-fold) var(--bm-ease);
+        }
+
+        .bm-section[data-open] .bm-body{grid-template-rows:1fr}
+
+        .bm-fold{
+            min-height:0;
+            overflow:hidden;
+        }
+
+        .bm-tree{
+            position:relative;
+            padding:6px 0;
+            box-sizing:border-box;
+        }
+
+        .bm-lines{
+            position:absolute;
+            top:0;
+            left:0;
+            overflow:visible;
+            opacity:0;
+            pointer-events:none;
+            transition:opacity 200ms ease;
+        }
+
+        .bm-section[data-open] .bm-lines{
+            opacity:1;
+            transition:opacity 250ms ease 100ms;
+        }
+
+        .bm-base,
+        .bm-reach{
+            fill:none;
+            stroke-width:var(--bm-line-w);
+            stroke-linecap:round;
+            stroke-linejoin:round;
+        }
+
+        .bm-base{stroke:var(--bm-line)}
+
+        .bm-reach{
+            stroke:var(--bm-accent);
+            transition:stroke-dashoffset var(--bm-draw) var(--bm-ease);
+        }
+
+        .bm-item{
+            display:flex;
+            align-items:center;
+            width:100%;
+            height:var(--bm-row);
+            margin:0;
+            padding:0 8px 0 var(--bm-indent);
+            border:0;
+            background:none;
+            color:var(--bm-muted);
+            font:inherit;
+            text-align:left;
+            cursor:pointer;
+            outline:none;
+            box-sizing:border-box;
+            transition:color 200ms ease;
+        }
+
+        @media (hover:hover) and (pointer:fine){
+            .bm-item:hover{color:var(--bm-ink)}
+        }
+
+        .bm-item[data-active]{
+            color:var(--bm-accent);
+            font-weight:500;
+        }
+
+        .bm-label{
+            min-width:0;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            white-space:nowrap;
+        }
+
+        @media (prefers-reduced-motion:reduce){
+            .bm-marker{transition:opacity 150ms ease}
+            .bm-body,
+            .bm-reach{transition:none}
+        }
+
+        /* Footer */
+        footer{
+            position:relative;
+            z-index:1;
+            text-align:center;
+            padding:30px 20px 60px;
+            color:var(--muted);
+            font-size:.9rem;
+        }
+
+        footer::before{
+            content:"";
+            position:absolute;
+            top:0;
+            left:0;
+            right:0;
+            height:1px;
+            background:linear-gradient(90deg,transparent,var(--accent),transparent);
+            filter:drop-shadow(0 0 6px var(--accent));
+            pointer-events:none;
+        }
+
+        @media (max-width:520px){
+            .section-body{padding:2px 18px 20px}
+            details.log-section > summary,
+            .log-static > h2{padding:14px 18px;font-size:1.1rem}
+        }
+    </style>
+</head>
+
+<body>
+
+<canvas id="bg" aria-hidden="true"></canvas>
+
+<header class="topbar">
+    <nav>
+        <div class="tabs">
+            <span class="tab-pill"></span>
+            <a href="index.html">&larr; Portfolio</a>
+            <a href="https://github.com/kevlam1/kevlam1.github.io/blob/main/LOG.md" target="_blank" rel="noopener">View on GitHub</a>
+        </div>
+    </nav>
+</header>
+
+<main class="layout">
+    <aside id="toc" aria-label="Contents"></aside>
+
+    <div id="log">
+        <p id="status">Loading the log&hellip;</p>
+    </div>
+
+    <noscript>
+        <p style="text-align:center">This page needs JavaScript to display the log.
+            <a href="https://github.com/kevlam1/kevlam1.github.io/blob/main/LOG.md">View it on GitHub</a>.</p>
+    </noscript>
+</main>
+
+<footer>
+    Rendered live from <code>LOG.md</code> in the repository.
+</footer>
+
+<!-- Markdown renderer. Pinned to major version 12 so a future release can't change the page. -->
+<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+<script>
+    (() => {
+        const root = document.getElementById('log');
+        const toc = document.getElementById('toc');
+        const status = document.getElementById('status');
+        const GITHUB = 'https://github.com/kevlam1/kevlam1.github.io/blob/main/LOG.md';
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // How sections are grouped in the contents menu. The first rule that matches wins.
+        // "## 1. Something" style headings go under "The build"; everything else goes under "Reflection".
+        // Sections with these titles are shown as plain always-open cards: not collapsible,
+        // and left out of the contents menu.
+        const STATIC_TITLES = [/^what i set out to build$/i];
+
+        const GROUPS = [
+            { label: 'The build',  match: title => /^\d+\./.test(title) },
+            { label: 'Reflection', match: () => true }
+        ];
+
+        function fail(message) {
+            status.innerHTML = message + ' <a href="' + GITHUB + '">View the log on GitHub</a>.';
+        }
+
+        /* ---------- Branched contents menu ---------- */
+        function buildMenu(groups, onPick) {
+            const ROW = 36, INDENT = 40, TRUNK = 14, PAD = 6, MARK = 16, RADIUS = 10;
+            const NS = 'http://www.w3.org/2000/svg';
+            const r = Math.min(RADIUS, ROW / 2 - 2);
+            const endX = INDENT - 8;
+            const rowY = k => PAD + k * ROW + ROW / 2;
+            const branch = k => `M ${TRUNK} ${rowY(k) - r} A ${r} ${r} 0 0 0 ${TRUNK + r} ${rowY(k)} H ${endX}`;
+            const reach  = k => `M ${TRUNK} 0 V ${rowY(k) - r} A ${r} ${r} 0 0 0 ${TRUNK + r} ${rowY(k)} H ${endX}`;
+            const length = k => rowY(k) - r + (Math.PI * r) / 2 + (endX - TRUNK - r);
+            const el = (tag, cls) => { const e = document.createElement(tag); e.className = cls; return e; };
+
+            const nav = el('nav', 'branched-menu');
+            nav.setAttribute('aria-label', 'Log contents');
+            const marker = el('span', 'bm-marker');
+            marker.setAttribute('aria-hidden', 'true');
+            nav.append(marker);
+
+            const parts = [];
+            let active = null;
+
+            function placeMarker(glide) {
+                const part = parts.find(p => p.group.kids.some(k => k.id === active));
+                const on = Boolean(part && part.open);
+                if (!glide) marker.style.transition = 'none';
+                if (on) marker.style.top = `${part.head.offsetTop + (part.head.offsetHeight - MARK) / 2}px`;
+                marker.toggleAttribute('data-on', on);
+                if (!glide) {
+                    void marker.offsetHeight;
+                    marker.style.transition = '';
+                }
+            }
+
+            function setOpen(part, open) {
+                part.open = open;
+                part.section.toggleAttribute('data-open', open);
+                part.head.setAttribute('aria-expanded', String(open));
+                part.buttons.forEach(b => { b.tabIndex = open ? 0 : -1; });
+                placeMarker(true);
+            }
+
+            function setActive(id) {
+                if (id === active) return;
+                active = id;
+                parts.forEach(part => {
+                    part.group.kids.forEach((kid, k) => {
+                        const on = kid.id === id;
+                        part.buttons[k].toggleAttribute('data-active', on);
+                        if (on) part.buttons[k].setAttribute('aria-current', 'true');
+                        else part.buttons[k].removeAttribute('aria-current');
+                        part.reaches[k].style.strokeDashoffset = on ? '0' : String(length(k));
+                    });
+                    if (part.group.kids.some(kid => kid.id === id) && !part.open) setOpen(part, true);
+                });
+                placeMarker(true);
+            }
+
+            groups.forEach(group => {
+                const section = el('div', 'bm-section');
+
+                const head = el('button', 'bm-head');
+                head.type = 'button';
+                head.textContent = group.label;
+                head.setAttribute('aria-expanded', 'false');
+
+                const body = el('div', 'bm-body');
+                const fold = el('div', 'bm-fold');
+                const tree = el('div', 'bm-tree');
+                const bodyH = PAD * 2 + group.kids.length * ROW;
+                tree.style.height = bodyH + 'px';
+
+                const svg = document.createElementNS(NS, 'svg');
+                svg.setAttribute('class', 'bm-lines');
+                svg.setAttribute('width', INDENT);
+                svg.setAttribute('height', bodyH);
+                svg.setAttribute('aria-hidden', 'true');
+
+                const addPath = (d, cls) => {
+                    const p = document.createElementNS(NS, 'path');
+                    p.setAttribute('class', cls);
+                    p.setAttribute('d', d);
+                    svg.append(p);
+                    return p;
+                };
+
+                addPath(`M ${TRUNK} 0 V ${rowY(group.kids.length - 1) - r}`, 'bm-base');
+                group.kids.forEach((_, k) => addPath(branch(k), 'bm-base'));
+                const reaches = group.kids.map((_, k) => {
+                    const p = addPath(reach(k), 'bm-reach');
+                    p.style.strokeDasharray = String(length(k));
+                    p.style.strokeDashoffset = String(length(k));
+                    return p;
+                });
+                tree.append(svg);
+
+                const buttons = group.kids.map(kid => {
+                    const b = el('button', 'bm-item');
+                    b.type = 'button';
+                    b.title = kid.label;
+                    b.tabIndex = -1;
+                    const label = el('span', 'bm-label');
+                    label.textContent = kid.label;
+                    b.append(label);
+                    b.addEventListener('click', () => { setActive(kid.id); onPick(kid.id); });
+                    tree.append(b);
+                    return b;
+                });
+
+                fold.append(tree);
+                body.append(fold);
+                section.append(head, body);
+                nav.append(section);
+
+                const part = { group, section, head, buttons, reaches, open: false };
+                head.addEventListener('click', () => setOpen(part, !part.open));
+                parts.push(part);
+            });
+
+            new ResizeObserver(() => placeMarker(false)).observe(nav);
+
+            setOpen(parts[0], true);
+            setActive(groups[0].kids[0].id);
+
+            return { nav, setActive };
+        }
+
+        /* ---------- Render LOG.md ---------- */
+        function render(markdown) {
+            marked.setOptions({ gfm: true, breaks: true });
+
+            const holder = document.createElement('div');
+            holder.innerHTML = marked.parse(markdown);
+            holder.querySelectorAll('hr').forEach(hr => hr.remove());   // the sections already separate things
+
+            // Everything before the first "##" heading is the title area.
+            // Each "##" heading starts a collapsible section that holds everything up to the next one.
+            const intro = document.createElement('div');
+            intro.className = 'intro';
+            root.replaceChildren(intro);
+
+            let body = null;
+            [...holder.childNodes].forEach(node => {
+                if (node.nodeType === 1 && node.tagName === 'H2') {
+                    const title = node.textContent.trim();
+                    body = document.createElement('div');
+                    body.className = 'section-body';
+
+                    if (STATIC_TITLES.some(rx => rx.test(title))) {
+                        const card = document.createElement('div');
+                        card.className = 'log-static';
+                        const heading = document.createElement('h2');
+                        heading.textContent = title;
+                        card.append(heading, body);
+                        root.append(card);
+                    } else {
+                        const details = document.createElement('details');
+                        details.className = 'log-section';
+                        const summary = document.createElement('summary');
+                        summary.textContent = title;
+                        details.append(summary, body);
+                        root.append(details);
+                    }
+                } else if (body) {
+                    body.append(node);
+                } else {
+                    intro.append(node);
+                }
+            });
+
+            const controls = document.createElement('div');
+            controls.className = 'controls';
+            [['Expand all', true], ['Collapse all', false]].forEach(([label, open]) => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.textContent = label;
+                button.addEventListener('click', () => {
+                    root.querySelectorAll('details').forEach(d => { d.open = open; });
+                });
+                controls.append(button);
+            });
+            intro.after(controls);
+
+            buildContents();
+        }
+
+        /* ---------- Contents menu wiring ---------- */
+        function buildContents() {
+            const sections = [...root.querySelectorAll('details.log-section')];
+            if (!sections.length) return;
+
+            const groups = GROUPS.map(g => ({ label: g.label, kids: [] }));
+            sections.forEach((d, i) => {
+                d.id = 'log-section-' + i;
+                const title = d.querySelector('summary').textContent.trim();
+                const gi = GROUPS.findIndex(g => g.match(title));
+                groups[gi].kids.push({ id: d.id, label: title.replace(/^\d+\.\s*/, '') });
+            });
+            const usable = groups.filter(g => g.kids.length);
+
+            let lockUntil = 0;   // ignore scroll tracking while a click scrolls the page
+
+            const menu = buildMenu(usable, id => {
+                const target = document.getElementById(id);
+                if (!target) return;
+                target.open = true;
+                lockUntil = Date.now() + 900;
+                target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+            });
+            toc.replaceChildren(menu.nav);
+
+            function track() {
+                ticking = false;
+                if (Date.now() < lockUntil) return;
+                const probe = window.innerHeight * .35;
+                let current = sections[0];
+                sections.forEach(s => { if (s.getBoundingClientRect().top <= probe) current = s; });
+                const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+                if (atBottom) current = sections[sections.length - 1];
+                menu.setActive(current.id);
+            }
+
+            let ticking = false;
+            window.addEventListener('scroll', () => {
+                if (ticking) return;
+                ticking = true;
+                requestAnimationFrame(track);
+            }, { passive: true });
+        }
+
+        if (!window.marked) {
+            fail('The Markdown renderer did not load.');
+            return;
+        }
+
+        // 'no-cache' makes the browser check for a newer LOG.md instead of reusing an old copy.
+        fetch('LOG.md', { cache: 'no-cache' })
+            .then(response => {
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                return response.text();
+            })
+            .then(render)
+            .catch(() => fail('Could not load LOG.md.'));
+    })();
+</script>
+
+<!-- =========================================================
+     GRADIENT WAVES BACKGROUND
+     Vanilla WebGL2 port of the React Bits "Gradient Waves" component.
+     Mouse parallax and the shader's own grain were removed (the page
+     already has a grain overlay). Falls back to the plain gradient
+     background if WebGL2 isn't available.
+     ========================================================= -->
+<script>
+    (() => {
+        const canvas = document.getElementById('bg');
+        if (!canvas) return;
+
+        const gl = canvas.getContext('webgl2', {
+            alpha: true,
+            premultipliedAlpha: true,
+            antialias: false,
+            powerPreference: 'low-power'
+        });
+
+        if (!gl) {
+            canvas.remove();
+            return;
+        }
+
+        /* ---- Tweak these ---- */
+        const CFG = {
+            // Colours, matched to the portfolio palette
+            horizonColor: '#0f172a',   // fades into the page background
+            waveColor:    '#243b6b',   // body of the waves
+            crestColor:   '#b6c4dc',   // highlights on the wave tops
+
+            // Look and motion
+            speed: 0.2,
+            amplitude: 2.5,
+            waveScale: 0.6,
+            waveRatio: 0.9,
+            swell: 35,
+            turbulence: 20,
+            tilt: 1.11,
+            zoom: 1.0,
+            height: 5.5,
+            fogDepth: 15,
+            brightness: 0.9,
+            opacity: 0.55,             // lower = quieter behind the text
+
+            // Performance
+            steps: 60,                 // raymarch steps per pixel (40 low, 70 medium, 110 high)
+            scale: 0.5,                // render resolution vs. the window (0.5 = half size)
+            fps: 30
+        };
+
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        const vertexSrc = `#version 300 es
+in vec2 position;
+void main() {
+  gl_Position = vec4(position, 0.0, 1.0);
+}
+`;
+
+        const fragmentSrc = `#version 300 es
+precision highp float;
+uniform vec2 iResolution;
+uniform float iTime;
+uniform float uSpeed;
+uniform float uAmplitude;
+uniform float uWaveScale;
+uniform float uWaveRatio;
+uniform float uSwell;
+uniform float uTurbulence;
+uniform float uTilt;
+uniform float uZoom;
+uniform float uHeight;
+uniform float uFogDepth;
+uniform float uSteps;
+uniform float uBrightness;
+uniform float uOpacity;
+uniform vec3 uHorizonColor;
+uniform vec3 uWaveColor;
+uniform vec3 uCrestColor;
+out vec4 fragColor;
+
+const float MAX_DIST = 20000.0;
+
+float plasma(vec3 r, vec2 freq, vec4 tc) {
+  float mx = r.x + tc.x;
+  mx += uSwell * sin((r.y + mx) / 20.0 + tc.y);
+  float my = r.y - tc.z;
+  my += uTurbulence * cos(r.x / 23.0 + tc.w);
+  return r.z - (sin(mx * freq.x) * uAmplitude + sin(my * freq.y) * uAmplitude + uHeight);
+}
+
+float raymarch(vec3 pos, vec3 dir, vec2 freq, vec4 tc) {
+  float dist = 0.0;
+  for (int i = 0; i < 128; i++) {
+    if (float(i) >= uSteps) break;
+    float dscene = plasma(pos + dist * dir, freq, tc);
+    if (abs(dscene) < 0.1) break;
+    dist += 0.9 * dscene;
+    if (!(abs(dist) < MAX_DIST)) return MAX_DIST;
+  }
+  return dist;
+}
+
+void main() {
+  float T = iTime * uSpeed;
+  vec2 freq = vec2(uWaveScale / 7.0, (uWaveScale * uWaveRatio) / 3.0);
+  vec4 tc = vec4(T / 0.130, T / 0.810, T / 0.200, T / 0.710);
+  float c, s;
+  float vfov = (3.14159 / 2.3) / max(uZoom, 0.05);
+  vec3 cam = vec3(0.0, 0.0, 30.0);
+  vec2 uv = (gl_FragCoord.xy / iResolution.xy) - 0.5;
+  uv.x *= iResolution.x / iResolution.y;
+  uv.y *= -1.0;
+
+  vec3 dir = vec3(0.0, 0.0, -1.0);
+  float ulen = length(uv);
+  float xrot = vfov * ulen;
+  c = cos(xrot); s = sin(xrot);
+  dir = mat3(1.0, 0.0, 0.0, 0.0, c, -s, 0.0, s, c) * dir;
+  vec2 nuv = ulen > 1e-5 ? uv / ulen : vec2(1.0, 0.0);
+  c = nuv.x; s = nuv.y;
+  dir = mat3(c, -s, 0.0, s, c, 0.0, 0.0, 0.0, 1.0) * dir;
+  c = cos(uTilt); s = sin(uTilt);
+  dir = mat3(c, 0.0, s, 0.0, 1.0, 0.0, -s, 0.0, c) * dir;
+
+  float dist = raymarch(cam, dir, freq, tc);
+  vec3 pos = cam + dist * dir;
+
+  float t = clamp(uFogDepth / max(dist, 0.001), 0.0, 1.0);
+  vec3 body = mix(uWaveColor, uCrestColor, clamp(pos.z * 0.08 + 0.5, 0.0, 1.0));
+  vec3 col = mix(uHorizonColor, body, t);
+  col *= uBrightness;
+  col = clamp(col, 0.0, 1.0);
+
+  float alpha = clamp(t * uOpacity, 0.0, 1.0);
+  fragColor = vec4(col * alpha, alpha);
+}
+`;
+
+        function compile(type, src) {
+            const s = gl.createShader(type);
+            gl.shaderSource(s, src);
+            gl.compileShader(s);
+
+            if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+                console.error(gl.getShaderInfoLog(s));
+                return null;
+            }
+            return s;
+        }
+
+        const vs = compile(gl.VERTEX_SHADER, vertexSrc);
+        const fs = compile(gl.FRAGMENT_SHADER, fragmentSrc);
+
+        if (!vs || !fs) {
+            canvas.remove();
+            return;
+        }
+
+        const program = gl.createProgram();
+        gl.attachShader(program, vs);
+        gl.attachShader(program, fs);
+        gl.linkProgram(program);
+
+        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+            console.error(gl.getProgramInfoLog(program));
+            canvas.remove();
+            return;
+        }
+
+        gl.useProgram(program);
+
+        // One oversized triangle that covers the whole screen
+        gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+
+        const loc = gl.getAttribLocation(program, 'position');
+        gl.enableVertexAttribArray(loc);
+        gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+        const hex = h => {
+            const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(h);
+            return m ? [parseInt(m[1], 16) / 255, parseInt(m[2], 16) / 255, parseInt(m[3], 16) / 255] : [1, 1, 1];
+        };
+
+        const uni = name => gl.getUniformLocation(program, name);
+
+        Object.entries({
+            uSpeed: CFG.speed,
+            uAmplitude: CFG.amplitude,
+            uWaveScale: CFG.waveScale,
+            uWaveRatio: CFG.waveRatio,
+            uSwell: CFG.swell,
+            uTurbulence: CFG.turbulence,
+            uTilt: CFG.tilt,
+            uZoom: CFG.zoom,
+            uHeight: CFG.height,
+            uFogDepth: CFG.fogDepth,
+            uSteps: CFG.steps,
+            uBrightness: CFG.brightness,
+            uOpacity: CFG.opacity
+        }).forEach(([name, value]) => gl.uniform1f(uni(name), value));
+
+        gl.uniform3fv(uni('uHorizonColor'), hex(CFG.horizonColor));
+        gl.uniform3fv(uni('uWaveColor'), hex(CFG.waveColor));
+        gl.uniform3fv(uni('uCrestColor'), hex(CFG.crestColor));
+
+        const uRes = uni('iResolution');
+        const uTime = uni('iTime');
+
+        gl.clearColor(0, 0, 0, 0);
+
+        let lastTime = 20;
+
+        function resize() {
+            const w = Math.max(1, Math.floor(window.innerWidth * CFG.scale));
+            const h = Math.max(1, Math.floor(window.innerHeight * CFG.scale));
+
+            if (canvas.width !== w || canvas.height !== h) {
+                canvas.width = w;
+                canvas.height = h;
+            }
+
+            gl.viewport(0, 0, canvas.width, canvas.height);
+        }
+
+        function draw(t) {
+            lastTime = t;
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            gl.uniform2f(uRes, canvas.width, canvas.height);
+            gl.uniform1f(uTime, t);
+            gl.drawArrays(gl.TRIANGLES, 0, 3);
+        }
+
+        let raf = 0;
+        let lastDraw = 0;
+        const startedAt = performance.now();
+        const FRAME_MS = 1000 / CFG.fps - 4;
+
+        function frame(now) {
+            raf = requestAnimationFrame(frame);
+            if (now - lastDraw < FRAME_MS) return;
+            lastDraw = now;
+            draw((now - startedAt) / 1000 + 20);
+        }
+
+        resize();
+
+        window.addEventListener('resize', () => {
+            resize();
+            draw(lastTime);
+        }, { passive: true });
+
+        if (reduceMotion) {
+            draw(lastTime);
+        } else {
+            raf = requestAnimationFrame(frame);
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    cancelAnimationFrame(raf);
+                    raf = 0;
+                } else if (!raf) {
+                    raf = requestAnimationFrame(frame);
+                }
+            });
+        }
+    })();
+</script>
+
+<script>
+    // Header buttons: the highlight pill slides to the hovered or focused button
+    (() => {
+        const tabs = document.querySelector('.tabs');
+        if (!tabs) return;
+        const pill = tabs.querySelector('.tab-pill');
+
+        function show(a) {
+            if (!tabs.classList.contains('hovering')) {
+                pill.style.transition = 'none';   // first appearance: jump there instead of sliding in
+                pill.style.left = a.offsetLeft + 'px';
+                pill.style.width = a.offsetWidth + 'px';
+                void pill.offsetWidth;
+                pill.style.transition = '';
+            } else {
+                pill.style.left = a.offsetLeft + 'px';
+                pill.style.width = a.offsetWidth + 'px';
+            }
+            tabs.classList.add('hovering');
+        }
+
+        tabs.querySelectorAll('a').forEach(a => {
+            a.addEventListener('mouseenter', () => show(a));
+            a.addEventListener('focus', () => { if (a.matches(':focus-visible')) show(a); });
+            a.addEventListener('blur', () => tabs.classList.remove('hovering'));
+        });
+        tabs.addEventListener('mouseleave', () => tabs.classList.remove('hovering'));
+    })();
+</script>
+
+</body>
+</html>

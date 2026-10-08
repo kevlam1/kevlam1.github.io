@@ -13,15 +13,18 @@
             --line:#334155;
             --text:#e2e8f0;
             --muted:#94a3b8;
-            --accent: #ffffff;
+            --accent:#ffffff;
         }
 
         *{box-sizing:border-box}
 
         html{
-            scroll-behavior:smooth;
             scroll-padding-top:70px;
         }
+
+        html.lenis, html.lenis body { height:auto }
+        .lenis.lenis-smooth { scroll-behavior:auto !important }
+        .lenis.lenis-stopped { overflow:hidden }
 
         body{
             margin:0;
@@ -50,7 +53,6 @@
             position:fixed;
             inset:0;
             z-index:0;
-            background-color:transparent;
             background-image:var(--noise);
             background-repeat:repeat;
             background-size:182px;
@@ -71,7 +73,6 @@
             right:0;
             z-index:10;
             background:rgb(24,24,24);
-            backdrop-filter:blur(6px);
             border-bottom:1px solid var(--line);
         }
 
@@ -169,9 +170,7 @@
             letter-spacing:-.01em;
         }
 
-        h1 span{
-            display:block;
-        }
+        h1 span{display:block}
 
         .hero-sub{
             color:var(--muted);
@@ -214,7 +213,7 @@
             filter:brightness(.92);
         }
 
-        /* Hero load animation */
+        /* Hero animation */
         .rise{
             opacity:0;
             transform:translateY(24px);
@@ -236,11 +235,10 @@
         }
 
         :root{
-            --desc-lines:3;     /* lines of description to reserve space for */
-            --card-h:300px;     /* minimum card height, so every card matches */
+            --desc-lines:3;
+            --card-h:300px;
         }
 
-        /* Extra space between Side Projects and footer */
         #side-projects{
             padding-bottom:400px;
         }
@@ -253,11 +251,6 @@
             margin:36px auto 0;
         }
 
-        /*
-         * IMPORTANT:
-         * The wrapper handles the entrance animation.
-         * The actual .card is free to use transform for tilt.
-         */
         .card-entrance{
             display:flex;
             flex:0 1 calc(50% - 10px);
@@ -265,6 +258,7 @@
             transform:translateX(-60px);
             will-change:transform,opacity;
         }
+
         .card-entrance.in-view{
             animation:cardSlideIn .8s cubic-bezier(.22,1,.36,1) forwards;
             animation-delay:calc(var(--card-i) * .15s);
@@ -275,7 +269,6 @@
                 opacity:0;
                 transform:translateX(-60px);
             }
-
             to{
                 opacity:1;
                 transform:translateX(0);
@@ -287,27 +280,27 @@
             display:grid;
             grid-template-columns:42% 58%;
             width:100%;
-            min-height:var(--card-h,300px);
+            min-height:var(--card-h);
             overflow:hidden;
             border:1px solid var(--line);
             border-radius:14px;
             background:rgba(30,41,59,.82);
             text-align:center;
             cursor:pointer;
-            box-shadow:0 12px 24px -8px rgba(0,0,0,.6),0 2px 6px rgba(0,0,0,.3);
+            box-shadow:
+                    0 12px 24px -8px rgba(0,0,0,.6),
+                    0 2px 6px rgba(0,0,0,.3);
         }
 
-        .card.locked{cursor:default}
-        .card.locked{opacity:.5}
+        .card.locked{
+            cursor:default;
+            opacity:.65;
+        }
 
         .card::before{
             content:"";
             position:absolute;
-            top:0;
-            left:0;
-            width:100%;
-            height:100%;
-            background-color:transparent;
+            inset:0;
             background-image:var(--noise);
             background-repeat:repeat;
             background-size:182px;
@@ -322,14 +315,11 @@
 
         .card.live{
             border-color:var(--accent);
-
             --mx:50%;
             --my:50%;
-
             transition:
                     transform 400ms cubic-bezier(.03,.98,.52,.99),
                     box-shadow 400ms ease;
-
             will-change:transform;
         }
 
@@ -345,20 +335,17 @@
             position:absolute;
             inset:-1px;
             z-index:2;
-            background:
-                    radial-gradient(
-                            700px circle at var(--mx) var(--my),
-                            rgba(203,213,225,.08),
-                            transparent 80%
-                    );
+            background:radial-gradient(
+                    700px circle at var(--mx) var(--my),
+                    rgba(203,213,225,.08),
+                    transparent 80%
+            );
             opacity:0;
             transition:opacity 300ms;
             pointer-events:none;
         }
 
-        .card.live:hover::after{
-            opacity:1;
-        }
+        .card.live:hover::after{opacity:1}
 
         /* Card image */
         .media{
@@ -367,12 +354,11 @@
             justify-content:center;
             min-height:150px;
             border-right:1px solid var(--line);
-            background:
-                    repeating-linear-gradient(
-                            45deg,
-                            rgba(255,255,255,.03) 0 10px,
-                            transparent 10px 20px
-                    );
+            background:repeating-linear-gradient(
+                    45deg,
+                    rgba(255,255,255,.03) 0 10px,
+                    transparent 10px 20px
+            );
             color:var(--muted);
             font-size:.75rem;
             letter-spacing:.1em;
@@ -426,9 +412,7 @@
             font-weight:400;
         }
 
-        .card p{
-            margin:0;
-        }
+        .card p{margin:0}
 
         .card .desc{
             font-size:.92rem;
@@ -440,11 +424,9 @@
             font-size:.88rem;
         }
 
-        .card .links{
-            margin-top:2px;
-        }
+        .card .links{margin-top:2px}
 
-        /* Toolkit pills */
+        /* Toolkit */
         .toolkit{
             display:flex;
             justify-content:center;
@@ -452,7 +434,7 @@
             align-content:center;
             gap:6px;
             flex-wrap:wrap;
-            min-height:54px;   /* two rows of pills */
+            min-height:54px;
             margin-top:2px;
         }
 
@@ -472,7 +454,7 @@
             color:var(--accent);
         }
 
-        /* Link hover */
+        /* Links */
         .hover-link{
             position:relative;
             display:inline-block;
@@ -557,21 +539,19 @@
             height:4px;
             margin:0 auto;
             opacity:.6;
-            background:
-                    linear-gradient(
-                            90deg,
-                            transparent,
-                            var(--accent),
-                            transparent
-                    ) top/100% 1px no-repeat;
+            background:linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--accent),
+                    transparent
+            ) top/100% 1px no-repeat;
             filter:drop-shadow(0 0 5px var(--accent));
         }
 
         /* Background */
         #bg{
             position:fixed;
-            top:0;
-            left:0;
+            inset:0;
             width:100%;
             height:100%;
             z-index:-1;
@@ -580,9 +560,7 @@
         }
 
         /* Modal */
-        .card .reflection{
-            display:none;
-        }
+        .card .reflection{display:none}
 
         dialog.modal{
             border:0;
@@ -611,9 +589,7 @@
             transition:opacity .28s ease;
         }
 
-        dialog.modal.open::backdrop{
-            opacity:1;
-        }
+        dialog.modal.open::backdrop{opacity:1}
 
         .card.modal-card{
             display:grid;
@@ -621,6 +597,7 @@
             flex:none;
             width:min(780px,100%);
             max-height:min(88vh,760px);
+            min-height:0;
             overflow:auto;
             cursor:default;
             opacity:0;
@@ -638,22 +615,16 @@
             transform:none;
         }
 
-        .card.modal-card.accent{
-            border-color:var(--accent);
-        }
+        .card.modal-card.accent{border-color:var(--accent)}
 
-        .modal-card .media{
-            min-height:240px;
-        }
+        .modal-card .media{min-height:240px}
 
         .modal-card .card-body{
             padding:24px 26px;
             gap:10px;
         }
 
-        .modal-card h3{
-            font-size:1.5rem;
-        }
+        .modal-card h3{font-size:1.5rem}
 
         .card.modal-card .reflection{
             display:block;
@@ -695,11 +666,8 @@
             color:var(--accent);
         }
 
-        html.modal-open{
-            overflow:hidden;
-        }
+        html.modal-open{overflow:hidden}
 
-        .card.modal-card{min-height:0}
         .modal-card .desc,
         .modal-card .toolkit{min-height:0}
 
@@ -717,25 +685,42 @@
             left:0;
             right:0;
             height:1px;
-            background:
-                    linear-gradient(
-                            90deg,
-                            transparent,
-                            var(--accent),
-                            transparent
-                    );
+            background:linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--accent),
+                    transparent
+            );
             filter:drop-shadow(0 0 6px var(--accent));
             pointer-events:none;
         }
 
-        /* Responsive */
-        @media (max-width:900px){
-            .card-entrance{
-                flex-basis:100%;
-            }
+        /* =========================================================
+           GRADUAL BLUR
+           Layers (and their masks / blur amounts) are built in JS.
+           ========================================================= */
+        .gradual-blur{
+            position:fixed;
+            left:0;
+            right:0;
+            z-index:8;
+            pointer-events:none;
+            --fade:1;
         }
 
-        @media (max-width:640px){
+        /*noinspection CssUnusedSymbol*/
+        .gradual-blur-layer{
+            position:absolute;
+            inset:0;
+            opacity:var(--fade,1);
+        }
+
+        /* Responsive */
+        @media(max-width:900px){
+            .card-entrance{flex-basis:100%}
+        }
+
+        @media(max-width:640px){
             .card,
             .card.modal-card{
                 grid-template-columns:1fr;
@@ -748,15 +733,9 @@
             }
         }
 
-        @media (max-width:520px){
-            nav{
-                padding:10px 8px;
-            }
-
-            .tabs{
-                padding:0 4px;
-            }
-
+        @media(max-width:520px){
+            nav{padding:10px 8px}
+            .tabs{padding:0 4px}
             .tabs a{
                 padding:0 7px;
                 font-size:.78rem;
@@ -765,47 +744,44 @@
         }
 
         /* Reduced motion */
-        @media (prefers-reduced-motion:reduce){
-            html{
-                scroll-behavior:auto;
-            }
+        @media(prefers-reduced-motion:reduce){
+            html{scroll-behavior:auto}
 
-            .rise{
-                opacity:1;
-                transform:none;
-                animation:none;
-            }
-
+            .rise,
             .card-entrance{
                 opacity:1;
                 transform:none;
                 animation:none;
             }
 
-            .tabs.ready .tab-pill{
-                transition:none;
-            }
+            .tabs.ready .tab-pill{transition:none}
 
             .hover-link,
-            .hover-link::after{
-                transition:none;
-            }
+            .hover-link::after{transition:none}
 
             dialog.modal::backdrop,
-            .card.modal-card{
-                transition:none;
-            }
+            .card.modal-card{transition:none}
         }
 
-        /* Click stars: a small burst of stars pops from wherever you click */
+        /* Click stars */
         #click-stars{
-            position:fixed;top:0;left:0;width:0;height:0;
-            z-index:99999;pointer-events:none;
+            position:fixed;
+            top:0;
+            left:0;
+            width:0;
+            height:0;
+            z-index:99999;
+            pointer-events:none;
         }
+
         #click-stars svg{
-            position:absolute;top:0;left:0;
+            position:absolute;
+            top:0;
+            left:0;
             fill:var(--accent);
-            filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 10px var(--accent));
+            filter:
+                    drop-shadow(0 0 3px #fff)
+                    drop-shadow(0 0 10px var(--accent));
             will-change:transform,opacity;
         }
     </style>
@@ -814,6 +790,9 @@
 <body>
 
 <canvas id="bg" aria-hidden="true"></canvas>
+
+<!-- Gradual blur (layers are created by the script below) -->
+<div class="gradual-blur" aria-hidden="true"></div>
 
 <header>
     <nav>
@@ -849,9 +828,7 @@
             </p>
 
             <div class="buttons rise" style="--i:5">
-                <a class="btn primary" href="#artifacts">
-                    View Artifacts
-                </a>
+                <a class="btn primary" href="#artifacts">View Artifacts</a>
             </div>
 
         </div>
@@ -885,7 +862,7 @@
             <h2>Artifacts</h2>
 
             <p class="lead">
-                Five things I build this quarter.
+                Five things I'm building this quarter.
             </p>
 
             <p class="lead">
@@ -905,7 +882,7 @@
                         <div class="card-body">
 
                             <div class="meta">
-                                <span>Artifact 1 &middot; Due Oct 11</span>
+                                <span>Artifact 1 &middot; My Portfolio &middot; Due Oct 11</span>
                                 <span class="status live">Live</span>
                             </div>
 
@@ -936,9 +913,7 @@
                             </p>
 
                             <p class="links">
-                                <a class="hover-link" href="https://kevlam1.github.io/">
-                                    Visit Portfolio
-                                </a>
+                                <a class="hover-link" href="https://kevlam1.github.io/">Visit Portfolio</a>
                             </p>
 
                         </div>
@@ -950,29 +925,28 @@
                     <article class="card locked" id="artifact-2">
 
                         <div class="media">
-                            <img src="images/artifact-2.jpg" alt="Image coming soon">
+                            <img src="images/artifact-2.jpg" alt="MIDI visualizer and piano interface">
                         </div>
 
                         <div class="card-body">
 
                             <div class="meta">
-                                <span>Artifact 2 &middot; Due Oct 18</span>
+                                <span>Artifact 2 &middot; Personal Utility &middot; Due Oct 18</span>
                                 <span class="status">Coming soon</span>
                             </div>
 
-                            <h3>Personal Utility</h3>
+                            <h3>MIDI Visualizer</h3>
 
                             <p class="desc">
-                                Idea: TBA.
+                                A browser-based MIDI player and Synthesia-style visualizer that lets users load MIDI files,
+                                watch notes fall in real time, and play along using a connected piano keyboard.
                             </p>
 
                             <div class="toolkit" aria-label="Toolkit">
                                 <span class="toolkit-pill">Toolkit: TBA</span>
                             </div>
 
-                            <p class="reflection">
-                                Link and reflection coming soon.
-                            </p>
+                            <p class="reflection">Link and reflection coming soon.</p>
 
                         </div>
                     </article>
@@ -989,23 +963,22 @@
                         <div class="card-body">
 
                             <div class="meta">
-                                <span>Artifact 3 &middot; Due Oct 25</span>
+                                <span>Artifact 3 &middot; AI Agent Integration &middot; Due Oct 25</span>
                                 <span class="status">Coming soon</span>
                             </div>
 
-                            <h3>AI Agent Integration</h3>
+                            <h3>README.md Architect</h3>
 
                             <p class="desc">
-                                Idea: TBA.
+                                A Claude Code skill that analyzes a project's codebase and generates a README
+                                based on its actual structure, technologies, and functionality.
                             </p>
 
                             <div class="toolkit" aria-label="Toolkit">
                                 <span class="toolkit-pill">Toolkit: TBA</span>
                             </div>
 
-                            <p class="reflection">
-                                Link and reflection coming soon.
-                            </p>
+                            <p class="reflection">Link and reflection coming soon.</p>
 
                         </div>
                     </article>
@@ -1022,23 +995,22 @@
                         <div class="card-body">
 
                             <div class="meta">
-                                <span>Artifact 4 &middot; Due Nov 8</span>
+                                <span>Artifact 4 &middot; Client Focused &middot; Due Nov 8</span>
                                 <span class="status">Coming soon</span>
                             </div>
 
-                            <h3>Client Focused</h3>
+                            <h3>Service Booking Tool</h3>
 
                             <p class="desc">
-                                Idea: TBA.
+                                A client-focused booking system designed to help a service provider manage availability,
+                                appointments, and customer requests.
                             </p>
 
                             <div class="toolkit" aria-label="Toolkit">
                                 <span class="toolkit-pill">Toolkit: TBA</span>
                             </div>
 
-                            <p class="reflection">
-                                Link and reflection coming soon.
-                            </p>
+                            <p class="reflection">Link and reflection coming soon.</p>
 
                         </div>
                     </article>
@@ -1055,23 +1027,22 @@
                         <div class="card-body">
 
                             <div class="meta">
-                                <span>Artifact 5 &middot; Due Dec 13</span>
+                                <span>Artifact 5 &middot; The Moonshot &middot; Due Dec 13</span>
                                 <span class="status">Coming soon</span>
                             </div>
 
-                            <h3>The Moonshot</h3>
+                            <h3>Game Reference Tool</h3>
 
                             <p class="desc">
-                                Idea: TBA.
+                                A fast, no-bloat reference site for the games my friends and I play, starting with
+                                League of Legends, then expanding to Valorant and Overwatch.
                             </p>
 
                             <div class="toolkit" aria-label="Toolkit">
                                 <span class="toolkit-pill">Toolkit: TBA</span>
                             </div>
 
-                            <p class="reflection">
-                                Link and reflection coming soon.
-                            </p>
+                            <p class="reflection">Link and reflection coming soon.</p>
 
                         </div>
                     </article>
@@ -1085,7 +1056,6 @@
 
     <!-- SIDE PROJECTS -->
     <section id="side-projects">
-
         <div class="wrap">
 
             <h2>Side Projects</h2>
@@ -1139,14 +1109,7 @@
                             </p>
 
                             <p class="links">
-                                <a
-                                        class="hover-link"
-                                        href="https://cardex-companion.vercel.app"
-                                        target="_blank"
-                                        rel="noopener"
-                                >
-                                    Visit Cardex
-                                </a>
+                                <a class="hover-link" href="https://cardex-companion.vercel.app" target="_blank" rel="noopener">Visit Cardex</a>
                             </p>
 
                         </div>
@@ -1198,14 +1161,7 @@
                             </p>
 
                             <p class="links">
-                                <a
-                                        class="hover-link"
-                                        href="https://poke-guess-who.vercel.app"
-                                        target="_blank"
-                                        rel="noopener"
-                                >
-                                    Visit PokéGuess
-                                </a>
+                                <a class="hover-link" href="https://poke-guess-who.vercel.app" target="_blank" rel="noopener">Visit PokéGuess</a>
                             </p>
 
                         </div>
@@ -1222,23 +1178,13 @@
 
     <div class="social">
 
-        <a
-                href="https://github.com/kevlam1"
-                target="_blank"
-                rel="noopener"
-                aria-label="GitHub"
-        >
+        <a href="https://github.com/kevlam1" target="_blank" rel="noopener" aria-label="GitHub">
             <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
             </svg>
         </a>
 
-        <a
-                href="https://www.linkedin.com"
-                target="_blank"
-                rel="noopener"
-                aria-label="LinkedIn"
-        >
+        <a href="https://www.linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn">
             <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
             </svg>
@@ -1247,238 +1193,223 @@
     </div>
 
     Built for TCSS 490, Autumn 2026.
-    Log: <a href="LOG.md">LOG.md</a>
+    Log: <a href="LOG.html">LOG.html</a>
 
 </footer>
 
+
+<!-- =========================================================
+     GRADUAL BLUR
+     ========================================================= -->
 <script>
     (() => {
+        const container = document.querySelector('.gradual-blur');
+        if (!container) return;
 
-        const reduceMotion =
-            window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const DIVS = 8;        // layers: more = smoother ramp, heavier to render
+        const MAX_BLUR = 10;   // px for the strongest layer (layers stack, so the real peak is a bit higher)
+        const POWER = 2.2;     // higher = gentler start, stronger near the bottom edge
+        const OVERSHOOT = 48;  // px the blur extends below the viewport so the edge has pixels to sample
 
-        /* Sliding tab bar */
-        const tabs = document.querySelector('.tabs');
-        const pill = tabs.querySelector('.tab-pill');
-        const links = [...tabs.querySelectorAll('a')];
+        let currentH = 0;
 
-        let current = 0;
+        function build() {
+            const h = window.innerWidth <= 640 ? 100 : 150; // visible height in px
+            if (h === currentH) return;
+            currentH = h;
 
-        function place(i){
-            const a = links[i];
+            container.style.bottom = `-${OVERSHOOT}px`;
+            container.style.height = `${h + OVERSHOOT}px`;
+            container.replaceChildren();
 
-            pill.style.left = a.offsetLeft + 'px';
-            pill.style.width = a.offsetWidth + 'px';
+            const step = h / DIVS;
+            const px = n => `${Math.round(n * 10) / 10}px`;
 
-            links.forEach((l,j) => {
-                l.classList.toggle('active',j === i);
-            });
+            for (let i = 1; i <= DIVS; i++) {
+                const blur = MAX_BLUR * Math.pow(i / DIVS, POWER);
 
-            current = i;
-        }
+                // Soft band per layer; the last stop's colour holds to the end of the box.
+                let g = `transparent ${px(step * (i - 1))}, black ${px(step * i)}`;
+                if (step * (i + 1) <= h + .01) g += `, black ${px(step * (i + 1))}`;
+                if (step * (i + 2) <= h + .01) g += `, transparent ${px(step * (i + 2))}`;
+                const mask = `linear-gradient(to bottom, ${g})`;
 
-        place(0);
-
-        requestAnimationFrame(() => {
-            tabs.classList.add('ready');
-        });
-
-        window.addEventListener('load',() => place(current));
-        window.addEventListener('resize',() => place(current));
-
-        let isTabScrolling = false;
-        let scrollTimer = null;
-
-        links.forEach((a,i) => {
-
-            a.addEventListener('click',() => {
-
-                isTabScrolling = true;
-
-                place(i);
-
-                clearTimeout(scrollTimer);
-
-                scrollTimer = setTimeout(() => {
-                    isTabScrolling = false;
-                    updateActive();
-                },700);
-
-            });
-
-        });
-
-        const ids =
-            links.map(a => a.getAttribute('href').slice(1));
-
-        const targets =
-            ids.map(id => document.getElementById(id));
-
-        function updateActive(){
-
-            if(isTabScrolling) return;
-
-            const probe = window.innerHeight * .4;
-
-            let idx = 0;
-
-            targets.forEach((el,i) => {
-
-                if(el.getBoundingClientRect().top <= probe){
-                    idx = i;
-                }
-
-            });
-
-            const atBottom =
-                window.innerHeight + window.scrollY >=
-                document.documentElement.scrollHeight - 4;
-
-            if(atBottom){
-                idx = targets.length - 1;
-            }
-
-            if(idx !== current){
-                place(idx);
+                const layer = document.createElement('div');
+                layer.className = 'gradual-blur-layer';
+                layer.style.webkitMaskImage = layer.style.maskImage = mask;
+                layer.style.webkitBackdropFilter = layer.style.backdropFilter = `blur(${blur.toFixed(2)}px)`;
+                container.appendChild(layer);
             }
         }
 
-        window.addEventListener(
-            'scroll',
-            updateActive,
-            {passive:true}
-        );
+        build();
+        window.addEventListener('resize', build, { passive: true });
 
-        updateActive();
+        // Fade the blur out as you near the bottom so the footer stays readable
+        const FADE_DIST = 250; // px from the bottom where the fade starts
+        let ticking = false;
 
+        function updateFade() {
+            ticking = false;
+            const left = document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
+            const f = Math.min(1, Math.max(0, left / FADE_DIST));
+            container.style.setProperty('--fade', f.toFixed(3));
+            container.style.visibility = f === 0 ? 'hidden' : 'visible';
+        }
 
-        /*
-         * Card tilt
-         *
-         * IMPORTANT:
-         * The entrance animation is on .card-entrance.
-         * The tilt transform is on .card.live.
-         *
-         * This prevents the entrance animation from overwriting
-         * the tilt transform.
-         */
-
-        const cards =
-            document.querySelectorAll('.card.live');
-
-        cards.forEach(card => {
-
-            const MAX_TILT = 5;
-            const GROW_PX = 16;
-
-            let last = 0;
-
-            function pose(rx,ry){
-
-                const scale =
-                    1 + GROW_PX / card.offsetWidth;
-
-                card.style.transform =
-                    `perspective(1000px)
-                 rotateX(${rx}deg)
-                 rotateY(${ry}deg)
-                 scale3d(${scale},${scale},1)`;
-            }
-
-            card.addEventListener('mouseenter',() => {
-
-                if(!reduceMotion){
-                    pose(0,0);
-                }
-
-            });
-
-            card.addEventListener('mousemove',e => {
-
-                const box =
-                    card.getBoundingClientRect();
-
-                const x =
-                    e.clientX - box.left;
-
-                const y =
-                    e.clientY - box.top;
-
-                card.style.setProperty(
-                    '--mx',
-                    x + 'px'
-                );
-
-                card.style.setProperty(
-                    '--my',
-                    y + 'px'
-                );
-
-                if(reduceMotion) return;
-
-                const now = Date.now();
-
-                if(now - last < 100) return;
-
-                last = now;
-
-                pose(
-                    ((y - box.height / 2) /
-                        (box.height / 2)) * MAX_TILT,
-
-                    ((box.width / 2 - x) /
-                        (box.width / 2)) * MAX_TILT
-                );
-
-            });
-
-            card.addEventListener('mouseleave',() => {
-
-                card.style.transform = '';
-
-            });
-
-        });
-
+        window.addEventListener('scroll', () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(updateFade);
+        }, { passive: true });
+        window.addEventListener('resize', updateFade, { passive: true });
+        updateFade();
     })();
 </script>
 
 
+<!-- =========================================================
+     TAB NAVIGATION
+     ========================================================= -->
 <script>
-    /* Background animation */
     (() => {
+        const tabs = document.querySelector('.tabs');
+        const pill = tabs.querySelector('.tab-pill');
+        const links = [...tabs.querySelectorAll('a')];
+        let current = 0;
 
-        const canvas =
-            document.getElementById('bg');
+        function place(i) {
+            const a = links[i];
+            pill.style.left = a.offsetLeft + 'px';
+            pill.style.width = a.offsetWidth + 'px';
+            links.forEach((l, j) => l.classList.toggle('active', j === i));
+            current = i;
+        }
 
-        if(!canvas) return;
+        place(0);
+        requestAnimationFrame(() => tabs.classList.add('ready'));
+        window.addEventListener('load', () => place(current));
+        window.addEventListener('resize', () => place(current));
 
-        const gl =
-            canvas.getContext(
-                'webgl',
-                {
-                    antialias:false,
-                    alpha:false,
-                    powerPreference:'low-power'
-                }
-            );
+        let isTabScrolling = false;
+        let scrollTimer = null;
 
-        if(!gl){
+        links.forEach((a, i) => {
+            a.addEventListener('click', () => {
+                isTabScrolling = true;
+                place(i);
+                clearTimeout(scrollTimer);
+                scrollTimer = setTimeout(() => {
+                    isTabScrolling = false;
+                    updateActive();
+                }, 1400);
+            });
+        });
+
+        const targets = links.map(a => document.getElementById(a.getAttribute('href').slice(1)));
+
+        function updateActive() {
+            if (isTabScrolling) return;
+
+            const probe = window.innerHeight * .4;
+            let idx = 0;
+
+            targets.forEach((el, i) => {
+                if (el.getBoundingClientRect().top <= probe) idx = i;
+            });
+
+            const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+            if (atBottom) idx = targets.length - 1;
+
+            if (idx !== current) place(idx);
+        }
+
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => { ticking = false; updateActive(); });
+        }, { passive: true });
+        updateActive();
+    })();
+</script>
+
+
+<!-- =========================================================
+     CARD TILT
+     ========================================================= -->
+<script>
+    (() => {
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        document.querySelectorAll('.card.live').forEach(card => {
+            const MAX_TILT = 5;
+            const GROW_PX = 16;
+            let last = 0;
+
+            function pose(rx, ry) {
+                const scale = 1 + GROW_PX / card.offsetWidth;
+                card.style.transform =
+                    `perspective(1000px) rotateX(${rx}deg) rotateY(${ry}deg) scale3d(${scale},${scale},1)`;
+            }
+
+            card.addEventListener('mouseenter', () => {
+                if (!reduceMotion) pose(0, 0);
+            });
+
+            card.addEventListener('mousemove', e => {
+                const box = card.getBoundingClientRect();
+                const x = e.clientX - box.left;
+                const y = e.clientY - box.top;
+
+                card.style.setProperty('--mx', x + 'px');
+                card.style.setProperty('--my', y + 'px');
+
+                if (reduceMotion) return;
+
+                const now = Date.now();
+                if (now - last < 100) return;
+                last = now;
+
+                pose(
+                    ((y - box.height / 2) / (box.height / 2)) * MAX_TILT,
+                    ((box.width / 2 - x) / (box.width / 2)) * MAX_TILT
+                );
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+    })();
+</script>
+
+
+<!-- =========================================================
+     WEBGL BACKGROUND
+     ========================================================= -->
+<script>
+    (() => {
+        const canvas = document.getElementById('bg');
+        if (!canvas) return;
+
+        const gl = canvas.getContext('webgl', {
+            antialias: false,
+            alpha: false,
+            powerPreference: 'low-power'
+        });
+
+        if (!gl) {
             canvas.remove();
             return;
         }
 
-        const reduceMotion =
-            window.matchMedia(
-                '(prefers-reduced-motion: reduce)'
-            ).matches;
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         const vertexSrc = `
         attribute vec2 p;
-
         void main(){
-            gl_Position =
-                vec4(p,0.0,1.0);
+            gl_Position = vec4(p,0.0,1.0);
         }
     `;
 
@@ -1492,11 +1423,8 @@
         uniform vec2 uRes;
         uniform float uTime;
 
-        const vec3 BASE =
-            vec3(0.059,0.090,0.165);
-
-        const vec3 LIGHT =
-            vec3(0.110,0.165,0.275);
+        const vec3 BASE = vec3(0.059,0.090,0.165);
+        const vec3 LIGHT = vec3(0.110,0.165,0.275);
 
         const float SPEED = 0.05;
         const float ZOOM = 3.2;
@@ -1504,36 +1432,17 @@
         const float SPIN = 0.4;
 
         void main(){
+            vec2 uv = gl_FragCoord.xy / uRes;
+            vec2 c = (gl_FragCoord.xy - 0.5 * uRes) / uRes.y;
 
-            vec2 uv =
-                gl_FragCoord.xy / uRes;
+            float t = uTime * SPEED;
+            float r = length(c);
 
-            vec2 c =
-                (gl_FragCoord.xy - 0.5 * uRes)
-                / uRes.y;
+            float ang = SWIRL / (0.35 + r) + uTime * SPIN * 0.1;
 
-            float t =
-                uTime * SPEED;
+            mat2 rot = mat2(cos(ang), -sin(ang), sin(ang), cos(ang));
 
-            float r =
-                length(c);
-
-            float ang =
-                SWIRL / (0.35 + r)
-                + uTime * SPIN * 0.1;
-
-            mat2 rot =
-                mat2(
-                    cos(ang),
-                    -sin(ang),
-                    sin(ang),
-                    cos(ang)
-                );
-
-            vec2 p =
-                rot * c * ZOOM
-                + vec2(1.5);
-
+            vec2 p = rot * c * ZOOM + vec2(1.5);
             vec2 q = p;
 
             q += 0.6 * vec2(
@@ -1546,526 +1455,274 @@
                 cos(q.x * 1.8 + t * 1.2)
             );
 
-            float w =
-                sin(
-                    q.x * 2.0
-                    + t * 2.0
-                    + sin(q.y * 1.7 - t * 1.5) * 1.3
-                );
+            float w = sin(q.x * 2.0 + t * 2.0 + sin(q.y * 1.7 - t * 1.5) * 1.3);
 
-            w += 0.7 * sin(
-                q.y * 2.6
-                - q.x * 1.2
-                + t * 1.6
-                + sin(q.x * 1.9 + t) * 0.9
-            );
+            w += 0.7 * sin(q.y * 2.6 - q.x * 1.2 + t * 1.6 + sin(q.x * 1.9 + t) * 0.9);
+            w += 0.5 * sin(q.x * 3.4 + q.y * 1.4 - t * 2.2);
+            w += 0.35 * sin(length(q - vec2(2.0,1.0)) * 4.0 - t * 3.0);
 
-            w += 0.5 * sin(
-                q.x * 3.4
-                + q.y * 1.4
-                - t * 2.2
-            );
+            w = w / 2.6 * 0.5 + 0.5;
 
-            w += 0.35 * sin(
-                length(q - vec2(2.0,1.0)) * 4.0
-                - t * 3.0
-            );
+            float bands = 0.5 + 0.5 * sin(w * 13.0 + t * 3.0);
 
-            w =
-                w / 2.6 * 0.5 + 0.5;
+            vec3 col = mix(BASE, LIGHT, w * 0.5 + bands * 0.35);
 
-            float bands =
-                0.5
-                + 0.5 *
-                sin(w * 13.0 + t * 3.0);
+            float v = length(uv - 0.5);
+            col *= 1.0 - 0.45 * v * v;
 
-            vec3 col =
-                mix(
-                    BASE,
-                    LIGHT,
-                    w * 0.5 + bands * 0.35
-                );
-
-            float v =
-                length(uv - 0.5);
-
-            col *=
-                1.0 - 0.45 * v * v;
-
-            gl_FragColor =
-                vec4(col,1.0);
+            gl_FragColor = vec4(col,1.0);
         }
     `;
 
-        function compile(type,src){
-
-            const s =
-                gl.createShader(type);
-
-            gl.shaderSource(s,src);
+        function compile(type, src) {
+            const s = gl.createShader(type);
+            gl.shaderSource(s, src);
             gl.compileShader(s);
 
-            if(!gl.getShaderParameter(
-                s,
-                gl.COMPILE_STATUS
-            )){
-                console.error(
-                    gl.getShaderInfoLog(s)
-                );
-
+            if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+                console.error(gl.getShaderInfoLog(s));
                 return null;
             }
-
             return s;
         }
 
-        const vs =
-            compile(
-                gl.VERTEX_SHADER,
-                vertexSrc
-            );
+        const vs = compile(gl.VERTEX_SHADER, vertexSrc);
+        const fs = compile(gl.FRAGMENT_SHADER, fragmentSrc);
 
-        const fs =
-            compile(
-                gl.FRAGMENT_SHADER,
-                fragmentSrc
-            );
-
-        if(!vs || !fs){
+        if (!vs || !fs) {
             canvas.remove();
             return;
         }
 
-        const program =
-            gl.createProgram();
-
-        gl.attachShader(program,vs);
-        gl.attachShader(program,fs);
+        const program = gl.createProgram();
+        gl.attachShader(program, vs);
+        gl.attachShader(program, fs);
         gl.linkProgram(program);
 
-        if(!gl.getProgramParameter(
-            program,
-            gl.LINK_STATUS
-        )){
+        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
             canvas.remove();
             return;
         }
 
         gl.useProgram(program);
 
-        gl.bindBuffer(
-            gl.ARRAY_BUFFER,
-            gl.createBuffer()
-        );
+        gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
 
-        gl.bufferData(
-            gl.ARRAY_BUFFER,
-            new Float32Array([
-                -1,-1,
-                3,-1,
-                -1,3
-            ]),
-            gl.STATIC_DRAW
-        );
-
-        const loc =
-            gl.getAttribLocation(
-                program,
-                'p'
-            );
-
+        const loc = gl.getAttribLocation(program, 'p');
         gl.enableVertexAttribArray(loc);
+        gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
 
-        gl.vertexAttribPointer(
-            loc,
-            2,
-            gl.FLOAT,
-            false,
-            0,
-            0
-        );
-
-        const uRes =
-            gl.getUniformLocation(
-                program,
-                'uRes'
-            );
-
-        const uTime =
-            gl.getUniformLocation(
-                program,
-                'uTime'
-            );
+        const uRes = gl.getUniformLocation(program, 'uRes');
+        const uTime = gl.getUniformLocation(program, 'uTime');
 
         const SCALE = .7;
-
         let lastTime = 20;
 
-        function resize(){
+        function resize() {
+            const w = Math.max(1, Math.floor(window.innerWidth * SCALE));
+            const h = Math.max(1, Math.floor(window.innerHeight * SCALE));
 
-            const w =
-                Math.max(
-                    1,
-                    Math.floor(
-                        window.innerWidth * SCALE
-                    )
-                );
-
-            const h =
-                Math.max(
-                    1,
-                    Math.floor(
-                        window.innerHeight * SCALE
-                    )
-                );
-
-            if(
-                canvas.width !== w ||
-                canvas.height !== h
-            ){
+            if (canvas.width !== w || canvas.height !== h) {
                 canvas.width = w;
                 canvas.height = h;
             }
 
-            gl.viewport(
-                0,
-                0,
-                canvas.width,
-                canvas.height
-            );
+            gl.viewport(0, 0, canvas.width, canvas.height);
         }
 
-        function draw(t){
-
+        function draw(t) {
             lastTime = t;
-
-            gl.uniform2f(
-                uRes,
-                canvas.width,
-                canvas.height
-            );
-
-            gl.uniform1f(
-                uTime,
-                t
-            );
-
-            gl.drawArrays(
-                gl.TRIANGLES,
-                0,
-                3
-            );
+            gl.uniform2f(uRes, canvas.width, canvas.height);
+            gl.uniform1f(uTime, t);
+            gl.drawArrays(gl.TRIANGLES, 0, 3);
         }
 
         let raf = 0;
+        const startedAt = performance.now();
 
-        const startedAt =
-            performance.now();
+        const FRAME_MS = 29; // ~30fps; the background moves slowly, and every redraw re-blurs the layers above it
+        let lastDraw = 0;
 
-        function frame(now){
-
-            draw(
-                (now - startedAt) / 1000 + 20
-            );
-
-            raf =
-                requestAnimationFrame(frame);
+        function frame(now) {
+            raf = requestAnimationFrame(frame);
+            if (now - lastDraw < FRAME_MS) return;
+            lastDraw = now;
+            draw((now - startedAt) / 1000 + 20);
         }
 
         resize();
 
-        window.addEventListener(
-            'resize',
-            () => {
-                resize();
-                draw(lastTime);
-            }
-        );
-
-        if(reduceMotion){
-
+        window.addEventListener('resize', () => {
+            resize();
             draw(lastTime);
+        });
 
-        }else{
+        if (reduceMotion) {
+            draw(lastTime);
+        } else {
+            raf = requestAnimationFrame(frame);
 
-            raf =
-                requestAnimationFrame(frame);
-
-            document.addEventListener(
-                'visibilitychange',
-                () => {
-
-                    if(document.hidden){
-
-                        cancelAnimationFrame(raf);
-                        raf = 0;
-
-                    }else if(!raf){
-
-                        raf =
-                            requestAnimationFrame(frame);
-
-                    }
-
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    cancelAnimationFrame(raf);
+                    raf = 0;
+                } else if (!raf) {
+                    raf = requestAnimationFrame(frame);
                 }
-            );
+            });
         }
-
     })();
 </script>
 
 
+<!-- =========================================================
+     CARD MODAL
+     ========================================================= -->
 <script>
-    /* Card modal */
     (() => {
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        const reduceMotion =
-            window.matchMedia(
-                '(prefers-reduced-motion: reduce)'
-            ).matches;
-
-        const dialog =
-            document.createElement('dialog');
-
+        const dialog = document.createElement('dialog');
         dialog.className = 'modal';
-
-        dialog.setAttribute(
-            'aria-label',
-            'Artifact details'
-        );
-
+        dialog.setAttribute('aria-label', 'Artifact details');
         document.body.appendChild(dialog);
+        dialog.setAttribute('data-lenis-prevent', '');
 
         let lastCard = null;
         let closing = false;
 
-        function openCard(card){
-
+        function openCard(card) {
             lastCard = card;
             closing = false;
 
-            const clone =
-                card.cloneNode(true);
+            const clone = card.cloneNode(true);
 
-            [
-                'id',
-                'tabindex',
-                'role',
-                'aria-haspopup',
-                'style'
-            ].forEach(a => {
-                clone.removeAttribute(a);
-            });
+            ['id', 'tabindex', 'role', 'aria-haspopup', 'style'].forEach(a => clone.removeAttribute(a));
 
-            const wasLive =
-                clone.classList.contains('live');
+            const wasLive = clone.classList.contains('live');
 
             clone.classList.remove('live');
             clone.classList.add('modal-card');
+            if (wasLive) clone.classList.add('accent');
 
-            if(wasLive){
-                clone.classList.add('accent');
-            }
-
-            const closeBtn =
-                document.createElement('button');
-
-            closeBtn.className =
-                'modal-close';
-
-            closeBtn.type =
-                'button';
-
-            closeBtn.setAttribute(
-                'aria-label',
-                'Close'
-            );
-
-            closeBtn.innerHTML =
-                '&times;';
-
-            closeBtn.addEventListener(
-                'click',
-                closeCard
-            );
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'modal-close';
+            closeBtn.type = 'button';
+            closeBtn.setAttribute('aria-label', 'Close');
+            closeBtn.innerHTML = '&times;';
+            closeBtn.addEventListener('click', closeCard);
 
             clone.appendChild(closeBtn);
-
             dialog.replaceChildren(clone);
-
             dialog.showModal();
 
-            document.documentElement
-                .classList
-                .add('modal-open');
+            document.documentElement.classList.add('modal-open');
+            window.lenis?.stop();
 
             requestAnimationFrame(() => {
-
-                requestAnimationFrame(() => {
-
-                    dialog.classList.add('open');
-
-                });
-
+                requestAnimationFrame(() => dialog.classList.add('open'));
             });
         }
 
-        function closeCard(){
-
-            if(
-                !dialog.open ||
-                closing
-            ) return;
+        function closeCard() {
+            if (!dialog.open || closing) return;
 
             closing = true;
-
             dialog.classList.remove('open');
 
             const finish = () => {
-
                 dialog.close();
-
-                document.documentElement
-                    .classList
-                    .remove('modal-open');
-
-                if(lastCard){
-
-                    lastCard.focus({
-                        preventScroll:true
-                    });
-
-                }
+                document.documentElement.classList.remove('modal-open');
+                if (lastCard) lastCard.focus({ preventScroll: true });
+                window.lenis?.start();
             };
 
-            if(reduceMotion){
-
-                finish();
-
-            }else{
-
-                setTimeout(
-                    finish,
-                    280
-                );
-
-            }
+            if (reduceMotion) finish();
+            else setTimeout(finish, 280);
         }
 
-        dialog.addEventListener(
-            'click',
-            e => {
+        dialog.addEventListener('click', e => {
+            if (e.target === dialog) closeCard();
+        });
 
-                if(e.target === dialog){
-                    closeCard();
-                }
+        dialog.addEventListener('cancel', e => {
+            e.preventDefault();
+            closeCard();
+        });
 
-            }
-        );
+        document.querySelectorAll('.card:not(.locked)').forEach(card => {
+            card.tabIndex = 0;
+            card.setAttribute('role', 'button');
+            card.setAttribute('aria-haspopup', 'dialog');
 
-        dialog.addEventListener(
-            'cancel',
-            e => {
-
-                e.preventDefault();
-                closeCard();
-
-            }
-        );
-
-        document
-            .querySelectorAll('.card:not(.locked)')
-            .forEach(card => {
-
-                card.tabIndex = 0;
-
-                card.setAttribute(
-                    'role',
-                    'button'
-                );
-
-                card.setAttribute(
-                    'aria-haspopup',
-                    'dialog'
-                );
-
-                card.addEventListener(
-                    'click',
-                    e => {
-
-                        if(e.target.closest('a')){
-                            return;
-                        }
-
-                        openCard(card);
-
-                    }
-                );
-
-                card.addEventListener(
-                    'keydown',
-                    e => {
-
-                        if(e.target !== card){
-                            return;
-                        }
-
-                        if(
-                            e.key === 'Enter' ||
-                            e.key === ' '
-                        ){
-
-                            e.preventDefault();
-
-                            openCard(card);
-
-                        }
-
-                    }
-                );
-
+            card.addEventListener('click', e => {
+                if (e.target.closest('a')) return;
+                openCard(card);
             });
 
+            card.addEventListener('keydown', e => {
+                if (e.target !== card) return;
+
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openCard(card);
+                }
+            });
+        });
     })();
 </script>
+
+
+<!-- =========================================================
+     CARD ENTRANCE
+     ========================================================= -->
 <script>
-    /* Cards slide in when they scroll into view */
     (() => {
         const items = document.querySelectorAll('.card-entrance');
+
         if (!('IntersectionObserver' in window)) {
-            items.forEach(el => el.classList.add('in-view'));   // fallback: just show them
+            items.forEach(el => el.classList.add('in-view'));
             return;
         }
+
         const io = new IntersectionObserver((entries, obs) => {
             entries.forEach(e => {
-                if (e.isIntersecting) { e.target.classList.add('in-view'); obs.unobserve(e.target); }
+                if (e.isIntersecting) {
+                    e.target.classList.add('in-view');
+                    obs.unobserve(e.target);
+                }
             });
-        }, { threshold: 0.15 });
+        }, { threshold: .15 });
+
         items.forEach(el => io.observe(el));
     })();
 </script>
+
+
+<!-- =========================================================
+     CLICK STARS
+     ========================================================= -->
 <script>
-    /* Click stars: each click pops a small burst of four-pointed stars from the pointer. */
     (() => {
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-        const COUNT   = 7;            // stars per click
-        const SPEED   = [110, 210];   // launch speed range, px per second
-        const SIZE    = [9, 17];      // star size range, px
-        const LIFE    = [350, 550];   // how long each star lasts, ms
-        const GRAVITY = 90;           // how much the stars drift downward, px per second squared
-        const MAX     = 90;           // cap on stars on screen, so rapid clicking can't pile up
+        const COUNT = 7;
+        const SPEED = [110, 210];
+        const SIZE = [9, 17];
+        const LIFE = [350, 550];
+        const GRAVITY = 90;
+        const MAX = 90;
 
         const NS = 'http://www.w3.org/2000/svg';
         const PATH = 'M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z';
+
         const rand = (a, b) => a + Math.random() * (b - a);
 
         const layer = document.createElement('div');
         layer.id = 'click-stars';
         layer.setAttribute('aria-hidden', 'true');
 
-        // The card popup sits in the browser's top layer, which covers normal page content,
-        // so while it is open the stars live inside it to stay visible.
         function ensureHost() {
             const host = document.querySelector('dialog.modal[open]') || document.body;
             if (layer.parentNode !== host) host.appendChild(layer);
@@ -2077,9 +1734,11 @@
 
         function spawn(x, y) {
             ensureHost();
+
             const now = performance.now();
+
             for (let i = 0; i < COUNT && particles.length < MAX; i++) {
-                const angle = (i / COUNT) * Math.PI * 2 + rand(-0.35, 0.35);
+                const angle = (i / COUNT) * Math.PI * 2 + rand(-.35, .35);
                 const speed = rand(SPEED[0], SPEED[1]);
                 const size = rand(SIZE[0], SIZE[1]);
 
@@ -2087,44 +1746,61 @@
                 svg.setAttribute('viewBox', '0 0 24 24');
                 svg.setAttribute('width', size);
                 svg.setAttribute('height', size);
+
                 const path = document.createElementNS(NS, 'path');
                 path.setAttribute('d', PATH);
+
                 svg.appendChild(path);
                 layer.appendChild(svg);
 
                 particles.push({
-                    el: svg, size, x, y,
+                    el: svg,
+                    size,
+                    x,
+                    y,
                     vx: Math.cos(angle) * speed,
-                    vy: Math.sin(angle) * speed - 30,   // small upward kick
+                    vy: Math.sin(angle) * speed - 30,
                     rot: rand(0, 360),
                     spin: rand(-360, 360),
                     born: now,
                     life: rand(LIFE[0], LIFE[1])
                 });
             }
-            if (!raf) { last = now; raf = requestAnimationFrame(tick); }
+
+            if (!raf) {
+                last = now;
+                raf = requestAnimationFrame(tick);
+            }
         }
 
         function tick(now) {
-            const dt = Math.min((now - last) / 1000, 0.05);
+            const dt = Math.min((now - last) / 1000, .05);
             last = now;
+
             ensureHost();
 
             particles = particles.filter(p => {
                 const age = (now - p.born) / p.life;
-                if (age >= 1) { p.el.remove(); return false; }
 
-                const drag = Math.pow(0.05, dt);    // slows the burst down smoothly
+                if (age >= 1) {
+                    p.el.remove();
+                    return false;
+                }
+
+                const drag = Math.pow(.05, dt);
+
                 p.vx *= drag;
                 p.vy = p.vy * drag + GRAVITY * dt;
                 p.x += p.vx * dt;
                 p.y += p.vy * dt;
                 p.rot += p.spin * dt;
 
-                const scale = 1 - age * age;        // shrinks faster near the end
+                const scale = 1 - age * age;
+
                 p.el.style.opacity = 1 - age;
                 p.el.style.transform =
-                    `translate3d(${p.x - p.size / 2}px,${p.y - p.size / 2}px,0) rotate(${p.rot}deg) scale(${scale})`;
+                    `translate3d(${p.x - p.size / 2}px, ${p.y - p.size / 2}px, 0) rotate(${p.rot}deg) scale(${scale})`;
+
                 return true;
             });
 
@@ -2132,9 +1808,29 @@
         }
 
         document.addEventListener('pointerdown', e => {
-            if (e.pointerType === 'mouse' && e.button !== 0) return;   // left clicks and taps only
+            if (e.pointerType === 'mouse' && e.button !== 0) return;
             spawn(e.clientX, e.clientY);
         }, { passive: true });
+    })();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1/dist/lenis.min.js"></script>
+<script>
+    (() => {
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches || !window.Lenis) return;
+        const lenis = new Lenis({ lerp: 0.1 });   // lower = floatier, higher = snappier
+        window.lenis = lenis;
+        const raf = t => { lenis.raf(t); requestAnimationFrame(raf); };
+        requestAnimationFrame(raf);
+
+        // route the nav tabs and buttons through Lenis, with room for the fixed header
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                const t = document.querySelector(a.getAttribute('href'));
+                if (!t) return;
+                e.preventDefault();
+                lenis.scrollTo(t, { offset: -70 });
+            });
+        });
     })();
 </script>
 </body>
