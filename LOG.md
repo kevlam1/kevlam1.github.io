@@ -5,7 +5,7 @@
 
 ## What I set out to build
 
-A small front-end portfolio with a card for each of the five course artifacts. Only card 1 is real (it is this site). Cards 2-5 hold placeholder ideas until I finish those artifacts. The site is also how I hand in every artifact, so it has to stay at one stable link all quarter.
+A small front-end portfolio with a card for each of the five course artifacts. Only card 1 is real (it is this site). Cards 2-5 hold placeholder ideas until I finish those artifacts. The site is also how I hand in every artifact, so it has to stay at one stable link all quarter. Overtime I will add more elements to it such as UX and UI to make sure this is the best work I would be satisfied with.
 
 ---
 
@@ -235,6 +235,10 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 - [ ] Push the latest changes and check the live site in a private window and on my phone.
 - [ ] Submit the link on Canvas by Sunday, Oct 11 at 11:59 PM.
 
+
+## Extra logs to fix later
 - Added log.html, a themed page that loads and renders LOG.md in the browser (collapsible sections, checklists), so the Markdown file stays the single source. Footer now links to it.
 - Added a branched contents menu to the log page (a plain JavaScript port of a React Bits component). It groups the sections, follows my scroll position, and jumps to a section on click.
-- 
+- Asked Claude to fix up the header to be in line with the main index. Change up how the buttons worked too.
+- Have it so the sidebar drops down when the page is loaded, including the boxes just like index.html cards.
+- Animation for the sidebar seemed choppy. Asked Claude to improve upon it after giving it more specific instruction. Went successful.

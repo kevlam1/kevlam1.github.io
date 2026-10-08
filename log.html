@@ -358,7 +358,9 @@
             --bm-indent:40px;
             --bm-line-w:1.5;
             --bm-draw:400ms;
-            --bm-fold:300ms;
+            --bm-fold:450ms;
+            --bm-fold-ease:cubic-bezier(.4,0,.2,1);
+            --bm-stagger:40ms;
             --bm-ease:cubic-bezier(.23,1,.32,1);
             --bm-muted:color-mix(in srgb,var(--bm-ink) 55%,transparent);
 
@@ -436,7 +438,7 @@
         .bm-body{
             display:grid;
             grid-template-rows:0fr;
-            transition:grid-template-rows var(--bm-fold) var(--bm-ease);
+            transition:grid-template-rows var(--bm-fold) var(--bm-fold-ease);
         }
 
         .bm-section[data-open] .bm-body{grid-template-rows:1fr}
@@ -464,7 +466,7 @@
 
         .bm-section[data-open] .bm-lines{
             opacity:1;
-            transition:opacity 250ms ease 100ms;
+            transition:opacity 600ms ease 250ms;
         }
 
         .bm-base,
@@ -497,7 +499,7 @@
             cursor:pointer;
             outline:none;
             box-sizing:border-box;
-            transition:color 200ms ease;
+            transition:color 200ms ease,opacity 450ms ease,transform 600ms var(--bm-fold-ease);
         }
 
         @media (hover:hover) and (pointer:fine){
@@ -520,6 +522,117 @@
             .bm-marker{transition:opacity 150ms ease}
             .bm-body,
             .bm-reach{transition:none}
+        }
+
+        /* Divider, same as the portfolio */
+        .divider{
+            width:min(1250px,90%);
+            height:4px;
+            margin:44px auto 0;
+            opacity:.6;
+            background:linear-gradient(90deg,transparent,var(--accent),transparent) top/100% 1px no-repeat;
+            filter:drop-shadow(0 0 5px var(--accent));
+        }
+
+        /* Titled groups of cards ("The build", "Reflection", ...) */
+        .log-group{padding:56px 0 8px}
+
+        .group-title{
+            margin:0 0 12px;
+            font-size:clamp(1.6rem,4vw,2.2rem);
+            font-weight:400;
+            text-align:center;
+        }
+
+        .group-lead{
+            max-width:60ch;
+            margin:0 auto 26px;
+            color:var(--muted);
+            font-size:.95rem;
+            text-align:center;
+        }
+
+        /* Cards slide and fade in as they scroll into view, like the portfolio cards */
+        .reveal{
+            opacity:0;
+            transform:translateX(-60px);
+        }
+
+        .reveal.in-view{
+            animation:logSlideIn .8s cubic-bezier(.22,1,.36,1) forwards;
+        }
+
+        @keyframes logSlideIn{
+            from{
+                opacity:0;
+                transform:translateX(-60px);
+            }
+            to{
+                opacity:1;
+                transform:translateX(0);
+            }
+        }
+
+        /* Contents menu entrance: the rail and group heads drop in one after another,
+           then the group you're reading unfolds (see reveal() in the script). */
+        .branched-menu::before{
+            opacity:0;
+            transition:opacity 900ms ease;
+        }
+
+        .branched-menu.is-in::before{opacity:1}
+
+        .branched-menu .bm-section{
+            opacity:0;
+            transform:translateY(-12px);
+            transition:opacity 700ms ease,transform 800ms var(--bm-fold-ease);
+            transition-delay:calc(var(--k,0) * 220ms);
+        }
+
+        .branched-menu.is-in .bm-section{
+            opacity:1;
+            transform:none;
+        }
+
+        /* Items fade down into place, one after another, as their group unfolds */
+        .branched-menu .bm-item{
+            opacity:0;
+            transform:translateY(-8px);
+        }
+
+        .branched-menu .bm-section[data-open] .bm-item{
+            opacity:1;
+            transform:none;
+            transition-delay:
+                    0s,
+                    calc(var(--i,0) * var(--bm-stagger) + 150ms),
+                    calc(var(--i,0) * var(--bm-stagger) + 150ms);
+        }
+
+        /* Slower, softer unfold while the menu first drops in */
+        .branched-menu.is-intro{
+            --bm-fold:1100ms;
+            --bm-stagger:70ms;
+        }
+
+        @media (prefers-reduced-motion:reduce){
+            .reveal{
+                opacity:1;
+                transform:none;
+                animation:none;
+            }
+
+            .branched-menu::before{
+                opacity:1;
+                transition:none;
+            }
+
+            .branched-menu .bm-section,
+            .branched-menu .bm-item{
+                opacity:1;
+                transform:none;
+                transition:none;
+            }
         }
 
         /* Footer */
@@ -593,15 +706,18 @@
         const GITHUB = 'https://github.com/kevlam1/kevlam1.github.io/blob/main/LOG.md';
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        // How sections are grouped in the contents menu. The first rule that matches wins.
-        // "## 1. Something" style headings go under "The build"; everything else goes under "Reflection".
         // Sections with these titles are shown as plain always-open cards: not collapsible,
         // and left out of the contents menu.
         const STATIC_TITLES = [/^what i set out to build$/i];
 
+        // How the collapsible sections are grouped, both on the page and in the contents menu.
+        // The first rule that matches wins. "## 1. Something" style headings go under "The build";
+        // everything else goes under "Reflection".
         const GROUPS = [
-            { label: 'The build',  match: title => /^\d+\./.test(title) },
-            { label: 'Reflection', match: () => true }
+            { label: 'The build',  blurb: 'How the portfolio was planned, built, and revised, step by step.', match: title => /^\d+\./.test(title) },
+            // To give "Still to do" its own group, add a rule like this above Reflection:
+            // { label: 'Next steps', blurb: 'What is left to finish.', match: title => /^still to do/i.test(title) },
+            { label: 'Reflection', blurb: 'Where the AI got things wrong, what I decided, and what is still open.', match: () => true }
         ];
 
         function fail(message) {
@@ -667,6 +783,7 @@
 
             groups.forEach(group => {
                 const section = el('div', 'bm-section');
+                section.style.setProperty('--k', String(parts.length));
 
                 const head = el('button', 'bm-head');
                 head.type = 'button';
@@ -703,8 +820,9 @@
                 });
                 tree.append(svg);
 
-                const buttons = group.kids.map(kid => {
+                const buttons = group.kids.map((kid, i) => {
                     const b = el('button', 'bm-item');
+                    b.style.setProperty('--i', String(i));
                     b.type = 'button';
                     b.title = kid.label;
                     b.tabIndex = -1;
@@ -728,10 +846,30 @@
 
             new ResizeObserver(() => placeMarker(false)).observe(nav);
 
-            setOpen(parts[0], true);
-            setActive(groups[0].kids[0].id);
+            // Call once the menu is on the page: the heads drop in, then every group
+            // unfolds in turn. getId returns the section currently in view.
+            function reveal(getId) {
+                void nav.offsetHeight;   // make sure the hidden starting state has been painted
+                nav.classList.add('is-in');
 
-            return { nav, setActive };
+                if (reduceMotion) {
+                    setActive(getId());
+                    parts.forEach(part => setOpen(part, true));
+                    return;
+                }
+
+                const START = 600;   // ms: let the heads start dropping in first
+                const GAP = 500;     // ms from one group starting to unfold to the next
+                nav.classList.add('is-intro');
+
+                setTimeout(() => setActive(getId()), START);
+                parts.forEach((part, k) => {
+                    setTimeout(() => { if (!part.open) setOpen(part, true); }, START + k * GAP);
+                });
+                setTimeout(() => nav.classList.remove('is-intro'), START + parts.length * GAP + 2600);
+            }
+
+            return { nav, setActive, reveal };
         }
 
         /* ---------- Render LOG.md ---------- */
@@ -748,6 +886,7 @@
             intro.className = 'intro';
             root.replaceChildren(intro);
 
+            const collapsibles = [];
             let body = null;
             [...holder.childNodes].forEach(node => {
                 if (node.nodeType === 1 && node.tagName === 'H2') {
@@ -768,13 +907,42 @@
                         const summary = document.createElement('summary');
                         summary.textContent = title;
                         details.append(summary, body);
-                        root.append(details);
+                        collapsibles.push(details);
                     }
                 } else if (body) {
                     body.append(node);
                 } else {
                     intro.append(node);
                 }
+            });
+
+            // Put the collapsible sections under titled headings, separated by dividers
+            const grouped = GROUPS.map(g => ({ ...g, cards: [] }));
+            collapsibles.forEach(d => {
+                const title = d.querySelector('summary').textContent.trim();
+                grouped[GROUPS.findIndex(g => g.match(title))].cards.push(d);
+            });
+            grouped.filter(g => g.cards.length).forEach(g => {
+                const divider = document.createElement('div');
+                divider.className = 'divider';
+                divider.setAttribute('aria-hidden', 'true');
+
+                const group = document.createElement('section');
+                group.className = 'log-group';
+                const heading = document.createElement('h2');
+                heading.className = 'group-title';
+                heading.textContent = g.label;
+                group.append(heading);
+
+                if (g.blurb) {
+                    const lead = document.createElement('p');
+                    lead.className = 'group-lead';
+                    lead.textContent = g.blurb;
+                    group.append(lead);
+                }
+
+                g.cards.forEach(card => group.append(card));
+                root.append(divider, group);
             });
 
             const controls = document.createElement('div');
@@ -791,6 +959,28 @@
             intro.after(controls);
 
             buildContents();
+            setupReveal();
+        }
+
+        /* ---------- Cards slide and fade in as they scroll into view ---------- */
+        function setupReveal() {
+            const cards = [...root.querySelectorAll('details.log-section, .log-static')];
+            cards.forEach(c => c.classList.add('reveal'));
+
+            if (reduceMotion || !('IntersectionObserver' in window)) {
+                cards.forEach(c => c.classList.add('in-view'));
+                return;
+            }
+
+            const io = new IntersectionObserver((entries, obs) => {
+                entries.filter(e => e.isIntersecting).forEach((e, i) => {
+                    e.target.style.animationDelay = (i * 0.12) + 's';   // stagger cards that arrive together
+                    e.target.classList.add('in-view');
+                    obs.unobserve(e.target);
+                });
+            }, { threshold: 0, rootMargin: '0px 0px -8% 0px' });
+
+            cards.forEach(c => io.observe(c));
         }
 
         /* ---------- Contents menu wiring ---------- */
@@ -817,16 +1007,21 @@
                 target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
             });
             toc.replaceChildren(menu.nav);
+            menu.reveal(() => currentSection().id);
 
-            function track() {
-                ticking = false;
-                if (Date.now() < lockUntil) return;
+            function currentSection() {
                 const probe = window.innerHeight * .35;
                 let current = sections[0];
                 sections.forEach(s => { if (s.getBoundingClientRect().top <= probe) current = s; });
                 const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
                 if (atBottom) current = sections[sections.length - 1];
-                menu.setActive(current.id);
+                return current;
+            }
+
+            function track() {
+                ticking = false;
+                if (Date.now() < lockUntil) return;
+                menu.setActive(currentSection().id);
             }
 
             let ticking = false;
