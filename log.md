@@ -3,6 +3,8 @@
 **Chat AIs:** Claude (main), ChatGPT (a few sessions when I hit Claude's limit), Gemini (brainstorming only) | **Editor:** IntelliJ IDEA Ultimate | **Host:** GitHub Pages (`kevlam1.github.io`)
 **Stack:** plain HTML, CSS, and JavaScript with no build step: `index.html` for the portfolio, `log.html` for this log page, and `log.md` for the log text. Lenis (smooth scrolling) and marked (Markdown rendering) load from a CDN.
 
+---
+
 ## What I set out to build
 
 A small front-end portfolio with a card for each of the five course artifacts. Only card 1 is real (it is this site). Cards 2-5 hold placeholder ideas until I finish those artifacts. The site is also how I hand in every artifact, so it has to stay at one stable link all quarter. Over time I will add more elements to it, such as UX and UI, to make sure this is the best work I would be satisfied with.
@@ -84,7 +86,7 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 - Dividers: one thin line that fades out at both ends, with a soft glow. Added a matching line above the footer.
 - Soft drop shadows under every card, deeper on active cards while hovered.
 - Artifact 1 link: the text lifts slightly and a thick line sweeps out from the center.
-- Background: a slow-moving navy wave pattern drawn by a small WebGL shader. I liked the look of Balatro's background, but it was much busier than I wanted, Claude wrote an original shader instead of copying it.
+- Background: a slow-moving navy wave pattern drawn by a small WebGL shader. I liked the look of Balatro's background, but it was much busier than I wanted, so Claude wrote an original shader instead of copying it.
 - I asked for it to be busier and to swirl around the center like the original. Claude zoomed the pattern out, added a coordinate warp and a ripple layer, and added a twist around the screen center, with `ZOOM`, `SWIRL`, and `SPIN` settings I can tune.
 - It pauses when the tab is hidden, shows a still frame when reduced motion is on, and falls back to plain navy if WebGL is unavailable.
 
@@ -219,7 +221,7 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 - "What I set out to build" is now an always-open box and is left out of the menu.
 - The boxes are grouped under centered "The build" and "Reflection" headings, separated by the same glowing divider as the main page. "Still to do" stays inside Reflection for now.
 - Renamed `LOG.md` to `log.md` so every file name is lowercase, and pointed the footer link at `log.html` to match.
-- Reorganized `log.md`: regrouped the sections, made the labels consistent, folded the notes I had parked at the bottom into this section, and turned finished to-dos into checked items.
+- Reorganized `log.md`: regrouped the sections, made the labels consistent, folded the notes I had parked at the bottom into the numbered sections, and turned finished to-dos into checked items.
 
 **What changed: the contents menu**
 - Added a branched contents menu, a plain JavaScript port of a React Bits component. It groups the sections, follows my scroll position, and jumps to a section on click.
@@ -244,6 +246,45 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ---
 
+## 13. Mobile fixes and phone testing
+
+**What I found on my phone**
+- The card popup opened already scrolled down to the reflection.
+- In the popup, the text sat above the image and the card lost its grain.
+- The card images were too tall.
+- After rotating the phone, the card image stayed large when I rotated back.
+- A navy strip showed at the bottom of the screen.
+
+**What changed: card popup**
+- The popup scrolled down because the browser auto-focused the "Visit…" link. The × button now gets focus instead, and the scroll resets to the top.
+- The content now sits in an inner scroller, so the card's grain layer stays put and the image stays above the text. The × button stays pinned while I scroll.
+
+**What changed: cards**
+- Cut the image height by about 25% (aspect ratio `2.4 / 1`).
+- Fixed the rotation bug. The image's natural size was feeding back into its container, so it is now positioned absolutely inside a fixed-ratio box.
+- Phones now show two columns in both portrait and landscape, with the card text and pills shrunk to fit.
+- Matched the line heights across cards on mobile so the rows line up.
+
+**What changed: the navy strip at the bottom**
+- Tried `lvh` sizing, then oversizing the background layers. Neither worked, so I removed the second attempt.
+- It turned out not to be my code. The same strip shows on google.com, because it is the browser's toolbar collapsing.
+- Left a couple of harmless leftovers (`clientWidth` / `clientHeight` in the WebGL `resize()`, and `OVERSHOOT = 120`).
+
+**What I learned: testing on a phone**
+- `localhost` on a phone means the phone itself, so I need my computer's IP address (`ipconfig`, then the IPv4 address).
+- The phone has to be on the same Wi-Fi network, with cellular off.
+- IntelliJ's built-in server (port 63342) had "Can accept external connections" grayed out, so I used `python -m http.server 8000` in the project folder instead.
+- That Python server only serves files. It does not add or change anything in the project, and it does not live-reload, so I refresh the phone after saving.
+- Windows Firewall may need to allow Python on Private networks.
+
+**What I learned: debugging**
+- Mobile browsers behave differently from desktop. Fixes for scrolling, fixed layers, and focus often need a real phone to check.
+- A layout bug can come from an image's natural size feeding back into its container, which was the rotation bug.
+- Not every oddity is my code, like the browser's toolbar causing the navy strip.
+- Some of the fixes were guesses that did not work (`lvh`, oversizing). Testing and reporting back exactly what I saw is what narrowed things down.
+
+---
+
 ## Where AI misread me, or I had to correct course
 
 **Claude**
@@ -254,6 +295,7 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 - **Pages it could not open:** it could not read the css reference pages or some course guides, so I had to paste or describe what I wanted.
 - **Checking sources:** I asked Claude to double-check sources. It checked the assignment against the course site and the hosting steps against GitHub's docs, and it flagged what it could not verify instead of guessing.
 - **Log page menu:** the first version of the log page listed "What I set out to build" in the Reflection part of the menu, so clicking it just scrolled back to the top. I asked for it to be a plain box and removed it from the menu.
+- **Mobile fixes that did not work:** the `lvh` sizing and the oversized background layers did not fix the navy strip, which turned out to be the browser's own toolbar.
 
 **ChatGPT**
 - Twice (the card entrance and the first blur), it wrote code and then reversed itself in the same message, and ignored my instruction to stop. I found Claude clearer about exactly which part of the code to change.
@@ -283,13 +325,14 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 - Log page: made "What I set out to build" a plain box instead of a collapsible one.
 - Log page: dropped the wave background's mouse parallax and built-in grain.
 - Log page: kept "Still to do" inside Reflection instead of giving it its own group. It is a one-line change if I want to split it out later.
+- Mobile: removed the `lvh` and oversized-background attempts once I found the navy strip was the browser's toolbar.
 
 ---
 
 ## Not yet verified
 
-- Testing on a phone and a small window: nav fit with five tabs, card layout, popup sizing, and background performance.
-- Whether the gradual blur and Lenis scrolling feel good on a slower computer or a phone.
+- On a phone: whether the nav fits with five tabs, how the background performs, and whether the gradual blur and Lenis scrolling feel good. Cards and the popup have been checked (see section 13).
+- Whether the same blur and scrolling feel good on a slower computer.
 - Whether the Lenis script loads reliably from the CDN, and that nothing breaks without it.
 - Whether the log page opens from the live site's footer link, and whether it finds `log.md` after the rename. The file names and every link and fetch must match exactly, because GitHub Pages is case-sensitive.
 - How the log page looks on a phone (its contents menu is hidden below 1100px wide by design), and whether its wave background, loading animation, and menu animation run smoothly on a slower computer.
@@ -304,6 +347,8 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 - [ ] Submit the link on Canvas by Sunday, Oct 11 at 11:59 PM.
 
 **Done**
-- [x] Add a line to the Artifact 1 reflection about switching chat AIs (ChatGPT, Gemini). The assignment says switching is worth a line in the reflection.
-- [x] Replace the generic LinkedIn link with my profile URL, or remove it. I hid the LinkedIn icon for now.
-- [x] Make the footer link and the log page's file name match. The footer now links to `log.html`.
+- [x] Wrote my own ideas for cards 2-5.
+- [x] Added a line about switching chat AIs to my Artifact 1 reflection.
+- [x] Hid the generic LinkedIn icon until I have a real profile link.
+- [x] Pointed the footer link at the log page.
+- [x] Checked the cards and the popup on a real phone.

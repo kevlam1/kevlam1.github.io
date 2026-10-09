@@ -6,6 +6,8 @@
     <title>Kevin Lam | Portfolio</title>
     <meta name="description" content="Portfolio for TCSS 490: five things I built this quarter.">
 
+    <meta name="theme-color" content="#0f172a">
+
     <style>
         :root{
             --bg:#0f172a;
@@ -783,6 +785,113 @@
                     drop-shadow(0 0 3px #fff)
                     drop-shadow(0 0 10px var(--accent));
             will-change:transform,opacity;
+        }
+
+        /* =========================================================
+   MOBILE: phones, portrait + landscape
+   ========================================================= */
+        @media (max-width:900px), (max-height:500px) and (orientation:landscape){
+
+            section{padding-left:12px;padding-right:12px}
+
+            /* --- 5. Two columns --- */
+            .cards{gap:12px}
+            .card-entrance{flex:0 1 calc(50% - 6px);min-width:0}
+
+            .card:not(.modal-card){
+                grid-template-columns:1fr;   /* image on top, text below */
+                min-height:0;
+            }
+
+            .card:not(.modal-card) .card-body{
+                padding:12px;
+                gap:6px;
+                justify-content:flex-start;
+            }
+            .card:not(.modal-card) h3{font-size:1rem}
+            .card:not(.modal-card) .desc{font-size:.8rem;line-height:1.45;min-height:0}
+            .card:not(.modal-card) .meta{font-size:.6rem;letter-spacing:.06em;gap:4px}
+            .card:not(.modal-card) .status{padding:0 6px}
+            .card:not(.modal-card) .toolkit{min-height:0;gap:4px}
+            .card:not(.modal-card) .toolkit-pill{font-size:.58rem;padding:2px 6px}
+            .card:not(.modal-card) .links{margin-top:auto}  /* links line up across a row */
+
+            /* --- 3 + 4. Shorter image, and no more rotation bug --- */
+            .card .media{
+                position:relative;
+                height:auto;
+                min-height:0;
+                aspect-ratio:2.4 / 1;        /* ~25% shorter than 16:9 */
+                overflow:hidden;
+                border-right:0;
+                border-bottom:1px solid var(--line);
+            }
+            .card .media img{
+                position:absolute;           /* image no longer affects layout sizing */
+                inset:0;
+            }
+
+            /* --- Modal --- */
+            dialog.modal{padding:10px}
+
+            .card.modal-card{
+                max-height:92vh;
+                max-height:92dvh;
+            }
+            .modal-card .card-body{padding:18px}
+        }
+
+        /* Landscape modal is side by side: keep the image at the top of its column */
+        @media (min-width:641px) and (max-width:900px), (max-height:500px) and (orientation:landscape){
+            .card.modal-card .media{
+                align-self:start;
+                border-bottom:0;
+                border-right:1px solid var(--line);
+            }
+        }
+
+        /* ===== Modal: inner scroller (all screen sizes) ===== */
+        .card.modal-card{
+            display:flex;
+            overflow:hidden;              /* the inner scroller does the scrolling */
+        }
+
+        .modal-scroll{
+            flex:1;
+            min-width:0;
+            min-height:0;
+            overflow:auto;
+            display:grid;
+            grid-template-columns:42% 58%;
+            overscroll-behavior:contain;
+        }
+
+        /* Portrait phones: image on top, text below, stacked explicitly */
+        @media (max-width:640px){
+            .modal-scroll{display:block}
+        }
+
+        /* ===== Mobile: aligned card rows + bold titles ===== */
+        @media (max-width:900px), (max-height:500px) and (orientation:landscape){
+
+            /* Let the text area fill the card and start from the top, so every row lines up */
+            .cards .card:not(.modal-card){
+                grid-template-rows:auto 1fr;
+            }
+            .cards .card:not(.modal-card) .card-body{
+                justify-content:flex-start;
+            }
+
+            /* Reserve two lines for titles so descriptions start at the same height */
+            .cards .card:not(.modal-card) h3{
+                line-height:1.25;
+                min-height:2.5em;
+            }
+
+            /* Bold artifact names (cards and popup) */
+            .card h3{
+                font-weight:700;
+            }
         }
     </style>
 </head>
@@ -1609,9 +1718,16 @@
             clone.classList.add('modal-card');
             if (wasLive) clone.classList.add('accent');
 
+            // wrap everything in an inner scroller so the card's grain layer never scrolls away
+            const scroller = document.createElement('div');
+            scroller.className = 'modal-scroll';
+            while (clone.firstChild) scroller.appendChild(clone.firstChild);
+            clone.appendChild(scroller);
+
             const closeBtn = document.createElement('button');
             closeBtn.className = 'modal-close';
             closeBtn.type = 'button';
+            closeBtn.autofocus = true;
             closeBtn.setAttribute('aria-label', 'Close');
             closeBtn.innerHTML = '&times;';
             closeBtn.addEventListener('click', closeCard);
@@ -1619,6 +1735,8 @@
             clone.appendChild(closeBtn);
             dialog.replaceChildren(clone);
             dialog.showModal();
+            scroller.scrollTop = 0;
+            clone.scrollTop = 0;
 
             document.documentElement.classList.add('modal-open');
             window.lenis?.stop();
