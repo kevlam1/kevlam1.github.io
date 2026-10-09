@@ -352,3 +352,7 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 - [x] Hid the generic LinkedIn icon until I have a real profile link.
 - [x] Pointed the footer link at the log page.
 - [x] Checked the cards and the popup on a real phone.
+
+
+## more logs to sort later
+- Gave the footer link to the log page a slowly drifting blue-to-white gradient with a soft glow that brightens on hover.

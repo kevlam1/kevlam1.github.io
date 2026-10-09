@@ -893,6 +893,39 @@
                 font-weight:700;
             }
         }
+
+        /* Footer log link: a drifting blue-to-white gradient with a soft glow */
+        .log-link{
+            display:inline-block;
+            text-decoration:none;
+            background:linear-gradient(90deg,#7aa2ff,#ffffff,#9fb8e8,#7aa2ff);
+            background-size:300% 100%;
+            -webkit-background-clip:text;
+            background-clip:text;
+            -webkit-text-fill-color:transparent;
+            color:transparent;
+            filter:drop-shadow(0 0 6px rgba(122,162,255,.55));
+            animation:logLinkShift 8s linear infinite;
+            transition:filter .3s ease,transform .3s ease;
+        }
+
+        .log-link:hover,
+        .log-link:focus-visible{
+            background-image:linear-gradient(#fff,#fff);   /* pure white text while hovered */
+            filter:drop-shadow(0 0 1px #fff) drop-shadow(0 0 2px rgba(255,255,255,.9));
+            transform:translateY(-1px);
+        }
+
+        @keyframes logLinkShift{
+            to{background-position:150% 0}
+        }
+
+        @media (prefers-reduced-motion:reduce){
+            .log-link{
+                animation:none;
+                transition:none;
+            }
+        }
     </style>
 </head>
 
@@ -1019,9 +1052,8 @@
                                 matched what I pictured. The biggest thing I learned is to describe the exact layout
                                 I want, and to check what the AI tells me against the real documentation instead of
                                 trusting it. Whenever I hit Claude's limits, I switched to ChatGPT and Gemini, but I
-                                found their quality lacking compared to Claude, and they were sometimes close to
-                                useless. Still, the way I had to phrase my requests for them taught me to ask Claude
-                                more clearly, which brought out better code.
+                                found them less reliable than Claude. Still, the way I had to phrase my requests
+                                for them taught me to ask Claude more clearly, which brought out better code.
                             </p>
 
                             <p class="links">
@@ -1305,8 +1337,7 @@
     </div>
 
     <p>Built for TCSS 490, Autumn 2026.</p>
-    <p><a href="log.html">log.html</a></p>
-
+    <p><a class="log-link" href="log.html">/log.html</a></p>
 </footer>
 
 
