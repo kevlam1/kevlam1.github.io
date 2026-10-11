@@ -356,3 +356,8 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ## more logs to sort later
 - Gave the footer link to the log page a slowly drifting blue-to-white gradient with a soft glow that brightens on hover.
+- Added a smooth scroll progress bar under the header (a thin blue-to-white glowing line with a bright tip) that glides along with the page scroll.
+- Replaced the progress bar’s tip with the same four-pointed star used by the loader and click effect. It spins with scroll position, so it costs nothing when idle.
+- The first version of the progress bar’s star showed up huge and black because its CSS wasn’t applied. I replaced the whole progress bar CSS block at once and set the star’s size directly on the SVG.
+- Fixed the progress bar's star. Asked Claude to have it spin too.
+- Asked for suggestions on different fonts, decided to use "DM Sans", with "Arial" as backup.
