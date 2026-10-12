@@ -313,6 +313,9 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 **What changed: font**
 - Asked for suggestions on different fonts, decided to use "DM Sans", with "Arial" as backup.
 
+**What I checked**
+- After pushing, checked the live site and the log page on my phone. Everything worked: the nav with five tabs, the background, the gradual blur and scrolling, the footer stars and caption, and the log page with its new progress bar.
+
 ---
 
 ## 15. Moving to Claude Code
@@ -384,8 +387,6 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ## Not yet verified
 
-- On a phone: whether the nav fits with five tabs, how the background performs, and whether the gradual blur and Lenis scrolling feel good. Cards and the popup have been checked (see section 13).
-- Whether the same blur and scrolling feel good on a slower computer.
+- Whether the blur and scrolling feel good on a slower computer, and whether the log page's wave background, loading animation, and menu animation run smoothly on one.
 - Whether the Lenis script loads reliably from the CDN, and that nothing breaks without it.
-- Whether the log page opens from the live site's footer link, and whether it finds `log.md` after the rename. The file names and every link and fetch must match exactly, because GitHub Pages is case-sensitive.
-- How the log page looks on a phone (its contents menu is hidden below 1100px wide by design), and whether its wave background, loading animation, and menu animation run smoothly on a slower computer.
+- How the link preview looks when the site is shared on different platforms.

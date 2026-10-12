@@ -5,7 +5,7 @@
 - [ ] Confirm the repo shows `log.md` in lowercase on GitHub. The log page fetches that exact name.
 - [ ] Push the latest `index.html`, `log.html`, and `log.md`, then check the live site and the log page in a private window and on a phone.
 - [ ] Verify the scroll progress bar: it should be one thin line under the header with a small spinning star on its tip, no giant black star. The previous attempt pasted the code twice and omitted the star's sizing CSS.
-- [ ] Phone checks still open: nav fit with five tabs, background performance, gradual blur and Lenis feel, and the log page on a narrow screen.
+- [x] Kevin checked the live site and log page on his phone (Oct 11) and everything worked. Previously open phone checks: nav fit with five tabs, background performance, gradual blur and Lenis feel, and the log page on a narrow screen.
 - [ ] `log.md` has a few lines that no longer match the code. Section 13 mentions `OVERSHOOT = 120` and `clientWidth`/`clientHeight` leftovers, but the current files use `OVERSHOOT = 48` and `innerWidth`/`innerHeight`. Section 6 says one card per row on tablets, but phones and tablets (900px and below) show two per row now. The `theme-color` meta tag is not mentioned. Section 14 says the progress star spins with scroll position, but it now spins constantly. Ask Kevin before changing past entries. (The progress bar, footer link, and font are now logged in section 14.)
 - [x] `.scroll-progress` was defined twice in `index.html`. The duplicate is removed.
 - [x] Footer link: Kevin kept the `/log.html` text and added a small, faint "build log" caption under it, with a spinning star on each side.
