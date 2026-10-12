@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    <!-- Navy on light browser tabs, white on dark ones -->
+    <style>
+        path{fill:#0f172a}
+        @media (prefers-color-scheme:dark){path{fill:#ffffff}}
+    </style>
+    <!-- The site's four-pointed star, turned 45 degrees and scaled by the square root of 2 so each point reaches a corner -->
+    <path fill="#0f172a" transform="translate(12 12) rotate(45) scale(1.41421) translate(-12 -12)" d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z"/>
+</svg>

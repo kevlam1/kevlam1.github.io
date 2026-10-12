@@ -285,6 +285,54 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ---
 
+## 14. Footer link, progress bar, and font
+
+**What changed: footer link**
+- Gave the footer link to the log page a slowly drifting blue-to-white gradient with a soft glow that brightens on hover.
+- Added a small spinning white star on each side of the link, the same star and glow as the log page's loader. It stops spinning for visitors who prefer reduced motion.
+- Added a small, faint "build log" caption under the link, so it's clear where `/log.html` goes.
+
+**What changed: favicon**
+- Added a favicon to both pages: the site's four-pointed star, turned so its points reach the corners. It's navy on light browser tabs and white on dark ones.
+
+**What changed: link preview**
+- Made a 1200x630 preview image of the homepage and added Open Graph tags to both pages, so a pasted link shows a title, description, and image instead of a bare URL.
+
+**What changed: cleanup**
+- Removed a duplicate copy of the scroll progress bar's CSS rule. Both copies were the same, so nothing looks different.
+
+**What changed: scroll progress bar**
+- Added a smooth scroll progress bar under the header (a thin blue-to-white glowing line with a bright tip) that glides along with the page scroll.
+- Replaced the progress bar’s tip with the same four-pointed star used by the loader and click effect. It spins with scroll position, so it costs nothing when idle.
+- The first version of the progress bar’s star showed up huge and black because its CSS wasn’t applied. I replaced the whole progress bar CSS block at once and set the star’s size directly on the SVG.
+- Fixed the progress bar's star. Asked Claude to have it spin too.
+
+**What changed: font**
+- Asked for suggestions on different fonts, decided to use "DM Sans", with "Arial" as backup.
+
+---
+
+## 15. Moving to Claude Code
+
+**What I asked for**
+- Had the web chat write up everything it knew about the project into a handoff folder, then asked Claude Code to read it and flag anything that conflicted before changing files.
+- Asked for the pros and cons of making `CLAUDE.md` and `docs/` public, based on what the course asks for.
+
+**What changed**
+- Added `CLAUDE.md` at the repo root. It holds the project's rules, how to run and check the site, and how to keep this log.
+- Added `docs/` with the site guide, lessons learned, artifact plans, and to-do list.
+- Fixed `.gitignore`. Its lines had leading spaces, so `.idea/` was never actually ignored.
+- Claude Code checked the handoff notes against the real files and found a few that were out of date: they still said the font was Georgia, and that the progress bar's star spins with scroll position (it spins on a constant loop).
+
+**Decisions**
+- `CLAUDE.md` is public, since the course guide says the project copy lives at the repo root and is committed. It also shows how I direct the agent.
+- `docs/PROJECT_CONTEXT.md` stays on my machine only. It has my grading and deadline notes, which don't belong on a public site. The rest of `docs/` is public.
+- Private notes go in `CLAUDE.local.md`, which is gitignored.
+- My general working preferences live in a `CLAUDE.md` in my `TCSS 490` folder, one level above this repo, so every artifact repo I create inside it loads them. It stays out of git.
+- Claude Code adds new entries to this log in my voice, and I review them in the diff. It doesn't rewrite past entries without asking.
+
+---
+
 ## Where AI misread me, or I had to correct course
 
 **Claude**
@@ -352,12 +400,3 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 - [x] Hid the generic LinkedIn icon until I have a real profile link.
 - [x] Pointed the footer link at the log page.
 - [x] Checked the cards and the popup on a real phone.
-
-
-## more logs to sort later
-- Gave the footer link to the log page a slowly drifting blue-to-white gradient with a soft glow that brightens on hover.
-- Added a smooth scroll progress bar under the header (a thin blue-to-white glowing line with a bright tip) that glides along with the page scroll.
-- Replaced the progress bar’s tip with the same four-pointed star used by the loader and click effect. It spins with scroll position, so it costs nothing when idle.
-- The first version of the progress bar’s star showed up huge and black because its CSS wasn’t applied. I replaced the whole progress bar CSS block at once and set the star’s size directly on the SVG.
-- Fixed the progress bar's star. Asked Claude to have it spin too.
-- Asked for suggestions on different fonts, decided to use "DM Sans", with "Arial" as backup.

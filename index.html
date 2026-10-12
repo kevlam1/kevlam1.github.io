@@ -7,6 +7,18 @@
     <meta name="description" content="Portfolio for TCSS 490: five things I built this quarter.">
 
     <meta name="theme-color" content="#0f172a">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+    <!-- Link preview (Open Graph) for Canvas, LinkedIn, Discord, etc. Image URLs must be absolute. -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kevlam1.github.io/">
+    <meta property="og:title" content="Kevin Lam | Portfolio">
+    <meta property="og:description" content="Portfolio for TCSS 490: five things I built this quarter.">
+    <meta property="og:image" content="https://kevlam1.github.io/images/image-link-preview.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Kevin Lam's portfolio homepage: Building with AI. Learning by making. One artifact at a time.">
+    <meta name="twitter:card" content="summary_large_image">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -930,14 +942,33 @@
                 transition:none;
             }
         }
-        /* Scroll progress: a thin glowing line under the header that fills as you scroll */
-        .scroll-progress{
-            position:absolute;
-            left:0;
-            top:100%;                 /* sits just under the header */
-            width:100%;
-            height:3px;
-            pointer-events:none;
+
+        /* Spinning white stars on both sides of the log link, same star and glow as the log page's loader */
+        .log-line{
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:10px;
+            margin-bottom:0;
+        }
+
+        /* Small, faint caption under the log link */
+        .log-caption{
+            margin:4px 0 0;
+            font-size:.75rem;
+            letter-spacing:.04em;
+            opacity:.6;
+        }
+
+        .log-star{
+            flex:none;
+            filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 9px rgba(255,255,255,.55));
+            will-change:transform;
+            animation:progressStarSpin 5s linear infinite;   /* same 360deg spin as the progress bar's star; seconds per turn */
+        }
+
+        @media (prefers-reduced-motion:reduce){
+            .log-star{animation:none}
         }
 
         /* The star on the leading edge of the bar */
@@ -1405,7 +1436,12 @@
     </div>
 
     <p>Built for TCSS 490, Autumn 2026.</p>
-    <p><a class="log-link" href="log.html">/log.html</a></p>
+    <p class="log-line">
+        <svg class="log-star" width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z"/></svg>
+        <a class="log-link" href="log.html">/log.html</a>
+        <svg class="log-star" width="12" height="12" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z"/></svg>
+    </p>
+    <p class="log-caption">build log</p>
 </footer>
 
 
