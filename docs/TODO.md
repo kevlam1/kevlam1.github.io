@@ -16,8 +16,7 @@
 - [ ] Add an "In progress" status for progress-week cards.
 - [ ] Replace placeholder images and alt text on cards 2 to 5 as each artifact is finished.
 - [ ] A LinkedIn link, once Kevin has a real profile URL (uncomment the icon block in the footer).
-- [ ] Optional: give "Still to do" its own group on the log page (one rule in `GROUPS`).
-- [ ] The same progress bar could be added to `log.html` (header is `.topbar`, which is sticky, so an absolutely positioned bar works).
+- [x] Added the progress bar to `log.html`. It re-measures on page-height changes (a `ResizeObserver` on `body`) so it adjusts when boxes open or close.
 
 ## Upcoming artifacts
 - [ ] Artifact 2 (due Sun Oct 18): new repo, `CLAUDE.md`, log, first build with Claude Code. Read the Artifact 2 page and "Your First Session" again before starting. See `ARTIFACT_PLANS.md`.

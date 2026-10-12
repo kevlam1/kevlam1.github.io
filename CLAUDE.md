@@ -12,7 +12,7 @@ Read this file first. Longer background is in `docs/` (index at the bottom). Kee
 - `index.html`: the whole portfolio. All CSS is in one `<style>`; scripts are IIFE blocks at the bottom.
 - `log.html`: the build-log page. It fetches `log.md` in the browser and renders it.
 - `log.md`: the build log text. Single source of truth, written in Kevin's first-person voice.
-- `images/`: card images (`artifact-1.jpg` to `artifact-5.jpg`, `side-project-1.jpg`, `side-project-2.jpg`).
+- `images/`: every image lives here, nothing in the root. Card images (`artifact-1.jpg` to `artifact-5.jpg`, `side-project-1.jpg`, `side-project-2.jpg`), the favicon (`favicon.svg`), and the link preview (`image-link-preview.jpg`, 1200x630).
 - `docs/`: background notes carried over from the web-chat sessions. Everything in it is public except `docs/PROJECT_CONTEXT.md`, which is gitignored and exists only on Kevin's machine.
 - `CLAUDE.local.md`: Kevin's private notes for this project. Gitignored.
 - Site files (`log.md`, `log.html`, `images/`) are lowercase because GitHub Pages is case-sensitive. Keep new site files lowercase.
@@ -51,7 +51,7 @@ Read this file first. Longer background is in `docs/` (index at the bottom). Kee
 - Kevin keeps `log.md` as the course-required record of what he planned, asked for, decided, and abandoned. After a meaningful change, add to the log directly, in his first-person voice and matching the existing entries, and mention it in your summary so he can review it in the diff.
 - Structure: `# title`, tool lines, then `## What I set out to build` (a plain always-open card), then numbered `## N. Title` sections (shown under "The build"), then the unnumbered reflection sections.
 - Use bold labels (`**What I asked for**`, `**What changed**`, `**Decisions**`). Never add scratch headings or loose bullets at the bottom, because every `##` becomes a box and a menu entry on the log page.
-- Update "Not yet verified" and "Still to do" when their state changes. Record where an AI got something wrong, including you.
+- Update "Not yet verified" when its state changes. There is no "Still to do" section in the log; open items go in `docs/TODO.md`. Record where an AI got something wrong, including you.
 - Do not claim you tested something you did not.
 
 ## Site conventions (details in `docs/SITE_GUIDE.md`)

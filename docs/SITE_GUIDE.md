@@ -10,7 +10,7 @@ Single file: one `<style>`, then the HTML, then script blocks (each an IIFE with
 
 **Body order:** `<canvas id="bg">` (WebGL waves), `.gradual-blur` (layers built by script), `<header>` (fixed nav pill bar with five tabs plus the scroll progress bar), `<main>` (intro, divider, about, divider, artifacts, divider, side projects), `<footer id="connect">`.
 
-**Sections:** `#intro` (staggered `.rise` hero with `--i` delays), `#about`, `#artifacts`, `#side-projects`. `.divider` is a one-line glowing rule between sections. The footer has its own glowing top line (`footer::before`), a GitHub icon, a commented-out LinkedIn icon, "Built for TCSS 490, Autumn 2026.", and `a.log-link` pointing to `log.html` (drifting blue-to-white gradient text, tight white glow on hover). The link sits in `p.log-line` between two spinning `.log-star` SVGs (12px, loader glow, 5s per turn), with a faint `p.log-caption` ("build log") under it. `favicon.svg` (root) is the star turned 45 degrees with its points on the corners, navy or white by color scheme, linked from both pages.
+**Sections:** `#intro` (staggered `.rise` hero with `--i` delays), `#about`, `#artifacts`, `#side-projects`. `.divider` is a one-line glowing rule between sections. The footer has its own glowing top line (`footer::before`), a GitHub icon, a commented-out LinkedIn icon, "Built for TCSS 490, Autumn 2026.", and `a.log-link` pointing to `log.html` (drifting blue-to-white gradient text, tight white glow on hover). The link sits in `p.log-line` between two spinning `.log-star` SVGs (12px, loader glow, 5s per turn), with a faint `p.log-caption` ("build log") under it. `images/favicon.svg` is the star turned 45 degrees with its points on the corners, navy or white by color scheme, linked from both pages.
 
 **Design tokens (`:root`):** `--bg #0f172a`, `--panel #1e293b`, `--line #334155`, `--text #e2e8f0`, `--muted #94a3b8`, `--accent #ffffff`, `--grain .13`, `--noise` (an SVG feTurbulence data URI), `--desc-lines 3`, `--card-h 300px`. Font: DM Sans from Google Fonts (weights 400 to 700) with Arial as the fallback, on both `index.html` and `log.html`. Everything is centered. Header background is `rgb(24,24,24)`.
 
@@ -69,17 +69,18 @@ Loads `log.md` with `fetch('log.md', {cache:'no-cache'})`, renders it with `mark
 
 - Title area: everything before the first `##`. Then Expand all and Collapse all buttons.
 - `STATIC_TITLES`: titles matching `/^what i set out to build$/i` become an always-open plain card and stay out of the menu.
-- `GROUPS`: the first rule that matches wins. Numbered titles (`/^\d+\./`) go under "The build"; everything else under "Reflection". The comment in the file shows how to split out "Still to do".
+- `GROUPS`: the first rule that matches wins. Numbered titles (`/^\d+\./`) go under "The build"; everything else under "Reflection". The comment in the file shows how to give a section its own group.
 - Collapsible boxes use `details.log-section` with a Web Animations API open and close (height, padding, border, and opacity animate together). Instant for reduced motion.
 - Contents menu: a plain JavaScript port of the React Bits Branched Menu (SVG branches, drawn accent line, marker, folding groups). Visible at 1100px and wider. At 1360px and wider the log is centered and the menu sits at the left edge. It follows scroll position, jumps to a section on click, and drops in and unfolds on load. License terms for that component were not checked.
 - Background: a plain WebGL2 port of the React Bits Gradient Waves (raymarched waves). Recolored to the navy palette and made quiet. `CFG` holds the settings (`horizonColor #0f172a`, `waveColor #243b6b`, `crestColor #b6c4dc`, `speed .2`, `opacity .55`, `steps 60`, `scale .5`, `fps 30`). Mouse parallax and the shader's built-in grain were removed.
 - Loader: a glowing four-pointed star spinning inside dashed rings. The spinning parts are HTML elements so the browser keeps them turning while the page builds. `MIN_SHOW 1000` ms minimum, fades out before rendering. If loading fails it shows a message and a GitHub link.
 - Header: same bar as the portfolio, with a hover pill. Links to `index.html` and to `log.md` on GitHub.
+- Scroll progress: the portfolio's bar and spinning star, copied (CSS after the top-bar rules, script at the bottom, `GLIDE .14`). A `ResizeObserver` on `body` re-measures when the page height changes, so the bar glides to the right spot as boxes open and close. If either page's bar changes, change both.
 - Cards slide in on scroll with the same easing as the portfolio.
 
 ## log.md conventions
 - Line 1 is `# Build log: Artifact 1 (Portfolio)`, then two bold tool lines (chat AIs, editor, host, stack).
-- `## What I set out to build`, then `## 1.` to `## N.` build sections, then `## Where AI misread me, or I had to correct course`, `## Decisions and abandoned ideas`, `## Not yet verified`, `## Still to do`.
+- `## What I set out to build`, then `## 1.` to `## N.` build sections, then `## Where AI misread me, or I had to correct course`, `## Decisions and abandoned ideas`, `## Not yet verified`. (There is no "Still to do" section. Open items live in `docs/TODO.md`.)
 - Use bold labels inside sections. Use `---` between sections (the page ignores them; GitHub shows them).
 - Checklists use `- [ ]` and `- [x]`. They display read-only on the page.
 - Everything is first person and in Kevin's voice.

@@ -294,18 +294,21 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 **What changed: favicon**
 - Added a favicon to both pages: the site's four-pointed star, turned so its points reach the corners. It's navy on light browser tabs and white on dark ones.
+- Moved the favicon into `images/` with the rest of the images, so nothing image-related sits in the root.
 
 **What changed: link preview**
 - Made a 1200x630 preview image of the homepage and added Open Graph tags to both pages, so a pasted link shows a title, description, and image instead of a bare URL.
 
 **What changed: cleanup**
 - Removed a duplicate copy of the scroll progress bar's CSS rule. Both copies were the same, so nothing looks different.
+- Stopped loading the Instrument Serif font. Nothing used it since the switch to DM Sans, so every visitor was downloading it for nothing.
 
 **What changed: scroll progress bar**
 - Added a smooth scroll progress bar under the header (a thin blue-to-white glowing line with a bright tip) that glides along with the page scroll.
 - Replaced the progress bar’s tip with the same four-pointed star used by the loader and click effect. It spins with scroll position, so it costs nothing when idle.
 - The first version of the progress bar’s star showed up huge and black because its CSS wasn’t applied. I replaced the whole progress bar CSS block at once and set the star’s size directly on the SVG.
 - Fixed the progress bar's star. Asked Claude to have it spin too.
+- Added the same progress bar to the log page. Since opening or closing a box changes how long the page is, the bar re-measures whenever the page's height changes and glides back or forward to match.
 
 **What changed: font**
 - Asked for suggestions on different fonts, decided to use "DM Sans", with "Arial" as backup.
@@ -321,6 +324,7 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 **What changed**
 - Added `CLAUDE.md` at the repo root. It holds the project's rules, how to run and check the site, and how to keep this log.
 - Added `docs/` with the site guide, lessons learned, artifact plans, and to-do list.
+- Asked Claude Code to replace my two-line `README.md` with a proper one: what the site is, its features, the tech, the folder layout, how to run it locally, and credits for the ported components.
 - Fixed `.gitignore`. Its lines had leading spaces, so `.idea/` was never actually ignored.
 - Claude Code checked the handoff notes against the real files and found a few that were out of date: they still said the font was Georgia, and that the progress bar's star spins with scroll position (it spins on a constant loop).
 
@@ -374,6 +378,7 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 - Log page: dropped the wave background's mouse parallax and built-in grain.
 - Log page: kept "Still to do" inside Reflection instead of giving it its own group. It is a one-line change if I want to split it out later.
 - Mobile: removed the `lvh` and oversized-background attempts once I found the navy strip was the browser's toolbar.
+- Removed the "Still to do" section from this log. Open items are tracked in `docs/TODO.md` instead, and this log only records what happened.
 
 ---
 
@@ -384,19 +389,3 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 - Whether the Lenis script loads reliably from the CDN, and that nothing breaks without it.
 - Whether the log page opens from the live site's footer link, and whether it finds `log.md` after the rename. The file names and every link and fetch must match exactly, because GitHub Pages is case-sensitive.
 - How the log page looks on a phone (its contents menu is hidden below 1100px wide by design), and whether its wave background, loading animation, and menu animation run smoothly on a slower computer.
-
----
-
-## Still to do
-
-**Open**
-- [ ] Swap the placeholder images and alt text on cards 2-5 as I finish each artifact.
-- [ ] Push the latest changes and check the live site, including the log page, in a private window and on my phone.
-- [ ] Submit the link on Canvas by Sunday, Oct 11 at 11:59 PM.
-
-**Done**
-- [x] Wrote my own ideas for cards 2-5.
-- [x] Added a line about switching chat AIs to my Artifact 1 reflection.
-- [x] Hid the generic LinkedIn icon until I have a real profile link.
-- [x] Pointed the footer link at the log page.
-- [x] Checked the cards and the popup on a real phone.
