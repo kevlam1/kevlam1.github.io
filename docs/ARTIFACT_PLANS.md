@@ -30,26 +30,53 @@ These are Kevin's placeholder ideas plus scoped suggestions. Suggestions are not
 <fill in>
 ```
 
-## Artifact 2: MIDI Visualizer (due Oct 18; first Claude Code build)
-**Idea (Kevin's words, tightened):** a browser-based MIDI player and Synthesia-style visualizer. Load a MIDI file, watch notes fall in real time onto a piano, and play along with a connected piano keyboard.
+## Artifact 2: MIDI Companion (due Oct 18; first Claude Code build)
+**Idea (Kevin's words, tightened):** a browser-based MIDI player and Synthesia-style visualizer. Load a MIDI file, watch notes fall in real time onto a piano, and play along with a connected piano keyboard. The most important mode is Learn: play along with the file.
 
-**Fit with the spec:** small, does one real thing, and it is something Kevin would use. It does not need AI at runtime (that is Artifact 3). It does not have to be deployed, but a static page would deploy to GitHub Pages or Vercel easily.
+**Repo:** `kevlam1/midi-companion` (created on GitHub 2026-10-12). Clone it into `TCSS 490/midi-companion` and work on it in a Claude Code session started in that folder.
 
-**Suggested phases (a suggestion, not a decision)**
-1. Load a `.mid` file and parse it into a list of notes (pitch, start time, duration). Print the parsed data and compare against a file whose notes are known.
-2. Draw falling notes over a piano keyboard on a canvas, synced to a clock. Play, pause, restart.
-3. Play audio for the notes.
-4. Stretch: accept notes from a connected keyboard and mark hits and misses.
+**Fit with the spec:** small enough for one week, does one real thing, and Kevin will use it with his own MIDI keyboard. It does not need AI at runtime (that is Artifact 3). Deploying is optional for the grade (the card can link to the repo), but the plan is Vercel.
+
+**Time:** Kevin has about 8 to 10 hours a day through Sunday Oct 18 (roughly 50 hours), so audio and Learn mode are in scope.
+
+**Reference app: midee** (`github.com/aayushdutt/midee`, live at `midee.app`). Kevin uses it and likes that it is clean, simple, responsive, and has clear keys and notes. Checked on 2026-10-12 through the GitHub API and its `package.json`:
+- **No license** (`"license": null`), so all rights are reserved. Use it for ideas only. Do not copy its code, assets, or styling.
+- Stack: Vite + TypeScript, Solid for UI, PixiJS for drawing, Tone.js for audio, `@tonejs/midi` for parsing, `@tonejs/piano` for the piano sound. About 1.9 MB of TypeScript, built since April 2026, so it is far larger than a one-week build.
+- Modes: Play, Live, and Learn (Learn has a wait mode that pauses at each chord until the right notes are held, plus hand selection and loop).
+
+**Stack decision (Kevin, 2026-10-12): Vite + TypeScript, no UI framework, Canvas 2D for drawing.**
+- React was considered and dropped. The app is one big canvas plus a small toolbar, and per-frame animation should stay outside a UI framework anyway.
+- TypeScript was chosen because Learn mode compares key presses against typed note data, and with about 50 hours the setup cost is worth it.
+- Vite is the build tool (dev server, TypeScript, bundling). Using a common tool that midee also uses is not copying. Kevin asked about this and accepted the reasoning.
+- PixiJS was not chosen. Canvas 2D should handle a few hundred falling notes. Measure the frame rate before reconsidering.
+- Node v24.14.1 and npm 11.21.0 are installed (checked 2026-10-12). Vite's minimum Node version is not yet checked.
+
+**Proposed dependencies (each needs Kevin's OK after reading its license)**
+1. `@tonejs/midi` to parse `.mid` files. License not yet checked.
+2. `tone` for audio. License not yet checked.
+3. Piano sound: open question. Maybe `@tonejs/piano` or a simpler synth first. Check the sample license.
+Keep the list short so the project does not mirror midee's dependency list.
+
+**Week plan (a plan, not a promise)**
+- Mon: repo setup, `CLAUDE.md`, `LOG.md`, deploy a blank Vite page to Vercel, then parse a test MIDI file and print the notes.
+- Tue: draw the keyboard and falling notes, with play, pause, restart, and seek driven by one clock.
+- Wed: audio.
+- Thu: Web MIDI input from Kevin's keyboard; keys light up when pressed.
+- Fri: Learn wait mode (pause at each chord until the right notes are held). Left/right hand selection if there is time.
+- Sat: polish, log, portfolio card. Sun: buffer.
+- Not this week: intervals, sight reading, themes, streaks, video export, sample library.
 
 **Verify**
-- Use two or three MIDI files with known content (short scale, a short piece Kevin knows). Check note counts, timing, and tempo changes against what he knows.
-- Test play/pause/seek timing for drift. Test a file with many simultaneous notes for frame rate (Kevin likes optimization, so measure it).
-- Do not assume what the agent says about a MIDI library. Read the docs and show the API it uses.
+- A test MIDI file Kevin knows note for note (for example a C major scale he records himself). Check note count, pitches, and timing against what he played.
+- Test play/pause/seek timing for drift. Test a file with many simultaneous notes for frame rate (measure it).
+- Do not assume what the agent says about a library. Read the docs and show the API it uses.
 
-**Unverified, check first**
-- Which browsers support the Web MIDI API (input from a connected keyboard). Check MDN or caniuse. Do not assume Safari or Firefox support.
-- Whether to parse MIDI with a library or by hand, and the library's license.
-- Where test MIDI files come from (license). Prefer files Kevin made or that are clearly free.
+**Copyright:** MIDI arrangements of real songs are often copyrighted. Keep Kevin's songs in a gitignored `songs/` folder. Commit only test files he made.
+
+**Still to check**
+- Which browsers support Web MIDI (check MDN). Test in Chrome or Edge.
+- How Kevin's keyboard connects to the PC (USB directly, or a MIDI-to-USB cable).
+- Vercel's current docs for deploying a Vite project (Kevin has an account but has not deployed on his own).
 
 ## Artifact 3: README.md Architect (due Oct 25; "AI inside it")
 **Idea:** a Claude Code skill that analyzes a project's codebase and generates a README from its real structure, technologies, and functionality.
