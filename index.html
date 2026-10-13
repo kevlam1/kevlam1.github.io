@@ -315,6 +315,10 @@
             opacity:.65;
         }
 
+        .card.locked.in-progress{
+            opacity:1;
+        }
+
         .card::before{
             content:"";
             position:absolute;
@@ -420,8 +424,13 @@
         }
 
         .status.live{
-            border-color:var(--accent);
-            color:var(--accent);
+            border-color:#86efac;
+            color:#86efac;
+        }
+
+        .status.in-progress{
+            border-color:#facc15;
+            color:#facc15;
         }
 
         .card h3{
@@ -1165,7 +1174,7 @@
 
                 <!-- Artifact 2 -->
                 <div class="card-entrance" style="--card-i:1">
-                    <article class="card locked" id="artifact-2">
+                    <article class="card locked in-progress" id="artifact-2">
 
                         <div class="media">
                             <img src="images/artifact-2.jpg" alt="MIDI visualizer and piano interface">
@@ -1175,7 +1184,7 @@
 
                             <div class="meta">
                                 <span>Artifact 2 &middot; Personal Utility &middot; Due Oct 18</span>
-                                <span class="status">Coming soon</span>
+                                <span class="status in-progress">In progress</span>
                             </div>
 
                             <h3>MIDI Visualizer</h3>
