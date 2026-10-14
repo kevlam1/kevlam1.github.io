@@ -13,6 +13,9 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ## 1. Planning and hosting
 
+**Date:** 2026-10-06
+**Summary:** Learned to host on GitHub Pages and got the repo live before building anything else.
+
 **What I asked for**
 - Read the assignment and the course's artifact overview, then asked Claude for a plan.
 - Said I did not know how to host a site on GitHub Pages, so we stopped and learned that first.
@@ -31,6 +34,9 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ## 2. First build and look
 
+**Date:** 2026-10-06
+**Summary:** Built the first version of the layout, the staggered load animation, and the navy color theme.
+
 **What I asked for**
 - Showed Claude a reference portfolio (dark background, lime accent, big headline, section nav) and said I liked its layout, colors, and animation.
 - Asked for: no photo of me, centered text, Georgia serif, and a load animation where each row of text fades in from below, one after another.
@@ -44,6 +50,9 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 ---
 
 ## 3. Interactive effects
+
+**Date:** 2026-10-06
+**Summary:** Added card tilt, cursor spotlight, and the sliding nav highlight, ported from React tutorials to plain JavaScript.
 
 **What I asked for**
 - A tilt effect on the Artifact 1 card that also grows it a few pixels on hover.
@@ -65,6 +74,9 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ## 4. Content and sections
 
+**Date:** 2026-10-06
+**Summary:** Wrote my real About text and intro, and added the footer links, nav tabs, side projects, and toolkit pills.
+
 **What changed**
 - Wrote my About section from my own details (Computer Science and Systems senior at UW Tacoma, likes building usable tools and optimization, learning to bring AI into my workflow).
 - Rewrote the intro: headline "Building with AI. Learning by making. One artifact at a time." and subtitle "Building optimized systems."
@@ -78,6 +90,9 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 ---
 
 ## 5. Visual polish
+
+**Date:** 2026-10-06
+**Summary:** Added section dividers, card shadows, the underline link animation, and the animated WebGL background.
 
 **What I asked for**
 - Lines between the sections, a drop shadow under each card, an animated underline on the Artifact 1 link, and an animated background so the site is not bland.
@@ -94,6 +109,9 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ## 6. Card layout and entrance
 
+**Date:** 2026-10-07
+**Summary:** Redesigned cards into a wider image-left layout and added the slide-in entrance animation.
+
 **What I asked for**
 - More rectangular cards with an image slot for a picture of each artifact, and a reorganized text layout.
 - Every card should reserve space for two rows of pills and three lines of description so the rows match across.
@@ -109,6 +127,9 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ## 7. Card popup and locked cards
 
+**Date:** 2026-10-07
+**Summary:** Added the full-card popup for reflections and made locked cards (Artifacts 2-5) unclickable until finished.
+
 **What I asked for**
 - When I pasted in my long reflection, the card looked comically large. I asked for every card to show everything except the reflection, and for a click to fade in a full card from the center of the screen over a blurred background, with the reflection included.
 - Artifacts 2-5 should not be clickable until I finish them.
@@ -123,6 +144,9 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ## 8. Click stars
 
+**Date:** 2026-10-07
+**Summary:** Added a burst of four-pointed stars wherever I click or tap.
+
 **What I asked for**
 - Four-pointed stars around my cursor. Then, since a constant effect would get annoying, a burst of stars wherever I click, like a mobile game.
 
@@ -135,6 +159,9 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 ---
 
 ## 9. Gradual blur and smooth scrolling
+
+**Date:** 2026-10-07
+**Summary:** Built a gradual blur at the page bottom, fixed scroll performance, and added Lenis smooth scrolling.
 
 **First attempt (ChatGPT, after hitting Claude's limit)**
 - Tried adding a gradual blur effect to the bottom of the page.
@@ -167,6 +194,9 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ## 10. Planning Artifacts 2-5
 
+**Date:** 2026-10-07
+**Summary:** Researched Artifact 2's requirements and drafted placeholder ideas for Artifacts 2-5.
+
 **What I did**
 - Read the Artifact 2 spec on the course site. It does not have to be a web app or be deployed, a repo link works for the card, and it is my first build with Claude Code.
 - While my Claude session was locked, I brainstormed with Gemini. It explained AI image parsing as if Claude Code lived inside the finished app. I questioned it, and it admitted it had blurred the line between the tool that builds the software and the AI the finished app might call.
@@ -189,6 +219,9 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ## 11. Reviews and fixes
 
+**Date:** 2026-10-07
+**Summary:** Fixed editor warnings and bugs Claude found on review, then pushed the first full version live.
+
 **Editor warnings**
 - IntelliJ flagged a few CSS warnings (`--mx` and `--my` unresolved, `.gradual-blur-layer` never used, `--fade` unresolved). All were false alarms because JavaScript creates those layers and sets those values at runtime. I added default values to quiet some of them.
 - 17 editor errors came from a block of CSS I had pasted inside a script tag. I removed the duplicate.
@@ -203,6 +236,9 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 ---
 
 ## 12. The log page
+
+**Date:** 2026-10-08
+**Summary:** Built log.html to render this log.md file, with its own header, menu, and animations.
 
 **What I asked for**
 - A page on the site that shows this `log.md`, so the Markdown file stays the single source and I only edit the text in one place.
@@ -248,6 +284,9 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ## 13. Mobile fixes and phone testing
 
+**Date:** 2026-10-08
+**Summary:** Tested the site on my phone and fixed the card popup, image sizing, and rotation bugs it turned up.
+
 **What I found on my phone**
 - The card popup opened already scrolled down to the reflection.
 - In the popup, the text sat above the image and the card lost its grain.
@@ -287,6 +326,9 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ## 14. Footer link, progress bar, and font
 
+**Date:** 2026-10-11
+**Summary:** Polished the footer link, added a favicon and link preview, added a scroll progress bar, and switched the font to DM Sans.
+
 **What changed: footer link**
 - Gave the footer link to the log page a slowly drifting blue-to-white gradient with a soft glow that brightens on hover.
 - Added a small spinning white star on each side of the link, the same star and glow as the log page's loader. It stops spinning for visitors who prefer reduced motion.
@@ -319,6 +361,9 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 ---
 
 ## 15. Moving to Claude Code
+
+**Date:** 2026-10-11
+**Summary:** Moved the project to Claude Code with a `CLAUDE.md` and `docs/` folder so the agent has persistent project context.
 
 **What I asked for**
 - Had the web chat write up everything it knew about the project into a handoff folder, then asked Claude Code to read it and flag anything that conflicted before changing files.
