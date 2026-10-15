@@ -385,6 +385,26 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ---
 
+## 16. Unlocking the Artifact 2 card
+
+**Date:** 2026-10-14
+**Summary:** Pointed Claude Code at the finished `midi-companion` repo and unlocked its card on this portfolio.
+
+**What I asked for**
+- Told Claude Code to go check the `midi-companion` repo (a sibling folder, since it's deployed to Vercel) and update Artifact 2's card to match, since the site is live now instead of in progress.
+
+**What changed**
+- Claude Code read `midi-companion`'s README and confirmed the live link (`midi-companion.vercel.app`) actually loads before using it.
+- Card switched from `locked`/"In progress" to `live`/"Live", with the real link added and the toolkit pills replaced with the actual stack (TypeScript, Vite, Canvas 2D, Tone.js, Vercel, Claude Code), pulled from the README instead of guessed.
+- The description was rewritten from the README's own wording.
+
+**Left for me to finish**
+- The reflection paragraph still says "Link and reflection coming soon." Claude Code would not write this in my voice, so I still need to write it myself, same as Artifact 1's.
+- The card image is still the Oct 7 placeholder. I need to drop in a real screenshot.
+- The card title still reads "MIDI Visualizer," while the repo and site call it "MIDI Companion." I haven't decided whether to rename it on the card yet.
+
+---
+
 ## Where AI misread me, or I had to correct course
 
 **Claude**
