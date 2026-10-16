@@ -589,6 +589,10 @@
         /* Modal */
         .card .reflection{display:none}
 
+        .card .log-link{display:none}
+
+        .card.modal-card .log-link{display:inline}
+
         dialog.modal{
             border:0;
             padding:20px;
@@ -1166,6 +1170,7 @@
 
                             <p class="links">
                                 <a class="hover-link" href="https://kevlam1.github.io/">Visit Portfolio</a>
+                                <a class="hover-link log-link" href="log.html">View Build Log</a>
                             </p>
 
                         </div>
@@ -1187,7 +1192,7 @@
                                 <span class="status live">Live</span>
                             </div>
 
-                            <h3>MIDI Visualizer</h3>
+                            <h3>MIDI Companion</h3>
 
                             <p class="desc">
                                 A browser MIDI player and Synthesia-style visualizer. Load a .mid file, watch the notes
@@ -1203,10 +1208,24 @@
                                 <span class="toolkit-pill">Claude Code</span>
                             </div>
 
-                            <p class="reflection">Link and reflection coming soon.</p>
+                            <p class="reflection">
+                                I built MIDI Companion in a week: a browser app that loads a .mid file, drops the notes
+                                onto an 88-key piano, and lets me play along on my own MIDI keyboard. Learn mode, where
+                                the song waits at each chord until I play it, mattered most because it lets me learn
+                                piano at my own pace with no pressure. I kept the stack small (Vite, TypeScript,
+                                Canvas 2D) and measured a steady 165 fps before dropping PixiJS. The agent got things
+                                wrong: it said it couldn't open a browser until it drove Chrome headless, it ran a
+                                command that would have closed every Chrome window on my computer, and a shell-quoting
+                                slip silently deleted part of my scoring code while the type-check still passed. I
+                                caught bugs myself too, like Learn mode counting a held-down key and a welcome card that
+                                didn't fit my phone, and I tested the full app on my own phone and MIDI keyboard. Next
+                                time I'd brainstorm the full feature set up front, since adding one or two features at
+                                a time kept breaking my workflow.
+                            </p>
 
                             <p class="links">
                                 <a class="hover-link" href="https://midi-companion.vercel.app">Visit MIDI Companion</a>
+                                <a class="hover-link log-link" href="https://midi-companion.vercel.app/logs/">View Build Log</a>
                             </p>
 
                         </div>

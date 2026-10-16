@@ -405,6 +405,27 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ---
 
+## 17. Build-log buttons and the Artifact 2 reflection
+
+**Date:** 2026-10-16
+**Summary:** Added a "View Build Log" button to the Artifact 1 and 2 card popups, and wrote the Artifact 2 reflection.
+
+**What I asked for**
+- A button in the opened (popup) view of Artifact 1 and Artifact 2's cards, like the existing "Visit" link, that goes to each project's own build log.
+- Gave Claude Code a draft reflection for MIDI Companion to check and turn into the card's reflection text.
+
+**What changed**
+- Added a `.log-link` class that stays hidden on the collapsed card and only shows in the popup, the same way the reflection text already worked. Artifact 1's button points at this site's own `log.html`. Artifact 2's points at `midi-companion.vercel.app/logs/`, a build-log page that already existed in that repo but had never been committed or pushed, so the link won't work until I do that.
+- Claude Code checked my draft reflection's claims (the Co-Authored-By mix-up, the `taskkill` that could have closed every Chrome window, the shell-quoting slip, the early-hold Learn bug, and the 165 fps PixiJS test) against `midi-companion/log.md` and confirmed all of them before using any of it.
+- It also caught that my draft said I hadn't tested the score and limited-octave-range features on real hardware, which matched what the log said at the time but was now out of date since I'd since tested both on my own phone and MIDI keyboard.
+- Wrote and trimmed the Artifact 2 reflection down from my longer draft into one paragraph, matching Artifact 1's card. Cut the Co-Authored-By mention at my request to keep it shorter.
+
+**Left for me to finish**
+- Commit and push `midi-companion` so its build-log link actually works.
+- The card image is still the Oct 7 placeholder.
+
+---
+
 ## Where AI misread me, or I had to correct course
 
 **Claude**
