@@ -16,6 +16,9 @@
 - [ ] Add an "In progress" status for progress-week cards.
 - [ ] Replace placeholder images and alt text on cards 2 to 5 as each artifact is finished.
 - [ ] A LinkedIn link, once Kevin has a real profile URL (uncomment the icon block in the footer).
+- [x] Kevin retook `images/artifact-1.jpg`; it shows the new "Building optimized systems." headline. Its alt text still reads "Portfolio front page.", which is still accurate.
+- [ ] Retake `images/image-link-preview.jpg` (1200x630). It still shows the old three-line headline in the old serif font. The `og:image:alt` meta tag on both pages describes that old screenshot, so update it when the image is replaced.
+- [ ] The `redesign` branch is local only: not merged and not pushed. On `main`, the popup's "View Build Log" buttons still share the footer link's gradient-text class (`log-link`); the branch renames them to `build-log-link`.
 - [x] Added the progress bar to `log.html`. It re-measures on page-height changes (a `ResizeObserver` on `body`) so it adjusts when boxes open or close.
 
 ## Upcoming artifacts

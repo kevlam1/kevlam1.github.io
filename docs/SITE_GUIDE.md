@@ -8,11 +8,11 @@ Single file: one `<style>`, then the HTML, then script blocks (each an IIFE with
 
 **Head:** UTF-8, viewport, title "Kevin Lam | Portfolio", description, `theme-color` meta `#0f172a`.
 
-**Body order:** `<canvas id="bg">` (WebGL waves), `.gradual-blur` (layers built by script), `<header>` (fixed nav pill bar with five tabs plus the scroll progress bar), `<main>` (intro, divider, about, divider, artifacts, divider, side projects), `<footer id="connect">`.
+**Body order:** `.intro-loader` (the opening animation), `<canvas id="bg">` (WebGL waves), `.gradual-blur` (layers built by script), `<header>` (fixed nav pill bar with five tabs plus the scroll progress bar), `<main>` (intro, divider, about, divider, artifacts, divider, side projects), `<footer id="connect">`.
 
-**Sections:** `#intro` (staggered `.rise` hero with `--i` delays), `#about`, `#artifacts`, `#side-projects`. `.divider` is a one-line glowing rule between sections. The footer has its own glowing top line (`footer::before`), a GitHub icon, a commented-out LinkedIn icon, "Built for TCSS 490, Autumn 2026.", and `a.log-link` pointing to `log.html` (drifting blue-to-white gradient text, tight white glow on hover). The link sits in `p.log-line` between two spinning `.log-star` SVGs (12px, loader glow, 5s per turn), with a faint `p.log-caption` ("build log") under it. `images/favicon.svg` is the star turned 45 degrees with its points on the corners, navy or white by color scheme, linked from both pages.
+**Sections:** `#intro` (a small label, the headline "Building optimized systems." as three `.word` spans, and the button; all are `.rise` with `--i` delays that start after `--intro-delay`), `#about`, `#artifacts`, `#side-projects`. `.divider` is a one-line glowing rule between sections. The footer has its own glowing top line (`footer::before`), a GitHub icon, a commented-out LinkedIn icon, "Built for TCSS 490, Autumn 2026.", and `a.log-link` pointing to `log.html` (drifting blue-to-white gradient text, tight white glow on hover). The link sits in `p.log-line` between two spinning `.log-star` SVGs (12px, loader glow, 5s per turn), with a faint `p.log-caption` ("build log") under it. `images/favicon.svg` is the star turned 45 degrees with its points on the corners, navy or white by color scheme, linked from both pages.
 
-**Design tokens (`:root`):** `--bg #0f172a`, `--panel #1e293b`, `--line #334155`, `--text #e2e8f0`, `--muted #94a3b8`, `--accent #ffffff`, `--grain .13`, `--noise` (an SVG feTurbulence data URI), `--desc-lines 3`, `--card-h 300px`. Font: DM Sans from Google Fonts (weights 400 to 700) with Arial as the fallback, on both `index.html` and `log.html`. Everything is centered. Header background is `rgb(24,24,24)`.
+**Design tokens (`:root`):** `--bg #0f172a`, `--panel #1e293b`, `--line #334155`, `--text #e2e8f0`, `--muted #94a3b8`, `--accent #ffffff`, `--grain .13`, `--noise` (an SVG feTurbulence data URI), `--desc-lines 3`, `--card-h 300px`, `--gap 20px` (card grid gap, 12px at 900px and below), `--glow 122,162,255` (RGB for the blue glows), `--live` and `--progress` (status pill colors), `--ease`, and `--ornament` (the star-and-lines under each `h2`, an SVG data URI). Font: DM Sans from Google Fonts (weights 400 to 700) with Arial as the fallback, on both `index.html` and `log.html`. Everything is centered. Header background is `rgb(24,24,24)`.
 
 ### Card anatomy
 ```html
@@ -58,9 +58,17 @@ Single file: one `<style>`, then the HTML, then script blocks (each an IIFE with
 The star path used everywhere is `M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z` (24 by 24 viewBox).
 
 ### Responsive rules
-- 900px and below (and short landscape phones): two cards per row, image on top, smaller text and pills, titles reserve two lines so rows line up, bold titles. Image box uses `aspect-ratio 2.4 / 1` with the image absolutely positioned (this fixed an image that stayed large after rotating the phone).
-- 640px and below: single-column cards in the grid, popup stacks image above text.
-- 520px and below: compact nav tabs.
+- `.cards` is a CSS grid with two columns. The last card of an odd count is centered at half width. Above 900px each card is image-left (42%) and text-right.
+- 900px and below (and short landscape phones): still two cards per row, image on top, smaller text and pills, titles reserve two lines so rows line up, bold titles. Image box uses `aspect-ratio 2.4 / 1` with the image absolutely positioned (this fixed an image that stayed large after rotating the phone). All card images are `object-fit: cover`, centered, so the square images are cropped to fit.
+- 640px and below: the popup stacks the image above the text.
+- 520px and below: compact nav tabs. 380px and below: tighter still.
+- Short landscape phones (500px tall or less): the hero headline is sized by screen height so it fits.
+- Performance note: soft radial glows behind whole sections made headless Chrome stall at 2560 by 1080, so there are none. Only the hero has a glow. Do not add large full-width glow layers.
+- Opening (`.intro-loader`): 22 small stars fly in from random directions, distances, sizes and speeds, spiralling into a glowing center star on a near-black background, which then flashes. A `mask` iris (the registered `--iris` property) opens outward from the center and the hero text blurs in word by word. The stars are created by a small script right after the loader markup, which sets `--a` (angle), `--r` (distance in vmax), `--twist`, `--s` (size), `--dur` and `--delay` on each one, so the pattern is different on every load. Each star repeats its own flight until the flash. All timing hangs on `--intro-delay` (2s). It plays on every load. Reduced motion hides the overlay. Browsers that cannot animate `@property` should show the reveal as an instant switch (not tested). Avoid orbit-style (ellipse) rings: the first version looked like an atom symbol and was rejected.
+- Gradient text (`.word`, and the log page's title) only paints inside its own box, so `.word` has `padding-bottom: .2em` with a matching negative margin. Without it the bottoms of g, p and y are sliced off. Check new gradient text with a zoomed screenshot.
+- Card meta: `.meta` stacks the status pill above the label (`flex-direction: column-reverse`), so cards line up even when a label is long.
+- The popup's "View Build Log" button is `.build-log-link` (hidden on the collapsed card). Do not reuse `.log-link`, which is the footer's gradient link.
+- Popup layout: wide (1080px and 92vh/720px at most), text left-aligned with "Built with" and "Reflection" labels. The status pill floats over the image corner, `.links` becomes buttons (the first link is the white primary button), and the body rises in with `modalIn` and staggered delays. Side by side, the image fills its column and only the reflection panel scrolls, inside itself, so the buttons never overlap it. On small screens (900px wide or less on tall screens, phones, and short landscape phones) the whole popup scrolls and `.links` becomes a bar pinned to the bottom; on tall narrow screens the image also stacks on top at 16:10. The pill is `position: absolute` inside `.modal-scroll`, so nothing between them may have a transform, filter, or `will-change`, or the pill will anchor to that element instead. That is why the first block of the popup body only fades (`modalFade`) and does not slide. Test the popup with animations ON as well as with reduced motion.
 - Popup has an inner scroller (`.modal-scroll`) so the card's grain layer does not scroll away.
 
 ## log.html
@@ -77,6 +85,9 @@ Loads `log.md` with `fetch('log.md', {cache:'no-cache'})`, renders it with `mark
 - Header: same bar as the portfolio, with a hover pill. Links to `index.html` and to `log.md` on GitHub.
 - Scroll progress: the portfolio's bar and spinning star, copied (CSS after the top-bar rules, script at the bottom, `GLIDE .14`). A `ResizeObserver` on `body` re-measures when the page height changes, so the bar glides to the right spot as boxes open and close. If either page's bar changes, change both.
 - Cards slide in on scroll with the same easing as the portfolio.
+- Styling matches the portfolio (`--glow`, `--ornament`, gradient title, glass section cards). Bold-only lines (`p > strong:only-child`) render as small dotted labels, and `.section-body > p:has(> br)` styles the Date and Summary callout. That callout matches any top-level paragraph with a line break, so keep **Date:** and **Summary:** on two lines in `log.md`, and avoid other line breaks in top-level paragraphs.
+- The contents menu (`#toc`) hides its scrollbar (`scrollbar-width: none`) but still scrolls with the wheel or trackpad. Measured 15px of scrollbar before and 0px now.
+- `log.html` still defines `:root`, `details.log-section`, and `.branched-menu::before` twice each (older code). Merge them only with the menu scripts in mind.
 
 ## log.md conventions
 - Line 1 is `# Build log: Artifact 1 (Portfolio)`, then two bold tool lines (chat AIs, editor, host, stack).

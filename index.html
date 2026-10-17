@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="color-scheme" content="dark">
     <title>Kevin Lam | Portfolio</title>
     <meta name="description" content="Portfolio for TCSS 490: five things I built this quarter.">
 
@@ -32,12 +33,24 @@
             --text:#e2e8f0;
             --muted:#94a3b8;
             --accent:#ffffff;
+            --live:#86efac;
+            --progress:#facc15;
+            --glow:122,162,255;
+            --ease:cubic-bezier(.22,1,.36,1);
+            --gap:20px;
+            --desc-lines:3;
+            --card-h:300px;
+            --intro-delay:2s;
+            --grain:.13;
+            --noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)'/%3E%3C/svg%3E");
+            --ornament:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='14' viewBox='0 0 120 14'%3E%3Cdefs%3E%3ClinearGradient id='l'%3E%3Cstop offset='0' stop-color='white' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='white'/%3E%3C/linearGradient%3E%3ClinearGradient id='r'%3E%3Cstop offset='0' stop-color='white'/%3E%3Cstop offset='1' stop-color='white' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='0' y='6.5' width='48' height='1' fill='url(%23l)'/%3E%3Crect x='72' y='6.5' width='48' height='1' fill='url(%23r)'/%3E%3Cpath transform='translate(55 4) scale(.4167)' d='M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z' fill='white'/%3E%3C/svg%3E");
         }
 
         *{box-sizing:border-box}
 
         html{
             scroll-padding-top:70px;
+            -webkit-text-size-adjust:100%;
         }
 
         html.lenis, html.lenis body { height:auto }
@@ -55,17 +68,14 @@
 
         a{color:var(--accent)}
 
+        h1,h2,h3{text-wrap:balance}
+
         :focus-visible{
             outline:2px solid var(--accent);
             outline-offset:3px;
         }
 
         /* Grain */
-        :root{
-            --grain:.13;
-            --noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 600'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)'/%3E%3C/svg%3E");
-        }
-
         body::before{
             content:"";
             position:fixed;
@@ -90,6 +100,7 @@
             left:0;
             right:0;
             z-index:10;
+            padding-top:env(safe-area-inset-top);
             background:rgb(24,24,24);
             border-bottom:1px solid var(--line);
         }
@@ -97,17 +108,19 @@
         nav{
             display:flex;
             justify-content:center;
-            padding:12px;
+            padding:12px max(12px,env(safe-area-inset-right)) 12px max(12px,env(safe-area-inset-left));
         }
 
         .tabs{
             position:relative;
             display:flex;
             height:44px;
+            max-width:100%;
             padding:0 6px;
             border:1px solid var(--line);
             border-radius:999px;
-            background:rgba(255,255,255,.03);
+            background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.015));
+            box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
         }
 
         .tab-pill{
@@ -117,7 +130,10 @@
             left:0;
             width:0;
             border-radius:999px;
-            background:rgba(255,255,255,.12);
+            background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.08));
+            box-shadow:
+                    inset 0 0 0 1px rgba(255,255,255,.14),
+                    0 0 14px rgba(var(--glow),.28);
             pointer-events:none;
         }
 
@@ -134,6 +150,7 @@
             text-decoration:none;
             font-size:.95rem;
             letter-spacing:.04em;
+            white-space:nowrap;
             transition:color .2s;
         }
 
@@ -144,57 +161,140 @@
 
         /* Sections */
         section{
+            position:relative;
             padding:100px 20px;
         }
 
         .wrap{
+            position:relative;
+            z-index:1;
             max-width:860px;
             margin:0 auto;
         }
 
         h2{
-            font-size:clamp(1.6rem,4vw,2.2rem);
             margin:0 0 12px;
-            font-weight:400;
+            font-size:clamp(1.6rem,4vw,2.2rem);
+            font-weight:500;
+            letter-spacing:-.01em;
+        }
+
+        h2::after{
+            content:"";
+            display:block;
+            width:120px;
+            height:14px;
+            margin:12px auto 4px;
+            background:var(--ornament) center / contain no-repeat;
+            filter:drop-shadow(0 0 6px rgba(255,255,255,.6));
         }
 
         .lead{
-            color:var(--muted);
             max-width:60ch;
             margin:0 auto;
+            color:var(--muted);
+            text-wrap:pretty;
         }
 
         /* Hero */
         #intro{
-            min-height:100vh;
+            overflow:hidden;
+            overflow:clip;
             display:flex;
             align-items:center;
             justify-content:center;
+            min-height:100vh;
+            min-height:100svh;
             padding-top:120px;
         }
 
-        .hero-label{
-            color:var(--muted);
-            letter-spacing:.12em;
-            font-size:.9rem;
-            margin:0 0 18px;
+        #intro::before{
+            content:"";
+            position:absolute;
+            top:50%;
+            left:50%;
+            width:min(1000px,110vw);
+            aspect-ratio:1;
+            transform:translate(-50%,-50%);
+            background:radial-gradient(closest-side,rgba(var(--glow),.13),transparent);
+            pointer-events:none;
         }
+
+        #intro .wrap{max-width:1180px}
+
+        .hero-label{
+            display:inline-flex;
+            align-items:center;
+            gap:14px;
+            margin:0 0 18px;
+            color:var(--muted);
+            font-size:.9rem;
+            letter-spacing:.12em;
+        }
+
+        .hero-label::before,
+        .hero-label::after{
+            content:"";
+            width:28px;
+            height:1px;
+            background:linear-gradient(90deg,transparent,var(--muted));
+            animation:lineGrow .9s var(--ease) calc(var(--intro-delay) + .3s) both;
+        }
+
+        @keyframes lineGrow{
+            from{width:0}
+        }
+
+        .hero-label::after{transform:scaleX(-1)}
 
         h1{
-            margin:0 0 22px;
-            font-weight:400;
+            margin:0 0 34px;
+            font-weight:500;
             font-size:clamp(2.4rem,8vw,4.8rem);
             line-height:1.08;
-            letter-spacing:-.01em;
+            letter-spacing:-.02em;
         }
 
-        h1 span{display:block}
+        .word{
+            display:inline-block;
+            padding-bottom:.2em;
+            margin-bottom:-.2em;
+            color:#fff;
+            background:linear-gradient(180deg,#ffffff 35%,#a9b8d6);
+            -webkit-background-clip:text;
+            background-clip:text;
+            -webkit-text-fill-color:transparent;
+        }
 
-        .hero-sub{
-            color:var(--muted);
-            font-size:1.15rem;
-            margin:0 auto 34px;
-            max-width:46ch;
+        .scroll-cue{
+            position:absolute;
+            left:50%;
+            bottom:30px;
+            width:1px;
+            height:52px;
+            overflow:hidden;
+            background:rgba(148,163,184,.28);
+            opacity:0;
+            animation:cueIn .8s ease calc(var(--intro-delay) + 1.5s) forwards;
+            pointer-events:none;
+        }
+
+        @keyframes cueIn{
+            to{opacity:1}
+        }
+
+        .scroll-cue::after{
+            content:"";
+            position:absolute;
+            inset:0;
+            height:45%;
+            background:linear-gradient(180deg,transparent,var(--accent));
+            animation:scrollCue 2.2s var(--ease) infinite;
+        }
+
+        @keyframes scrollCue{
+            from{transform:translateY(-100%)}
+            to{transform:translateY(240%)}
         }
 
         .buttons{
@@ -205,17 +305,31 @@
         }
 
         .btn{
-            display:inline-block;
+            display:inline-flex;
+            align-items:center;
             padding:13px 28px;
+            border:1px solid var(--line);
             border-radius:999px;
+            color:var(--text);
             text-decoration:none;
             font-size:.95rem;
             letter-spacing:.05em;
-            border:1px solid var(--line);
-            color:var(--text);
+            transition:transform .4s var(--ease),border-color .2s,color .2s,box-shadow .4s var(--ease);
         }
 
-        .btn:hover{
+        .btn::after{
+            content:"";
+            width:.42em;
+            height:.42em;
+            margin-left:.7em;
+            border:solid currentColor;
+            border-width:0 1.5px 1.5px 0;
+            transform:rotate(45deg) translateY(-2px);
+        }
+
+        .btn:hover,
+        .btn:focus-visible{
+            transform:translateY(-2px);
             border-color:var(--accent);
             color:var(--accent);
         }
@@ -224,19 +338,35 @@
             background:var(--accent);
             border-color:var(--accent);
             color:#0f172a;
+            box-shadow:0 10px 30px -10px rgba(255,255,255,.45);
+            animation:btnPulse 1.5s ease-out calc(var(--intro-delay) + 1.1s);
         }
 
-        .btn.primary:hover{
+        @keyframes btnPulse{
+            from{box-shadow:0 10px 30px -10px rgba(255,255,255,.45),0 0 0 0 rgba(255,255,255,.55)}
+            to{box-shadow:0 10px 30px -10px rgba(255,255,255,.45),0 0 0 22px rgba(255,255,255,0)}
+        }
+
+        .btn.primary:hover,
+        .btn.primary:focus-visible{
             color:#0f172a;
-            filter:brightness(.92);
+            box-shadow:0 14px 36px -10px rgba(255,255,255,.6);
+            filter:brightness(.94);
         }
 
-        /* Hero animation */
+        /* Hero animation: starts as the opening below begins to lift (--intro-delay) */
         .rise{
             opacity:0;
             transform:translateY(24px);
             animation:rise .8s ease-out forwards;
-            animation-delay:calc(var(--i) * .22s + .15s);
+            animation-delay:calc(var(--intro-delay) + var(--i) * .16s);
+        }
+
+        .word.rise{
+            transform:translateY(.45em);
+            filter:blur(14px);
+            animation:wordIn 1.1s var(--ease) forwards;
+            animation-delay:calc(var(--intro-delay) + var(--i) * .16s);
         }
 
         @keyframes rise{
@@ -246,15 +376,145 @@
             }
         }
 
+        @keyframes wordIn{
+            to{
+                opacity:1;
+                transform:none;
+                filter:blur(0);
+            }
+        }
+
+        /* Opening: a ring of stars (one bright, the rest fading into a trail) spins around a glowing star,
+           tightens into it and flashes, then the page opens outward from the center. Plays on every load. */
+        @property --iris{
+            syntax:'<percentage>';
+            inherits:false;
+            initial-value:0%;
+        }
+
+        .intro-loader{
+            --iris:0%;
+            position:fixed;
+            inset:0;
+            z-index:100;
+            display:grid;
+            place-items:center;
+            background:radial-gradient(circle at 50% 50%,#1c1c20 0%,#0a0a0c 62%);
+            -webkit-mask-image:radial-gradient(circle at 50% 50%,transparent calc(var(--iris) - 10%),#000 var(--iris));
+            mask-image:radial-gradient(circle at 50% 50%,transparent calc(var(--iris) - 10%),#000 var(--iris));
+            animation:
+                    introIris 1s cubic-bezier(.65,0,.35,1) calc(var(--intro-delay) - .3s) forwards,
+                    introGone 0s linear calc(var(--intro-delay) + .8s) forwards;
+        }
+
+        @keyframes introIris{
+            to{--iris:165%}
+        }
+
+        @keyframes introGone{
+            to{
+                visibility:hidden;
+                pointer-events:none;
+            }
+        }
+
+        .intro-art{
+            position:relative;
+            width:200px;
+            height:200px;
+            animation:introArtOut .4s cubic-bezier(.5,0,.75,0) calc(var(--intro-delay) - .4s) forwards;
+        }
+
+        @keyframes introArtOut{
+            40%{transform:scale(1.25)}
+            to{
+                transform:scale(2.2);
+                opacity:0;
+            }
+        }
+
+        .intro-art::before{
+            content:"";
+            position:absolute;
+            inset:-40px;
+            background:radial-gradient(circle,rgba(255,255,255,.12),transparent 62%);
+            animation:introGlow 2.4s ease-in-out infinite;
+        }
+
+        /* Stars fly in from random directions and spiral into the center. Their values are set by a script
+           (so they differ on every load), and each star repeats its own flight until the flash. */
+        .intro-stars{
+            position:absolute;
+            top:50%;
+            left:50%;
+            width:0;
+            height:0;
+            animation:introStarsOut .3s ease-in calc(var(--intro-delay) - .55s) forwards;
+        }
+
+        @keyframes introStarsOut{
+            to{opacity:0}
+        }
+
+        .intro-stars i{
+            position:absolute;
+            top:0;
+            left:0;
+            width:var(--s);
+            height:var(--s);
+            margin:calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+            background:#fff;
+            clip-path:path('M8 0C8.6 5.3 10.7 7.4 16 8C10.7 8.6 8.6 10.7 8 16C7.4 10.7 5.3 8.6 0 8C5.3 7.4 7.4 5.3 8 0Z');
+            opacity:0;
+            will-change:transform,opacity;
+            animation:introStarIn var(--dur) cubic-bezier(.55,0,.8,.4) var(--delay) infinite;
+        }
+
+        @keyframes introStarIn{
+            0%{
+                opacity:0;
+                transform:rotate(var(--a)) translateX(calc(var(--r) * 1vmax)) scale(1.1);
+            }
+            18%{opacity:1}
+            85%{opacity:1}
+            100%{
+                opacity:0;
+                transform:rotate(calc(var(--a) + var(--twist))) translateX(0) scale(.15);
+            }
+        }
+
+        .intro-core{
+            position:absolute;
+            inset:0;
+            display:grid;
+            place-items:center;
+            filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 9px rgba(255,255,255,.55));
+            animation:introSpin 5s linear infinite;
+        }
+
+        .intro-core svg{
+            width:44px;
+            height:44px;
+            fill:#fff;
+            animation:introPulse 1.4s ease-in-out infinite;
+        }
+
+        @keyframes introSpin{to{transform:rotate(360deg)}}
+
+        @keyframes introPulse{
+            0%,100%{transform:scale(.8);opacity:.85}
+            50%{transform:scale(1.1);opacity:1}
+        }
+
+        @keyframes introGlow{
+            0%,100%{opacity:.55}
+            50%{opacity:1}
+        }
+
         /* Cards */
         #artifacts .wrap,
         #side-projects .wrap{
             max-width:1400px;
-        }
-
-        :root{
-            --desc-lines:3;
-            --card-h:300px;
         }
 
         #side-projects{
@@ -262,23 +522,28 @@
         }
 
         .cards{
-            display:flex;
-            flex-wrap:wrap;
-            justify-content:center;
-            gap:20px;
+            display:grid;
+            grid-template-columns:repeat(2,minmax(0,1fr));
+            gap:var(--gap);
             margin:36px auto 0;
+        }
+
+        .cards > .card-entrance:last-child:nth-child(odd){
+            grid-column:1 / -1;
+            justify-self:center;
+            width:calc(50% - var(--gap) / 2);
         }
 
         .card-entrance{
             display:flex;
-            flex:0 1 calc(50% - 10px);
+            min-width:0;
             opacity:0;
             transform:translateX(-60px);
             will-change:transform,opacity;
         }
 
         .card-entrance.in-view{
-            animation:cardSlideIn .8s cubic-bezier(.22,1,.36,1) forwards;
+            animation:cardSlideIn .8s var(--ease) forwards;
             animation-delay:calc(var(--card-i) * .15s);
         }
 
@@ -295,19 +560,25 @@
 
         .card{
             position:relative;
-            display:grid;
-            grid-template-columns:42% 58%;
             width:100%;
-            min-height:var(--card-h);
             overflow:hidden;
-            border:1px solid var(--line);
-            border-radius:14px;
-            background:rgba(30,41,59,.82);
+            border:1px solid rgba(148,163,184,.24);
+            border-radius:16px;
+            background:
+                    radial-gradient(120% 90% at 0% 0%,rgba(var(--glow),.12),transparent 55%),
+                    linear-gradient(160deg,rgba(34,46,68,.9),rgba(20,29,48,.88));
             text-align:center;
             cursor:pointer;
             box-shadow:
+                    inset 0 1px 0 rgba(255,255,255,.08),
                     0 12px 24px -8px rgba(0,0,0,.6),
                     0 2px 6px rgba(0,0,0,.3);
+        }
+
+        .cards .card{
+            display:grid;
+            grid-template-columns:42% 58%;
+            min-height:var(--card-h);
         }
 
         .card.locked{
@@ -317,6 +588,10 @@
 
         .card.locked.in-progress{
             opacity:1;
+        }
+
+        .card.locked .media img{
+            filter:saturate(.7);
         }
 
         .card::before{
@@ -336,19 +611,23 @@
         }
 
         .card.live{
-            border-color:var(--accent);
+            border-color:rgba(255,255,255,.55);
             --mx:50%;
             --my:50%;
             transition:
                     transform 400ms cubic-bezier(.03,.98,.52,.99),
-                    box-shadow 400ms ease;
+                    box-shadow 400ms ease,
+                    border-color 300ms ease;
             will-change:transform;
         }
 
         .card.live:hover{
             z-index:2;
+            border-color:var(--accent);
             box-shadow:
+                    inset 0 1px 0 rgba(255,255,255,.12),
                     0 22px 36px -10px rgba(0,0,0,.7),
+                    0 0 28px -6px rgba(var(--glow),.35),
                     0 4px 10px rgba(0,0,0,.35);
         }
 
@@ -369,46 +648,57 @@
 
         .card.live:hover::after{opacity:1}
 
-        /* Card image */
+        /* Card image: absolutely positioned so its natural size never changes the card's size */
         .media{
-            display:flex;
-            align-items:center;
-            justify-content:center;
+            position:relative;
             min-height:150px;
+            overflow:hidden;
             border-right:1px solid var(--line);
             background:repeating-linear-gradient(
                     45deg,
                     rgba(255,255,255,.03) 0 10px,
                     transparent 10px 20px
             );
-            color:var(--muted);
-            font-size:.75rem;
-            letter-spacing:.1em;
-            text-transform:uppercase;
         }
 
         .media img{
+            position:absolute;
+            inset:0;
+            display:block;
             width:100%;
             height:100%;
             object-fit:cover;
-            display:block;
+            object-position:50% 50%;
+            transition:transform .9s var(--ease);
+        }
+
+        .media::after{
+            content:"";
+            position:absolute;
+            inset:0;
+            background:linear-gradient(90deg,transparent 55%,rgba(15,23,42,.4));
+            pointer-events:none;
+        }
+
+        .card.live:hover .media img{
+            transform:scale(1.045);
         }
 
         /* Card content */
         .card-body{
-            padding:16px 20px;
             display:flex;
             flex-direction:column;
-            justify-content:center;
+            justify-content:flex-start;
             gap:7px;
+            padding:16px 20px;
         }
 
         .meta{
             display:flex;
+            flex-direction:column-reverse;
             justify-content:center;
             align-items:center;
-            gap:8px;
-            flex-wrap:wrap;
+            gap:6px;
             color:var(--muted);
             font-size:.72rem;
             letter-spacing:.1em;
@@ -416,27 +706,52 @@
         }
 
         .status{
+            display:inline-flex;
+            align-items:center;
+            gap:6px;
             padding:1px 8px;
-            border:1px solid var(--line);
+            border:1px solid rgba(148,163,184,.32);
             border-radius:999px;
             letter-spacing:.05em;
             text-transform:none;
         }
 
+        .status::before{
+            content:"";
+            width:6px;
+            height:6px;
+            border-radius:50%;
+            background:currentColor;
+            opacity:.65;
+        }
+
         .status.live{
-            border-color:#86efac;
-            color:#86efac;
+            border-color:rgba(134,239,172,.55);
+            background:rgba(134,239,172,.08);
+            color:var(--live);
+        }
+
+        .status.live::before{
+            opacity:1;
+            box-shadow:0 0 8px currentColor;
         }
 
         .status.in-progress{
-            border-color:#facc15;
-            color:#facc15;
+            border-color:rgba(250,204,21,.55);
+            background:rgba(250,204,21,.08);
+            color:var(--progress);
+        }
+
+        .status.in-progress::before{
+            opacity:1;
+            box-shadow:0 0 8px currentColor;
         }
 
         .card h3{
             margin:0;
             font-size:1.2rem;
-            font-weight:400;
+            font-weight:500;
+            letter-spacing:-.005em;
         }
 
         .card p{margin:0}
@@ -444,14 +759,16 @@
         .card .desc{
             font-size:.92rem;
             min-height:calc(var(--desc-lines) * 1.6 * .92rem);
+            text-wrap:pretty;
         }
 
         .card .reflection{
+            display:none;
             color:var(--muted);
             font-size:.88rem;
         }
 
-        .card .links{margin-top:2px}
+        .card .links{margin-top:auto}
 
         /* Toolkit */
         .toolkit{
@@ -467,18 +784,20 @@
 
         .toolkit-pill{
             padding:3px 9px;
-            border:1px solid var(--line);
+            border:1px solid rgba(148,163,184,.28);
             border-radius:999px;
+            background:rgba(255,255,255,.04);
             color:var(--muted);
             font-size:.68rem;
-            letter-spacing:.04em;
             line-height:1.4;
-            background:rgba(255,255,255,.025);
+            letter-spacing:.04em;
+            transition:border-color .2s,color .2s,box-shadow .3s;
         }
 
         .toolkit-pill:hover{
             border-color:var(--accent);
             color:var(--accent);
+            box-shadow:0 0 12px -2px rgba(var(--glow),.5);
         }
 
         /* Links */
@@ -489,7 +808,7 @@
             color:var(--text);
             text-decoration:none;
             letter-spacing:-.01em;
-            transition:transform .5s cubic-bezier(.22,1,.36,1);
+            transition:transform .5s var(--ease);
             will-change:transform;
         }
 
@@ -520,7 +839,7 @@
             border-radius:999px;
             background:var(--accent);
             transform:translateX(-50%);
-            transition:width .5s cubic-bezier(.22,1,.36,1);
+            transition:width .5s var(--ease);
             pointer-events:none;
         }
 
@@ -529,12 +848,12 @@
             width:100%;
         }
 
-        /* Social */
+        /* Social icons */
         .social{
             display:flex;
             justify-content:center;
-            gap:16px;
-            margin:0 0 18px;
+            gap:12px;
+            margin-bottom:20px;
         }
 
         .social a{
@@ -546,12 +865,15 @@
             border:1px solid var(--line);
             border-radius:50%;
             color:var(--muted);
-            transition:color .2s,border-color .2s;
+            transition:color .2s,border-color .2s,box-shadow .3s,transform .4s var(--ease);
         }
 
-        .social a:hover{
-            color:var(--accent);
+        .social a:hover,
+        .social a:focus-visible{
             border-color:var(--accent);
+            color:var(--accent);
+            box-shadow:0 0 18px -4px rgba(255,255,255,.55);
+            transform:translateY(-2px);
         }
 
         .social svg{
@@ -586,12 +908,10 @@
             pointer-events:none;
         }
 
-        /* Modal */
-        .card .reflection{display:none}
+        /* Modal (the popup clones a card and wraps it in .modal-card) */
+        .card .build-log-link{display:none}
 
-        .card .log-link{display:none}
-
-        .card.modal-card .log-link{display:inline}
+        .card.modal-card .build-log-link{display:inline-block}
 
         dialog.modal{
             border:0;
@@ -613,7 +933,7 @@
         }
 
         dialog.modal::backdrop{
-            background:rgba(8,12,24,.55);
+            background:radial-gradient(circle at 50% 40%,rgba(122,162,255,.16),rgba(8,12,24,.74));
             -webkit-backdrop-filter:blur(8px);
             backdrop-filter:blur(8px);
             opacity:0;
@@ -623,21 +943,24 @@
         dialog.modal.open::backdrop{opacity:1}
 
         .card.modal-card{
-            display:grid;
-            grid-template-columns:42% 58%;
+            display:flex;
             flex:none;
-            width:min(780px,100%);
-            max-height:min(88vh,760px);
+            width:min(1080px,100%);
+            max-height:min(92vh,720px);
+            max-height:min(92dvh,720px);
             min-height:0;
-            overflow:auto;
+            overflow:hidden;
+            border-radius:20px;
             cursor:default;
             opacity:0;
-            transform:scale(.92);
+            transform:scale(.94) translateY(12px);
             transition:
                     opacity .28s ease,
-                    transform .28s cubic-bezier(.22,1,.36,1);
+                    transform .34s var(--ease);
             box-shadow:
+                    inset 0 1px 0 rgba(255,255,255,.1),
                     0 30px 60px -12px rgba(0,0,0,.75),
+                    0 0 40px -10px rgba(var(--glow),.3),
                     0 6px 16px rgba(0,0,0,.4);
         }
 
@@ -648,53 +971,190 @@
 
         .card.modal-card.accent{border-color:var(--accent)}
 
-        .modal-card .media{min-height:240px}
-
-        .modal-card .card-body{
-            padding:24px 26px;
-            gap:10px;
+        /* Side by side: the image fills its column and only the reflection scrolls, inside its own panel */
+        .modal-scroll{
+            flex:1;
+            display:grid;
+            grid-template-columns:38% 62%;
+            grid-template-rows:minmax(0,1fr);
+            min-width:0;
+            min-height:0;
+            overflow:hidden;
+            overscroll-behavior:contain;
         }
 
-        .modal-card h3{font-size:1.5rem}
+        .modal-card .media{min-height:240px}
 
-        .card.modal-card .reflection{
-            display:block;
-            font-size:1rem;
-            line-height:1.65;
-            color:var(--text);
+        /* The status pill floats over the image's top-left corner */
+        .modal-card .status{
+            position:absolute;
+            top:16px;
+            left:16px;
+            z-index:2;
+            padding:3px 12px;
+            background:rgba(15,23,42,.8);
+        }
+
+        .modal-card .card-body{
+            --pad:clamp(24px,5vh,40px);
+            --rhythm:clamp(14px,2.8vh,24px);
+            gap:0;
+            min-height:0;
+            padding:var(--pad);
+            overflow:hidden;
             text-align:left;
-            margin-top:4px;
+        }
+
+        .modal-card .meta{
+            align-items:flex-start;
+            padding-right:48px;
+        }
+
+        .modal-card h3{
+            margin-top:12px;
+            font-size:2rem;
+            font-weight:600;
+            line-height:1.15;
+            letter-spacing:-.02em;
+        }
+
+        .modal-card .desc{
+            margin-top:calc(var(--rhythm) * .7);
+            color:#cbd5e1;
+            font-size:1rem;
+            line-height:1.7;
+        }
+
+        .modal-card .toolkit{
+            justify-content:flex-start;
+            gap:10px;
+            margin-top:var(--rhythm);
+            padding-top:var(--rhythm);
+            border-top:1px solid rgba(148,163,184,.18);
+        }
+
+        .modal-card .toolkit::before,
+        .card.modal-card .reflection::before{
+            display:block;
+            padding-left:16px;
+            background:radial-gradient(circle,rgb(var(--glow)) 0 3px,transparent 3.5px) left center / 14px 14px no-repeat;
+            color:var(--muted);
+            font-size:.72rem;
+            letter-spacing:.12em;
+            text-transform:uppercase;
+        }
+
+        .modal-card .toolkit::before{
+            content:"Built with";
+            flex:0 0 100%;
         }
 
         .card.modal-card .reflection::before{
             content:"Reflection";
+            margin-bottom:10px;
+        }
+
+        .modal-card .toolkit-pill{
+            padding:5px 14px;
+            font-size:.8rem;
+        }
+
+        .card.modal-card .reflection{
             display:block;
-            margin-bottom:4px;
-            color:var(--muted);
-            font-size:.72rem;
-            letter-spacing:.1em;
-            text-transform:uppercase;
+            flex:0 1 auto;
+            min-height:0;
+            margin-top:var(--rhythm);
+            padding:18px 22px;
+            overflow:auto;
+            border:1px solid rgba(255,255,255,.08);
+            border-left:2px solid rgb(var(--glow));
+            border-radius:14px;
+            background:rgba(255,255,255,.04);
+            color:var(--text);
+            font-size:.98rem;
+            line-height:1.75;
+            text-align:left;
+            text-wrap:pretty;
+            scrollbar-width:thin;
+            scrollbar-color:rgba(255,255,255,.28) transparent;
+        }
+
+        /* Links become buttons below the reflection */
+        .modal-card .links{
+            display:flex;
+            flex-wrap:wrap;
+            gap:12px;
+            margin:auto 0 0;
+            padding:var(--rhythm) 0 0;
+        }
+
+        .modal-card .links .hover-link{
+            padding:11px 22px;
+            border:1px solid rgba(255,255,255,.28);
+            border-radius:999px;
+            background:rgba(255,255,255,.04);
+            font-size:.95rem;
+            letter-spacing:.01em;
+            transition:transform .4s var(--ease),border-color .2s,background .2s;
+        }
+
+        .modal-card .links .hover-link::before,
+        .modal-card .links .hover-link::after{display:none}
+
+        .modal-card .links .hover-link:hover,
+        .modal-card .links .hover-link:focus-visible{
+            border-color:var(--accent);
+            background:rgba(255,255,255,.1);
+        }
+
+        .modal-card .links .hover-link:first-child{
+            border-color:var(--accent);
+            background:var(--accent);
+            color:#0f172a;
+            font-weight:500;
+            box-shadow:0 10px 26px -10px rgba(255,255,255,.5);
+        }
+
+        .modal-card .links .hover-link:first-child:hover,
+        .modal-card .links .hover-link:first-child:focus-visible{
+            background:var(--accent);
+            filter:brightness(.94);
+        }
+
+        .modal-card .links .hover-link:first-child::after{
+            position:static;
+            display:inline-block;
+            width:.45em;
+            height:.45em;
+            margin-left:.7em;
+            border:solid currentColor;
+            border-width:1.5px 1.5px 0 0;
+            border-radius:0;
+            background:none;
+            transform:rotate(45deg) translateY(1px);
         }
 
         .modal-card > .modal-close{
             position:absolute;
-            top:10px;
-            right:10px;
+            top:16px;
+            right:16px;
             z-index:3;
-            width:34px;
-            height:34px;
-            border:1px solid var(--line);
+            width:38px;
+            height:38px;
+            border:1px solid rgba(255,255,255,.22);
             border-radius:50%;
-            background:rgba(15,23,42,.8);
+            background:rgba(15,23,42,.72);
             color:var(--text);
             font-size:1.3rem;
             line-height:1;
             cursor:pointer;
+            transition:transform .35s var(--ease),border-color .2s,color .2s;
         }
 
         .modal-close:hover{
             border-color:var(--accent);
             color:var(--accent);
+            transform:rotate(90deg);
         }
 
         html.modal-open{overflow:hidden}
@@ -702,9 +1162,42 @@
         .modal-card .desc,
         .modal-card .toolkit{min-height:0}
 
+        /* The popup's contents rise in one after another when it opens.
+           The first block only fades: a transform on it would become the anchor for the status pill. */
+        @keyframes modalIn{
+            from{
+                opacity:0;
+                transform:translateY(14px);
+            }
+            to{
+                opacity:1;
+                transform:none;
+            }
+        }
+
+        @keyframes modalFade{
+            from{opacity:0}
+            to{opacity:1}
+        }
+
+        dialog.modal.open .modal-card .card-body > *{
+            animation:modalIn .6s var(--ease) both;
+        }
+
+        dialog.modal.open .modal-card .card-body > :nth-child(1){
+            animation-name:modalFade;
+            animation-delay:.10s;
+        }
+
+        dialog.modal.open .modal-card .card-body > :nth-child(2){animation-delay:.16s}
+        dialog.modal.open .modal-card .card-body > :nth-child(3){animation-delay:.22s}
+        dialog.modal.open .modal-card .card-body > :nth-child(4){animation-delay:.28s}
+        dialog.modal.open .modal-card .card-body > :nth-child(5){animation-delay:.34s}
+        dialog.modal.open .modal-card .card-body > :nth-child(6){animation-delay:.40s}
+
         /* Footer */
         footer{
-            padding:40px 20px 60px;
+            padding:40px 20px calc(60px + env(safe-area-inset-bottom));
             color:var(--muted);
             font-size:.9rem;
         }
@@ -746,32 +1239,161 @@
             opacity:var(--fade,1);
         }
 
-        /* Responsive */
-        @media(max-width:900px){
-            .card-entrance{flex-basis:100%}
-        }
+        /* =========================================================
+           RESPONSIVE
+           Tablets and phones keep two cards per row with the image on top.
+           ========================================================= */
 
-        @media(max-width:640px){
-            .card,
-            .card.modal-card{
+        @media (max-width:900px), (max-height:500px) and (orientation:landscape){
+            section{padding-left:12px;padding-right:12px}
+
+            .cards{--gap:12px}
+
+            .cards .card{
                 grid-template-columns:1fr;
+                grid-template-rows:auto 1fr;
+                min-height:0;
             }
 
-            .media{
+            .cards .card-body{
+                gap:6px;
+                padding:12px;
+            }
+
+            .cards .card h3{
+                min-height:2.5em;
+                font-size:1rem;
+                font-weight:700;
+                line-height:1.25;
+            }
+
+            .cards .desc{
+                min-height:0;
+                font-size:.8rem;
+                line-height:1.45;
+            }
+
+            .cards .meta{
+                gap:4px;
+                font-size:.6rem;
+                letter-spacing:.06em;
+            }
+
+            .cards .status{padding:0 6px}
+
+            .cards .toolkit{
+                min-height:0;
+                gap:4px;
+            }
+
+            .cards .toolkit-pill{
+                padding:2px 6px;
+                font-size:.58rem;
+            }
+
+            .cards .media{
+                min-height:0;
+                aspect-ratio:2.4 / 1;
                 border-right:0;
                 border-bottom:1px solid var(--line);
-                min-height:140px;
+            }
+
+            .cards .media::after{
+                background:linear-gradient(180deg,transparent 55%,rgba(15,23,42,.45));
+            }
+
+            dialog.modal{padding:10px}
+
+            .card.modal-card{
+                max-height:92vh;
+                max-height:92dvh;
+            }
+
+            .modal-card .card-body{--pad:18px}
+
+            .card h3{font-weight:700}
+        }
+
+        /* Popup on small screens: the whole popup scrolls and the links stay pinned at the bottom */
+        @media (max-width:900px) and (min-height:501px), (max-width:640px), (max-height:500px) and (orientation:landscape){
+            .modal-scroll{
+                grid-template-rows:auto;
+                overflow:auto;
+            }
+
+            .modal-card .card-body{
+                min-height:auto;
+                overflow:visible;
+            }
+
+            .card.modal-card .reflection{
+                flex:none;
+                overflow:visible;
+            }
+
+            .modal-card .links{
+                position:sticky;
+                bottom:0;
+                z-index:2;
+                margin:auto calc(var(--pad) * -1) calc(var(--pad) * -1);
+                padding:20px var(--pad) var(--pad);
+                background:linear-gradient(180deg,rgba(18,27,46,0),rgba(18,27,46,.96) 40%);
             }
         }
 
-        @media(max-width:520px){
-            nav{padding:10px 8px}
+        /* Tall, narrow screens (phones, tablets): the image stacks above the text */
+        @media (max-width:900px) and (min-height:501px), (max-width:640px){
+            .modal-scroll{display:block}
+
+            .card.modal-card .media{
+                aspect-ratio:16 / 10;
+                min-height:0;
+                border-right:0;
+                border-bottom:1px solid var(--line);
+            }
+        }
+
+        @media (max-width:520px){
+            nav{padding-top:10px;padding-bottom:10px}
+
             .tabs{padding:0 4px}
+
             .tabs a{
                 padding:0 7px;
                 font-size:.78rem;
                 letter-spacing:.02em;
             }
+
+            .modal-card .links .hover-link{
+                flex:1 1 100%;
+                text-align:center;
+            }
+        }
+
+        @media (max-width:380px){
+            .tabs a{
+                padding:0 5px;
+                font-size:.7rem;
+                letter-spacing:0;
+            }
+        }
+
+        /* Short landscape phones: keep the hero from filling more than the screen */
+        @media (max-height:500px) and (orientation:landscape){
+            #intro{
+                min-height:0;
+                padding-top:90px;
+                padding-bottom:56px;
+            }
+
+            #intro h1{
+                margin-bottom:14px;
+                font-size:clamp(1.7rem,9vh,3rem);
+            }
+
+            #intro .hero-label{margin-bottom:12px}
+
+            .scroll-cue{display:none}
         }
 
         /* Reduced motion */
@@ -785,13 +1407,36 @@
                 animation:none;
             }
 
+            .word.rise{
+                transform:none;
+                filter:none;
+            }
+
+            .intro-loader{display:none}
+
+            .hero-label::before,
+            .hero-label::after,
+            .btn.primary,
+            .scroll-cue{animation:none}
+
+            .scroll-cue{opacity:1}
+
+            .scroll-cue::after{animation:none}
+
             .tabs.ready .tab-pill{transition:none}
 
+            .btn,
+            .social a,
+            .media img,
+            .toolkit-pill,
             .hover-link,
             .hover-link::after{transition:none}
 
             dialog.modal::backdrop,
-            .card.modal-card{transition:none}
+            .card.modal-card,
+            .modal-close{transition:none}
+
+            dialog.modal.open .modal-card .card-body > *{animation:none}
         }
 
         /* Click stars */
@@ -814,113 +1459,6 @@
                     drop-shadow(0 0 3px #fff)
                     drop-shadow(0 0 10px var(--accent));
             will-change:transform,opacity;
-        }
-
-        /* =========================================================
-   MOBILE: phones, portrait + landscape
-   ========================================================= */
-        @media (max-width:900px), (max-height:500px) and (orientation:landscape){
-
-            section{padding-left:12px;padding-right:12px}
-
-            /* --- 5. Two columns --- */
-            .cards{gap:12px}
-            .card-entrance{flex:0 1 calc(50% - 6px);min-width:0}
-
-            .card:not(.modal-card){
-                grid-template-columns:1fr;   /* image on top, text below */
-                min-height:0;
-            }
-
-            .card:not(.modal-card) .card-body{
-                padding:12px;
-                gap:6px;
-                justify-content:flex-start;
-            }
-            .card:not(.modal-card) h3{font-size:1rem}
-            .card:not(.modal-card) .desc{font-size:.8rem;line-height:1.45;min-height:0}
-            .card:not(.modal-card) .meta{font-size:.6rem;letter-spacing:.06em;gap:4px}
-            .card:not(.modal-card) .status{padding:0 6px}
-            .card:not(.modal-card) .toolkit{min-height:0;gap:4px}
-            .card:not(.modal-card) .toolkit-pill{font-size:.58rem;padding:2px 6px}
-            .card:not(.modal-card) .links{margin-top:auto}  /* links line up across a row */
-
-            /* --- 3 + 4. Shorter image, and no more rotation bug --- */
-            .card .media{
-                position:relative;
-                height:auto;
-                min-height:0;
-                aspect-ratio:2.4 / 1;        /* ~25% shorter than 16:9 */
-                overflow:hidden;
-                border-right:0;
-                border-bottom:1px solid var(--line);
-            }
-            .card .media img{
-                position:absolute;           /* image no longer affects layout sizing */
-                inset:0;
-            }
-
-            /* --- Modal --- */
-            dialog.modal{padding:10px}
-
-            .card.modal-card{
-                max-height:92vh;
-                max-height:92dvh;
-            }
-            .modal-card .card-body{padding:18px}
-        }
-
-        /* Landscape modal is side by side: keep the image at the top of its column */
-        @media (min-width:641px) and (max-width:900px), (max-height:500px) and (orientation:landscape){
-            .card.modal-card .media{
-                align-self:start;
-                border-bottom:0;
-                border-right:1px solid var(--line);
-            }
-        }
-
-        /* ===== Modal: inner scroller (all screen sizes) ===== */
-        .card.modal-card{
-            display:flex;
-            overflow:hidden;              /* the inner scroller does the scrolling */
-        }
-
-        .modal-scroll{
-            flex:1;
-            min-width:0;
-            min-height:0;
-            overflow:auto;
-            display:grid;
-            grid-template-columns:42% 58%;
-            overscroll-behavior:contain;
-        }
-
-        /* Portrait phones: image on top, text below, stacked explicitly */
-        @media (max-width:640px){
-            .modal-scroll{display:block}
-        }
-
-        /* ===== Mobile: aligned card rows + bold titles ===== */
-        @media (max-width:900px), (max-height:500px) and (orientation:landscape){
-
-            /* Let the text area fill the card and start from the top, so every row lines up */
-            .cards .card:not(.modal-card){
-                grid-template-rows:auto 1fr;
-            }
-            .cards .card:not(.modal-card) .card-body{
-                justify-content:flex-start;
-            }
-
-            /* Reserve two lines for titles so descriptions start at the same height */
-            .cards .card:not(.modal-card) h3{
-                line-height:1.25;
-                min-height:2.5em;
-            }
-
-            /* Bold artifact names (cards and popup) */
-            .card h3{
-                font-weight:700;
-            }
         }
 
         /* Footer log link: a drifting blue-to-white gradient with a soft glow */
@@ -1030,11 +1568,41 @@
             will-change:transform;
         }
 
-
     </style>
 </head>
 
 <body>
+
+<!-- Opening animation (CSS only, see .intro-loader) -->
+<div class="intro-loader" aria-hidden="true">
+    <svg width="0" height="0" fill="#fff" style="position:absolute" aria-hidden="true">
+        <defs><path id="intro-star" d="M12 0C13 8 16 11 24 12C16 13 13 16 12 24C11 16 8 13 0 12C8 11 11 8 12 0Z"/></defs>
+    </svg>
+
+    <div class="intro-art">
+        <div class="intro-core">
+            <svg width="44" height="44" fill="#fff" viewBox="0 0 24 24"><use href="#intro-star"/></svg>
+        </div>
+    </div>
+
+    <div class="intro-stars"></div>
+</div>
+<script>
+    /* Random flight paths for the opening's stars (different on every load) */
+    (() => {
+        const box = document.querySelector('.intro-stars');
+        const rand = (a, b) => a + Math.random() * (b - a);
+        for (let n = 0; n < 22; n++) {
+            const s = document.createElement('i');
+            const dur = rand(1.1, 2.6);
+            s.style.cssText =
+                `--a:${rand(0, 360).toFixed(1)}deg;--r:${rand(20, 70).toFixed(1)};` +
+                `--twist:${(rand(30, 130) * (Math.random() < .5 ? -1 : 1)).toFixed(0)}deg;` +
+                `--s:${rand(7, 19).toFixed(1)}px;--dur:${dur.toFixed(2)}s;--delay:${(-rand(0, dur)).toFixed(2)}s`;
+            box.appendChild(s);
+        }
+    })();
+</script>
 
 <canvas id="bg" aria-hidden="true"></canvas>
 
@@ -1072,20 +1640,18 @@
             </p>
 
             <h1>
-                <span class="rise" style="--i:1">Building with AI.</span>
-                <span class="rise" style="--i:2">Learning by making.</span>
-                <span class="rise" style="--i:3">One artifact at a time.</span>
+                <span class="word rise" style="--i:1">Building</span>
+                <span class="word rise" style="--i:2">optimized</span>
+                <span class="word rise" style="--i:3">systems.</span>
             </h1>
 
-            <p class="hero-sub rise" style="--i:4">
-                Building optimized systems.
-            </p>
-
-            <div class="buttons rise" style="--i:5">
+            <div class="buttons rise" style="--i:4">
                 <a class="btn primary" href="#artifacts">View Artifacts</a>
             </div>
 
         </div>
+
+        <span class="scroll-cue" aria-hidden="true"></span>
     </section>
 
     <div class="divider" aria-hidden="true"></div>
@@ -1130,7 +1696,7 @@
                     <article class="card live" id="artifact-1">
 
                         <div class="media">
-                            <img src="images/artifact-1.jpg" alt="Portfolio front page.">
+                            <img src="images/artifact-1.jpg" alt="Portfolio front page." width="1200" height="1200" loading="lazy" decoding="async">
                         </div>
 
                         <div class="card-body">
@@ -1170,7 +1736,7 @@
 
                             <p class="links">
                                 <a class="hover-link" href="https://kevlam1.github.io/">Visit Portfolio</a>
-                                <a class="hover-link log-link" href="log.html">View Build Log</a>
+                                <a class="hover-link build-log-link" href="log.html">View Build Log</a>
                             </p>
 
                         </div>
@@ -1182,7 +1748,7 @@
                     <article class="card live" id="artifact-2">
 
                         <div class="media">
-                            <img src="images/artifact-2.jpg" alt="MIDI visualizer and piano interface">
+                            <img src="images/artifact-2.jpg" alt="MIDI visualizer and piano interface" width="1200" height="1200" loading="lazy" decoding="async">
                         </div>
 
                         <div class="card-body">
@@ -1211,21 +1777,15 @@
                             <p class="reflection">
                                 I built MIDI Companion in a week: a browser app that loads a .mid file, drops the notes
                                 onto an 88-key piano, and lets me play along on my own MIDI keyboard. Learn mode, where
-                                the song waits at each chord until I play it, mattered most because it lets me learn
-                                piano at my own pace with no pressure. I kept the stack small (Vite, TypeScript,
-                                Canvas 2D) and measured a steady 165 fps before dropping PixiJS. The agent got things
-                                wrong: it said it couldn't open a browser until it drove Chrome headless, it ran a
-                                command that would have closed every Chrome window on my computer, and a shell-quoting
-                                slip silently deleted part of my scoring code while the type-check still passed. I
-                                caught bugs myself too, like Learn mode counting a held-down key and a welcome card that
-                                didn't fit my phone, and I tested the full app on my own phone and MIDI keyboard. Next
-                                time I'd brainstorm the full feature set up front, since adding one or two features at
-                                a time kept breaking my workflow.
+                                the song waits at each chord until I play it, mattered most because I'm learning piano at
+                                my own pace. The agent got things wrong, like claiming it couldn't open a browser, and I
+                                caught bugs it missed. I tested everything on my own phone and MIDI keyboard. Next time
+                                I'd plan the full feature set up front instead of adding features one at a time.
                             </p>
 
                             <p class="links">
                                 <a class="hover-link" href="https://midi-companion.vercel.app">Visit MIDI Companion</a>
-                                <a class="hover-link log-link" href="https://midi-companion.vercel.app/logs/">View Build Log</a>
+                                <a class="hover-link build-log-link" href="https://midi-companion.vercel.app/logs/">View Build Log</a>
                             </p>
 
                         </div>
@@ -1237,7 +1797,7 @@
                     <article class="card locked" id="artifact-3">
 
                         <div class="media">
-                            <img src="images/artifact-3.jpg" alt="Image coming soon">
+                            <img src="images/artifact-3.jpg" alt="Image coming soon" width="1200" height="1200" loading="lazy" decoding="async">
                         </div>
 
                         <div class="card-body">
@@ -1269,7 +1829,7 @@
                     <article class="card locked" id="artifact-4">
 
                         <div class="media">
-                            <img src="images/artifact-4.jpg" alt="Image coming soon">
+                            <img src="images/artifact-4.jpg" alt="Image coming soon" width="1200" height="1200" loading="lazy" decoding="async">
                         </div>
 
                         <div class="card-body">
@@ -1301,7 +1861,7 @@
                     <article class="card locked" id="artifact-5">
 
                         <div class="media">
-                            <img src="images/artifact-5.jpg" alt="Image coming soon">
+                            <img src="images/artifact-5.jpg" alt="Image coming soon" width="1200" height="1200" loading="lazy" decoding="async">
                         </div>
 
                         <div class="card-body">
@@ -1351,7 +1911,7 @@
                     <article class="card live">
 
                         <div class="media">
-                            <img src="images/side-project-1.jpg" alt="Cardex front page">
+                            <img src="images/side-project-1.jpg" alt="Cardex front page" width="1200" height="1200" loading="lazy" decoding="async">
                         </div>
 
                         <div class="card-body">
@@ -1401,7 +1961,7 @@
                     <article class="card live">
 
                         <div class="media">
-                            <img src="images/side-project-2.jpg" alt="PokéGuess front page">
+                            <img src="images/side-project-2.jpg" alt="PokéGuess front page" width="1200" height="1200" loading="lazy" decoding="async">
                         </div>
 
                         <div class="card-body">

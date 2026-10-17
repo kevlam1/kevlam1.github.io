@@ -426,6 +426,138 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ---
 
+## 18. Restyle pass on a redesign branch
+
+**Date:** 2026-10-16
+**Summary:** Restyled the portfolio on a local `redesign` branch (not pushed), keeping my layout and sizes after a first pass came out too big.
+
+**What I asked for**
+- Asked Claude Code to act as a CSS designer and upgrade the site into a more modern one, keeping the look and ideas, using my existing images (cropped if needed), and working on phones, laptops, and other screen sizes.
+- Chose a whole-page visual refresh, on a separate local branch so `main` and the live site stay untouched.
+- After the first version, told it everything was too big and that I expected more change. Asked for a restyle that keeps my layout, with two columns back on phones.
+
+**What changed**
+- The first pass made type, padding, and cards bigger and put phones in one column. It looked like the same site, only larger. Most of the time went into building a screenshot tool to test screen sizes, not into the design.
+- The second pass puts every size back to what it was. The change is in the look: gradient hero text, a star ornament under each heading, glassier cards with a soft corner glow, status pills with a dot (stacked above each card's label), a lit nav pill, and a slow zoom on card images on hover.
+- Card images fill their box with `object-fit: cover`, so the square images are cropped to fit instead of stretched.
+- Tested in headless Chrome from 320 to 2560 pixels wide: no sideways scrolling and no console errors.
+
+**What went wrong**
+- The first version was too big. Claude Code read "modern" as "larger" and did not tell me.
+- The hero glow poked 20px past the right edge on phones and made the page scroll sideways. It is clipped now.
+- Soft glows behind the sections made the test browser stall at 2560 by 1080, which the original did not do. I removed them.
+- The "View Build Log" popup buttons I added earlier reused the footer's `log-link` class, so they got its gradient text. They are `build-log-link` on this branch. The live site on `main` still has the bug until I merge or fix it there.
+
+---
+
+## 19. Popup redesign, log page restyle, and a shorter reflection
+
+**Date:** 2026-10-16
+**Summary:** Gave the card popup and the log page the new look and shortened my Artifact 2 reflection.
+
+**What I asked for**
+- Said the restyle was good but I wanted more, and that the card popup still felt boring. Asked for modern changes I couldn't think of, a shorter and reworded Artifact 2 reflection, and the same treatment for the log page.
+
+**What changed**
+- Popup: a left-aligned layout with labeled blocks, the status pill floating over the image, the image pinned while the text scrolls, the reflection in a quote panel, "Visit" and "View Build Log" as buttons in a bar pinned to the bottom, and the content rising in when it opens. Tablets and phones stack the image above the text.
+- Log page: a gradient title, star ornaments under the headings, glass section cards, small dotted labels for "What I asked for" and the other bold lines, a callout for each Date and Summary line, and the lit nav pill.
+- Artifact 2 reflection cut to about half its length. I kept the Learn mode reason, the browser claim, my testing on my own phone and keyboard, and the lesson, and dropped the fps number and the other mistakes.
+- Checked both pages in headless Chrome from 320 to 2560 pixels wide: no sideways scrolling and no console errors.
+
+**What went wrong**
+- The pinned image did not pin at first, because its wrapper clipped it. Screenshots showed it and it was fixed.
+- On tablets the popup left a big empty panel under a small image. Screenshots showed that too. Tablets now stack the image on top, like phones.
+- `log.html` already had three CSS rules defined twice (`:root`, `details.log-section`, `.branched-menu::before`). I left them alone because the menu depends on them.
+
+---
+
+## 20. Wide popup, a quieter log menu, and a new opening
+
+**Date:** 2026-10-16
+**Summary:** Made the card popup wide, hid the log menu's scrollbar, and replaced the three-line headline with "Building optimized systems." and a new opening animation.
+
+**What I asked for**
+- Said the popup text felt too tight and asked for a wide card instead of a tall one.
+- Didn't like the scrollbar on the log page's contents menu when it was expanded.
+- Asked to remove the three sentences and only say "Building optimized systems.", with an opening animation like the log page's loader but with more flair.
+
+**What changed**
+- The popup is now up to 1080px wide with the image at 38%, so the lines of text are much longer. Tablets and phones still stack the image on top.
+- The contents menu has no visible scrollbar but still scrolls. The old version measured a 15px scrollbar and the new one measures 0px.
+- The headline is "Building optimized systems." and the separate subtitle line is gone. The opening: a glowing star spins inside dashed rings and flashes, then the page opens outward from the star as a growing circle, then the headline blurs in word by word and the lines beside my name draw outward. It plays once per visit, so coming back from the log page skips it, and it is off for visitors who prefer reduced motion.
+- Checked both pages from 320 to 2560 pixels wide, with the animation on and off: no sideways scrolling and no console errors.
+
+**What went wrong, and what is still open**
+- The first version of the new headline wrapped onto two lines, because its column was still sized for the old shorter lines. It is wider now.
+- The image on the Artifact 1 card and the link preview image still show the old three-line headline. I need to retake those screenshots.
+- Not tested: the opening on a real phone or in Firefox and Safari. A browser that cannot animate the growing circle should snap open instead.
+
+---
+
+## 21. Fixing the popup, replaying the opening, and an orbiting animation
+
+**Date:** 2026-10-16
+**Summary:** Fixed the popup's overlapping "Live" chip and crunched text, made the opening replay on every load, and changed it to stars orbiting a center star.
+
+**What I asked for**
+- Sent screenshots of the popup showing the "Live" chip sitting on top of the title and the text still crunched together.
+- Asked for the home page animation to replay on refresh or reopening, and to feel more like an orbiting spin.
+
+**What changed**
+- The chip had been anchored to the wrong element because of the popup's entrance animation, so it landed on the title. It now stays on the image corner. Claude Code measured its position with animations on and off.
+- The popup has more space between its parts, and only the reflection scrolls, inside its own panel, so the buttons no longer sit on top of it. On small screens the whole popup scrolls with the buttons pinned at the bottom.
+- The opening now plays on every load (I took out the once-per-visit setting from section 20). It is three stars orbiting a glowing star along tilted dashed orbits, spiralling in, then a flash and the circular reveal.
+- Checked the popup at five sizes with animations on, and the opening at three sizes: no sideways scrolling and no console errors.
+
+**What went wrong**
+- Claude Code only tested the popup with animations turned off, so it missed the chip bug that showed up in my screenshots. It now checks the popup with animations on too.
+- The first fix left the popup on a landscape phone with overlapping text. A screenshot showed it and it was fixed.
+- Not tested: Firefox and Safari, and a real phone.
+
+---
+
+## 22. Cut-off letters and a new loading animation
+
+**Date:** 2026-10-16
+**Summary:** Fixed the cut-off bottoms of the "g" and "p" in the headline, replaced the atom-like loading animation with a ring of stars, and changed its background from blue to near-black.
+
+**What I asked for**
+- Told Claude Code that the bottom of the "g" in "Building" was cut off.
+- Said the loading animation looked like an atom symbol and that I didn't like it, since this isn't a science site. Asked it to consider changing the blueish background too.
+
+**What changed**
+- Gradient text only paints inside each word's box, so letters that hang below the line were sliced off. Each word now has extra room below it. Claude Code checked this with a zoomed screenshot before and after, and checked the log page's title as well.
+- The loading animation is now a circle of ten stars, one bright and the rest fading into a trail, spinning around a glowing star. The ring tightens into the star, it flashes, and the page opens from the center, as before.
+- The loading background is a neutral near-black, close to the nav bar color, instead of navy blue.
+- Checked the page from 320 to 2560 pixels wide with the animation on, the popups with animations on, and reduced motion: no sideways scrolling and no console errors.
+
+**What went wrong**
+- I asked for an orbiting spin and the first version used tilted orbits that looked like an atom, so I rejected it.
+- The cut-off letters came from the gradient text added earlier, and the zoomed check was not done then.
+- Not tested: Firefox, Safari, and a real phone.
+
+---
+
+## 23. Stars flying into the center
+
+**Date:** 2026-10-16
+**Summary:** Changed the loading animation so stars fly into the center from random places, with a different pattern on every load.
+
+**What I asked for**
+- Asked for the stars to go into the center and look more random, instead of the ring.
+- Told Claude Code I had added a new Artifact 1 image.
+
+**What changed**
+- The ring is gone. 22 small stars start at random angles, distances, sizes, and speeds, spiral into the glowing center star, and each one keeps repeating its flight until the flash. A small script sets those values when the page loads, so it looks different every time. Then the page opens from the center as before.
+- Checked the opening from 320 to 2560 pixels wide, the popup with animations on, and reduced motion (the animation is off): no sideways scrolling and no console errors.
+
+**What went wrong**
+- The site guide still said the opening was "CSS only", which stopped being true once a script made the stars. It is fixed.
+- Claude Code could not tell whether my new Artifact 1 image was different from the one it had already looked at, since the file looks the same. I had to confirm it myself.
+- Not tested: Firefox, Safari, and a real phone.
+
+---
+
 ## Where AI misread me, or I had to correct course
 
 **Claude**
@@ -437,6 +569,9 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 - **Checking sources:** I asked Claude to double-check sources. It checked the assignment against the course site and the hosting steps against GitHub's docs, and it flagged what it could not verify instead of guessing.
 - **Log page menu:** the first version of the log page listed "What I set out to build" in the Reflection part of the menu, so clicking it just scrolled back to the top. I asked for it to be a plain box and removed it from the menu.
 - **Mobile fixes that did not work:** the `lvh` sizing and the oversized background layers did not fix the navy strip, which turned out to be the browser's own toolbar.
+- **Redesign came out too big:** I asked for a more modern site and the first version made almost everything larger, plus one column on phones, without telling me. I had to ask for the sizes and the two-column phone layout back (section 18).
+- **Popup chip bug missed by testing:** Claude Code reported the popup as fine after testing it with animations turned off. With animations on, the "Live" chip landed on the title, which my own screenshots showed (section 21).
+- **Orbit animation looked like an atom:** I asked for an orbiting kind of spin and Claude Code built tilted elliptical orbits around a center star, which read as an atom symbol (section 22). It also left the bottoms of letters like "g" cut off in the gradient headline.
 
 **ChatGPT**
 - Twice (the card entrance and the first blur), it wrote code and then reversed itself in the same message, and ignored my instruction to stop. I found Claude clearer about exactly which part of the code to change.
@@ -476,3 +611,5 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 - Whether the blur and scrolling feel good on a slower computer, and whether the log page's wave background, loading animation, and menu animation run smoothly on one.
 - Whether the Lenis script loads reliably from the CDN, and that nothing breaks without it.
 - How the link preview looks when the site is shared on different platforms.
+- The `redesign` branch on a real phone, in Safari and on iOS, and on a real GPU at very large screen sizes. It was only tested in headless Chrome.
+- The new opening animation on a real phone and in Firefox and Safari, and whether it feels too long to a first-time visitor.
