@@ -14,11 +14,15 @@
 
 ## Site backlog (only when asked)
 - [ ] Add an "In progress" status for progress-week cards.
-- [ ] Replace placeholder images and alt text on cards 2 to 5 as each artifact is finished.
+- [ ] Replace placeholder images and alt text on cards 4 and 5 as each artifact is finished. (Artifact 3 uses an animated CSS illustration instead of a photo; see `docs/SITE_GUIDE.md`.)
+- [ ] When unlocking Artifacts 4 and 5, add `target="_blank" rel="noopener"` to every link that leaves the site. Artifacts 2 and 3 both missed this at first and had to be fixed afterward (log sections 24-25).
 - [ ] A LinkedIn link, once Kevin has a real profile URL (uncomment the icon block in the footer).
 - [x] Kevin retook `images/artifact-1.jpg`; it shows the new "Building optimized systems." headline. Its alt text still reads "Portfolio front page.", which is still accurate.
 - [ ] Retake `images/image-link-preview.jpg` (1200x630). It still shows the old three-line headline in the old serif font. The `og:image:alt` meta tag on both pages describes that old screenshot, so update it when the image is replaced.
-- [ ] The `redesign` branch is local only: not merged and not pushed. On `main`, the popup's "View Build Log" buttons still share the footer link's gradient-text class (`log-link`); the branch renames them to `build-log-link`.
+- [x] The redesign is merged to `main` and pushed (commit `3f2a5db`), and the local `redesign` branch is deleted. That merge also fixed the popup's "View Build Log" buttons, which used the footer link's gradient-text class (`log-link`); they are `build-log-link` now.
+- [ ] After the redesign deploys, check the live site and `log.html` on a real phone and in Safari and Firefox. It was only tested in headless Chrome.
+- [ ] Check the popups (all four photo cards and Artifact 3) and the Artifact 3 demo on a real phone, in Safari and in Firefox. Also try the demo's full screen button on a real phone and tablet (it is hidden on iPhone Safari by design, and only tested in headless Chrome). Container units (`cqw`) and `:has()` need a fairly current browser; only headless Chrome was tested.
+- [ ] Older inline SVGs without `width`/`height`/`fill` on the tag (the progress-bar star and the footer GitHub icon) are sized by CSS and work, but break the hard rule in `CLAUDE.md`. Add the attributes if the site is touched again.
 - [x] Added the progress bar to `log.html`. It re-measures on page-height changes (a `ResizeObserver` on `body`) so it adjusts when boxes open or close.
 
 ## Upcoming artifacts

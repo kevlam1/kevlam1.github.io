@@ -41,6 +41,20 @@
 - Tailwind's in-browser (Play CDN) build is meant for development. It was not used.
 - Pin CDN versions.
 
+## CSS layout gotchas found while building the popups and the Artifact 3 demo
+- `:nth-child()` counts every sibling, not just the type you mean. Three window dots in front of the lines made `.demo-bar:nth-child(1)` match nothing, so the result bars never filled in motion mode. Use `:nth-of-type()` or a class, and measure the computed result (`animationName`, width) instead of judging by eye.
+- Flex items shrink by default. With `min-height: 0` on text blocks inside a fixed-height flex column, a narrower column squashed the description to one line and the next block painted over its overflow. Set `flex-shrink: 0` on blocks that must keep their content height and let the container scroll.
+- A `position: sticky; bottom: 0` element inside a scroll container that has padding is inset by that padding. Put the bottom padding on the sticky element instead.
+- Percent heights and aspect ratios on an auto-sized grid column can fight each other. Give the column an explicit size from one shared value (`--sq`) instead.
+- Do not scope size rules with `vw` caps to all screen sizes: `48vw` collapsed the popup to 187px on a phone. Wrap them in a media query.
+- Gradient text only paints inside its own box, so letters that hang below the line (g, p, y) get sliced off. Add bottom padding with a matching negative margin.
+- A soft full-width glow behind whole sections made headless Chrome stall at 2560 by 1080. Keep big glows to the hero.
+- A real control (a button) cannot live inside `aria-hidden` or inside `role="img"`: it becomes unreachable or is flattened into the image. Hide only the decorative parts and give the container `role="group"`.
+- `requestFullscreen()` needs a real user gesture. In headless tests, call `Runtime.evaluate` with `userGesture: true`, or the click is silently refused.
+- The popup is a clone of the card, so listeners attached to the card's own elements are not copied. Use one listener on `document` and `closest()`.
+- To match a tilt made in Photoshop, measure it: compare the finished images with their shared background and find the corners of what changed. A flat parallelogram is one `matrix()`; no perspective maths needed.
+- An element that fills a box the way `object-fit: cover` does can be made from a square stage sized `max(100cqw, 100cqh)`, centered. Percent positions inside it then stay fixed at every card size.
+
 ## Editor warnings that are false alarms
 - CSS variables set by JavaScript at runtime (`--mx`, `--my`, `--fade`) show as unresolved. Defaults can quiet them.
 - Classes created by scripts (`.gradual-blur-layer`, `.active`) show as unused.
