@@ -672,6 +672,31 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ---
 
+## 29. The Artifact 3 reflection
+
+**Date:** 2026-10-23
+**Summary:** Put my Artifact 3 reflection on the card, after Claude Code checked its claims against my build log and tightened the wording.
+
+**What I asked for**
+- Gave Claude Code my reflection and asked it to fix it up so it sounds like my other two.
+- Said `temporaryname` should now be the official name, meaning the old placeholder title in the `readme-architect` log.
+- After seeing it was longer than my other two, asked Claude Code to trim it.
+
+**What changed**
+- The reflection is on the Artifact 3 card. Claude Code kept my points and shortened the sentences. It checked each claim against the `readme-architect` log first: the secrets scan gap (entry 18) and the checker failing on its own README (entry 21) both happened as I described.
+- Two small changes to keep it true. I wrote that the problems were found by running the tool "on real projects," but the secrets gap was found with a test that used made-up secrets in a throwaway repo, and the README failure by running the tool on its own README, so it now says "when I tested it." I wrote that the gather script "wasn't scanning text files for secrets," but it did scan entry files and the package summary, so it now says it "wasn't scanning every text file."
+- I wrote "(both were fine)" about cost and latency. My own log says each run cost about $2 and that stopped me from repeating a run, and that the speed goal was only partly checked, so the parenthesis was left out. I can put it back if I still think it is true.
+- "Both fixes went in the code, not the prompt" is true for those two bugs, but not for everything. I also changed instructions in `SKILL.md` after other problems, so the sentence now says "both," not "each."
+- "I spent more time writing tests than writing the model part" is my own claim about my time. Claude Code could not check it, so it left it as written. The log does show 35 checker tests and 14 gather tests against an 80-line `SKILL.md`.
+- The `temporaryname` title was already fixed in `readme-architect/log.md` (it now says `readme-architect`, and it is pushed). The mentions left in entries 1 to 12 are history on purpose and I did not change them. That makes the line in section 24 here, saying the title was left alone, out of date. I left section 24 as written.
+
+**What went wrong**
+- With the reflection in, the popup clipped it mid-sentence in a small box with no sign there was more. The other cards avoid this because their whole text column scrolls, but Artifact 3 never got that, since its old reflection was one short line. Claude Code found it in a screenshot, and the Artifact 3 popup now scrolls the same way, with the buttons pinned. Phone, tablet and landscape phone were checked, and the other four popups were not affected.
+- The first version was 157 words, longer than Artifact 1 (134) and Artifact 2 (101). I asked for a trim, and it is now 127. The cut sentence was "The model's job stayed small, and the code took on the messy parts, like secret detection, code fence labels, and command checks", whose point is already in "I gave the model a small job" and "Both fixes went in the code". "Before handing files to the model" was also dropped. Nothing I said happened was changed.
+- Not tested: a real phone, Safari, or Firefox.
+
+---
+
 ## Where AI misread me, or I had to correct course
 
 **Claude**
