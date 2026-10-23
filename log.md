@@ -697,6 +697,27 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ---
 
+## 30. Rewording the Artifact 3 reflection again
+
+**Date:** 2026-10-23
+**Summary:** Reworded my Artifact 3 reflection to sound more like my Portfolio and MIDI Companion ones.
+
+**What I asked for**
+- Asked Claude Code to make the reflection more humanized and more like the other two.
+
+**What changed**
+- The reflection now opens the way the others do, by saying what I built ("I built readme-architect to check a README against the real files in a project"), then what the model does and what plain code does, then what went wrong, then what I learned. It uses plainer words: "I can test code by itself, but I can't test a model run until I look at what it gave back" replaces "a black box," and "my gather script wasn't checking every text file for secrets" replaces the more formal wording.
+- Claude Code used only my own points. It added no new facts. The first reworded version was 131 words, between Portfolio (134) and MIDI Companion (101).
+- Then I told it to add where the AI got something wrong, since my other two reflections both do. It added a sentence from my `readme-architect` log, entry 5: Claude said secrets would be filtered out "before the model reads anything," but that is not guaranteed, because the script only controls what it hands over. It dropped the sentence "Plain code does the rest. I planned that split from the start" to make room.
+- Checked the popup at desktop, phone and landscape-phone width: the whole reflection scrolls into view, the buttons stay pinned, and there are no console errors.
+
+**What went wrong**
+- With the new sentence it is 148 words, longer than Portfolio (134) and MIDI Companion (101). I did not trim it again. I can if it feels too long.
+- Not tested: a real phone, Safari, or Firefox.
+- The old line in section 24 still says the `readme-architect` log title was left alone, which is out of date. I left it as written.
+
+---
+
 ## Where AI misread me, or I had to correct course
 
 **Claude**
