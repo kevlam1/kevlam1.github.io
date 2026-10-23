@@ -1531,7 +1531,8 @@
            square by construction instead of cropping the photo into the illustration's 38% slot.
            It stays smaller than the full popup so the text column keeps a readable width (a 720px
            square left only 358px for text). The whole text column scrolls like a page, so the
-           reflection is never squeezed into a tiny box, and the link buttons stay pinned. */
+           reflection is never squeezed into a tiny box, and the link buttons stay pinned. The
+           Artifact 3 popup (`.demo-media`) shares the scrolling column but keeps its own widths. */
         @media (min-width:901px), (max-height:500px) and (orientation:landscape){
             .card.modal-card:has(.media > img){
                 --sq:min(86vh,600px,48vw);
@@ -1547,7 +1548,8 @@
                 grid-template-columns:var(--sq) minmax(0,1fr);
             }
 
-            .modal-card:has(.media > img) .card-body{
+            .modal-card:has(.media > img) .card-body,
+            .modal-card:has(.demo-media) .card-body{
                 padding-bottom:0;
                 overflow-y:auto;
                 overscroll-behavior:contain;
@@ -1555,12 +1557,14 @@
                 scrollbar-color:rgba(255,255,255,.28) transparent;
             }
 
-            .card.modal-card:has(.media > img) .reflection{
+            .card.modal-card:has(.media > img) .reflection,
+            .card.modal-card:has(.demo-media) .reflection{
                 flex:none;
                 overflow:visible;
             }
 
-            .modal-card:has(.media > img) .links{
+            .modal-card:has(.media > img) .links,
+            .modal-card:has(.demo-media) .links{
                 position:sticky;
                 bottom:0;
                 z-index:2;
@@ -2494,7 +2498,16 @@
                                 <span class="toolkit-pill">Node.js</span>
                             </div>
 
-                            <p class="reflection">Reflection coming soon.</p>
+                            <p class="reflection">
+                                Building readme-architect taught me that splitting work between a model and plain code
+                                is as much about watching what happens as it is about design. I gave the model a small
+                                job: list the claims and find evidence for each. The real problems only showed up when I
+                                tested it. The gather script wasn't scanning every text file for secrets, and the checker
+                                failed on its own README because it read example output as commands to run. Both fixes
+                                went in the code, not the prompt. The biggest lesson was about reliability: code can be
+                                tested on its own, but a model run is a black box until I check its output. I spent more
+                                time writing tests than writing the model part, and it paid off.
+                            </p>
 
                             <p class="links">
                                 <a class="hover-link" href="https://github.com/kevlam1/readme-architect" target="_blank" rel="noopener">View on GitHub</a>
