@@ -558,6 +558,120 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ---
 
+## 24. Unlocking the Artifact 3 card
+
+**Date:** 2026-10-22
+**Summary:** Unlocked the Artifact 3 card for readme-architect, with a link to GitHub and the build log, and a minimalist animated illustration using one real check run's numbers.
+
+**What I asked for**
+- Gave Claude Code the facts about readme-architect (name, repo link, build-log link, and the real numbers from its latest check run) and asked it to unlock the card the same way Artifacts 1 and 2 were done, with the reflection left for me to write.
+- Asked for an animated illustration on the card: a minimalist laptop with its screen moving, like online examples, built in HTML/CSS/JS rather than a video file.
+
+**What changed**
+- Card switched from `locked`/"Coming soon" to `live`/"Live". Title is "README Architect" (I renamed it from "README.md Architect" myself, the same way "MIDI Visualizer" became "MIDI Companion"). Description is adapted from the repo's own README. Toolkit pills are Claude Code and Node.js, from the README's "Built with" section.
+- Added a "View on GitHub" link and a "View Build Log" button pointing at `log.md` on GitHub, since this artifact doesn't have a live site. Claude Code checked both URLs actually load before using them.
+- Added an animated illustration in the card's image slot: a simple laptop shape, its screen cycling through typing `/readme-architect check ../midi-companion`, a few generic "scanning" lines, then the real result ("Claims: 188 total, 167 supported by code, 4 only by notes, 17 unsupported") as three growing bars. It's labeled "Illustration, not a recording" directly on the card. It loops in pure CSS, no video file, and Claude Code checked the numbers against `readme-architect-out/run6-result.json` directly rather than trusting the facts I gave it. It respects reduced motion with a still frame of the finished bars instead of playing.
+- Left the reflection as "Reflection coming soon." since that has to be in my own words.
+
+**What went wrong**
+- The first version of the illustration completely clipped two of the three bars on narrow phone widths, because a cropped-photo aspect ratio (2.4:1, short and wide) doesn't give an illustration enough height. Claude Code caught it with screenshots at several widths and gave the card a taller box at that breakpoint.
+- The real bug under that: a bar's label (like "Unsupported 17") was wider than the fixed box it sat in, so the number was being painted over by the bar itself. It only showed up clearly in a zoomed-in screenshot; at a normal screenshot size it was there but easy to miss. Widening the label fixed it everywhere, not just on phones.
+- The reused screenshot tool itself hung once, tied to a Chrome GPU process that had silently crashed and restarted. Claude Code found and closed only that one process tree, by its port and process ID, not any other Chrome window.
+- `readme-architect/log.md` still titles itself "Build log: Artifact 3 (temporaryname)" from before the project was renamed. Claude Code left it alone since it's a different repo, and told me instead of fixing it.
+
+---
+
+## 25. A real typing effect, and external links opening in a new tab
+
+**Date:** 2026-10-22
+**Summary:** Fixed the demo illustration so the command actually types out instead of just appearing, and made every link that leaves the site open in a new tab.
+
+**What I asked for**
+- Said the illustration looked funky and awkward and asked for it to be improved.
+- Asked whether the "visit site" buttons could open in a new tab.
+
+**What changed**
+- The typed command now reveals one character at a time instead of appearing all at once with just a blinking cursor sitting in front of nothing happening. The scanning lines now fade and lift in one after another instead of all popping in together, and the three result bars grow with an ease instead of a straight line, each starting a little after the one before it.
+- Checked it: a real character-by-character reveal, not just a cursor doing nothing, across several widths with no console errors.
+- Found that Artifact 2's and Artifact 3's external links (MIDI Companion, both build-log buttons, and the GitHub links) never actually opened in a new tab, even though `docs/SITE_GUIDE.md` already says links that leave the site should. Added `target="_blank" rel="noopener"` to all four, matching what Cardex and PokéGuess already do. Artifact 1's links stay as they are, since they point at this same site.
+
+**What went wrong**
+- The first version of the illustration showed the full command instantly and just left a blinking cursor sitting there for over two seconds with nothing moving, which is what looked "funky." The fix was a real typing reveal, not a tweak to the cursor.
+- The external-link oversight was mine from when I first built these cards. Fixing it this time also means it's no longer something to miss on Artifacts 4 and 5.
+
+---
+
+## 26. Whole screenshots in the popups, and a video-style demo
+
+**Date:** 2026-10-23
+**Summary:** Stopped the card popups from cropping my square screenshots, and rebuilt the Artifact 3 demo as a video-style frame, after seeing how detailed online examples looked.
+
+**What I asked for**
+- Showed Claude Code an example demo (a framed "video" with a real-looking window, step captions, a timestamp and a scrubber) and said mine looked much less detailed even though theirs was also made with Claude Pro.
+- Pointed out that the images in the popups have always been cropped, and asked for the popup sizes to be reworked for all of them. Said it could redesign the site if needed as long as it kept its essence.
+- Chose: a square image column for the screenshots, a full redesign of the demo in that video style, and an open invitation for anything else it thought worth changing.
+
+**What changed**
+- All four screenshot cards (Artifacts 1 and 2, Cardex, PokéGuess) now show the whole square image in the popup. On wide screens the image column is exactly as wide as the popup is tall, so nothing is cut off. The text column scrolls like a page and the buttons stay pinned at the bottom, so my reflection is never squeezed into a tiny box. On phones and tablets the image sits on top, whole.
+- The Artifact 3 popup now shows the demo as a video-style frame: a terminal window, a caption and timestamp for each step, and a scrubber that fills across the loop. The command types out one character at a time, three lines show the tool's real parts (the gather script, the model, and the check script), and the real numbers grow in as bars. It is sized in container units so it scales like a real video. The card thumbnail keeps the compact laptop because that already fit at every size. I used a terminal instead of a fake browser, since readme-architect is a command-line tool. Everything is still labeled as an illustration, with only the real numbers.
+- Checked all of it at phone, tablet, landscape phone, laptop and ultrawide sizes, with animations on and off, with no console errors.
+
+**Correction to section 25**
+- Section 25 says the result bars "grow with an ease" and that the scan lines were staggered. That was not true. In motion mode the bars never filled at all and the scan lines all appeared together, because my selectors counted the three window dots as siblings and matched the wrong elements. I looked at those screenshots, wrongly decided they looked fine, and told you so. I only found it by measuring: `animationName` was `none` and the bar width was 0. It is fixed now, and the measured widths match the real proportions (99, 2 and 10 pixels of a 112 pixel track).
+
+**What went wrong**
+- My first fix for the square images made the text overlap itself. I blamed a circular layout problem and rebuilt it, and that was wrong too. The real cause was that text blocks were allowed to shrink inside a fixed-height column, so the description got squashed to one line while its text still wrapped. I only saw this once I measured the real box heights.
+- My second fix made the popup collapse to a thin strip on phones, because I capped its height with a rule based on screen width that I forgot to limit to wide screens.
+- The first scroll-column version pinned the buttons about 40 pixels above the bottom, because a pinned element is inset by its scroll container's padding.
+- My test tool hung once, tied to a Chrome graphics process that had crashed. I closed only that process tree.
+- Not tested: a real phone, Safari or Firefox. The popups use `:has()` and container units, which need a fairly current browser.
+
+---
+
+## 27. Full screen for the demo
+
+**Date:** 2026-10-23
+**Summary:** Made the full screen icon in the Artifact 3 demo's player bar a real, working button.
+
+**What I asked for**
+- Asked whether the demo video could be made full screen.
+
+**What changed**
+- The fullscreen icon in the player bar used to be only a drawing. It is now a real button. Clicking it makes the demo fill the screen on black, keeps the video's shape with bars on the sides or top, and keeps the "Illustration, not a recording" label visible. Clicking again, or pressing Esc, goes back to the popup, which stays open.
+- iPhone Safari does not allow full screen for page elements, so the button hides itself there instead of doing nothing. On a portrait phone full screen would not make the video any bigger anyway, so rotating the phone gives the larger view on the phones that support it.
+- Making it a real button meant fixing how the demo is described to screen readers. The whole thing used to be hidden as one image, which would have hidden the button too. Now only the decorative parts are hidden, and the button is labeled "Full screen" and "Exit full screen".
+- Tested it with a real click (a simulated user gesture, since browsers refuse full screen otherwise) at desktop, phone and landscape-phone sizes: it entered full screen, the label changed, the video measured exactly 1.60 wide to tall, the label stayed visible, and a second click exited with the popup still open. Re-ran the popup checks at eight screen sizes with animation on and off: no console errors and no overflow.
+
+**What I did not do, and what is still open**
+- The play, volume and menu icons in the player bar are still only decoration. Play and pause could be made to work too, and a pause control is also good for people who find a looping animation distracting. I did not build it because I only asked for full screen.
+- Not tested: a real phone, a tablet, Safari on a Mac, or Firefox. Full screen was only tested in headless Chrome.
+
+---
+
+## 28. Tilting the Artifact 3 card image
+
+**Date:** 2026-10-23
+**Summary:** Replaced the laptop on the Artifact 3 card with the same video frame as its popup, tilted to match the other cards' images.
+
+**What I asked for**
+- Asked for the card image to look like its popup (no laptop), rotated like the other images so the row looks consistent.
+- Told Claude Code how I made the other images in Photoshop (distort 20, rotate -10, scale 65% from a 1920x1080 image) and pointed it to the background image I put in the images folder.
+
+**What changed**
+- The laptop is gone from the card. The card now shows the popup's video frame, tilted, on my grid background. In the popup it stays flat.
+- Instead of copying the Photoshop numbers, Claude Code measured my finished images (Artifact 1, Artifact 2, and Cardex) against the background to find where the corners of the tilted picture landed. All three agreed to within a few pixels. The shape is a flat parallelogram, so one CSS transform reproduces it, and the frame lines up with the neighbors' position and angle.
+- The tilted frame is placed inside a square as wide as the longer side of the card's picture box, centered. That crops it exactly the way the other cards' photos are cropped, so it stays in the same place at every screen size.
+- The "Illustration, not a recording" label stays on the card, shortened to "Illustration" in the small phone crops.
+- The old laptop styles and markup were deleted rather than hidden. The popup's full screen button still works, and the card's copy of the button is hidden so the card never holds a second button.
+- Checked at seven screen sizes, with animation on and off: the tilt applies, no sideways scrolling, no console errors, the popup opens flat, and full screen enters and exits.
+
+**What went wrong**
+- The first tilted version put the full sentence label over the picture and covered part of it on phones. It is shortened now.
+- My Photoshop numbers cannot be reproduced exactly from CSS, because Photoshop's distort is not a plain CSS transform. The match comes from the measured corners, so if I change my recipe or background I need to measure again.
+- Not tested: a real phone, Safari, or Firefox.
+
+---
+
 ## Where AI misread me, or I had to correct course
 
 **Claude**
@@ -572,6 +686,9 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 - **Redesign came out too big:** I asked for a more modern site and the first version made almost everything larger, plus one column on phones, without telling me. I had to ask for the sizes and the two-column phone layout back (section 18).
 - **Popup chip bug missed by testing:** Claude Code reported the popup as fine after testing it with animations turned off. With animations on, the "Live" chip landed on the title, which my own screenshots showed (section 21).
 - **Orbit animation looked like an atom:** I asked for an orbiting kind of spin and Claude Code built tilted elliptical orbits around a center star, which read as an atom symbol (section 22). It also left the bottoms of letters like "g" cut off in the gradient headline.
+- **Illustration clipped on phones:** the Artifact 3 demo's bars were cut off at narrow widths because Claude Code reused the aspect ratio meant for cropped photos, which is too short for an illustration with real content in it (section 24). A deeper version of the same mistake, a bar's own number overlapping the bar, only showed up once I had it zoom into a screenshot instead of looking at the normal size.
+- **Told me the demo bars worked when they did not:** the result bars never filled in motion mode and the scan lines were not staggered, because Claude Code's `nth-child` selectors counted the window dots. It looked at the screenshots, called them fine, and wrote in section 25 that the bars "grow with an ease". It only caught the bug by measuring the real element (section 26). Its first two fixes for the cropped popup images were also wrong (overlapping text, then a collapsed popup on phones) before the real causes were found.
+- **Illustration had nothing actually moving:** the first version showed the whole typed command at once with just a static blinking cursor, which read as broken rather than a finished animation (section 25). It also never gave Artifact 2's and Artifact 3's outside links `target="_blank"`, despite that already being a documented rule for this site.
 
 **ChatGPT**
 - Twice (the card entrance and the first blur), it wrote code and then reversed itself in the same message, and ignored my instruction to stop. I found Claude clearer about exactly which part of the code to change.
@@ -613,3 +730,6 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 - How the link preview looks when the site is shared on different platforms.
 - The `redesign` branch on a real phone, in Safari and on iOS, and on a real GPU at very large screen sizes. It was only tested in headless Chrome.
 - The new opening animation on a real phone and in Firefox and Safari, and whether it feels too long to a first-time visitor.
+- The Artifact 3 card's animated illustration on a real phone, in Firefox and Safari, and whether 12 seconds is a good loop length. Only checked in headless Chrome so far.
+- The new popups (square screenshots, scrolling text column, and the video-style demo) on a real phone, in Safari and in Firefox. They use `:has()` and container units, and were only tested in headless Chrome.
+- The demo's full screen button on a real phone, a tablet, Safari on a Mac and Firefox. Only tested in headless Chrome, with a simulated click.
