@@ -684,6 +684,536 @@
             transform:scale(1.045);
         }
 
+        /* =========================================================
+           DEMO ILLUSTRATION (Artifact 3 card)
+           A video-style frame: a terminal window that types a command,
+           shows the tool's three parts, then grows the real result
+           numbers in as bars. Pure CSS, no video file. Loops on its own;
+           respects prefers-reduced-motion (see below). The popup shows it
+           flat; the card shows the same frame tilted like the other cards'
+           screenshots (see the thumbnail rules below).
+           ========================================================= */
+        .demo-media{
+            position:absolute;
+            inset:0;
+        }
+
+        .demo-line{
+            margin:.5em 0 0;
+            color:var(--muted);
+            white-space:nowrap;
+        }
+
+        .demo-prompt{
+            margin-top:.7em;
+            color:var(--text);
+        }
+
+        .demo-typed{
+            display:inline-block;
+            overflow:hidden;
+            vertical-align:bottom;
+            white-space:nowrap;
+            width:41ch;
+        }
+
+        .demo-cursor{
+            display:inline-block;
+            width:.5em;
+            height:1em;
+            margin-left:1px;
+            background:var(--accent);
+            vertical-align:text-bottom;
+        }
+
+        .demo-results-head{
+            margin-top:0;
+            color:var(--text);
+            font-weight:600;
+        }
+
+        .demo-bar{
+            display:flex;
+            align-items:center;
+            gap:6px;
+            margin-top:.55em;
+        }
+
+        .demo-bar-label{
+            flex:0 0 auto;
+            width:7.4em;
+            color:var(--muted);
+            white-space:nowrap;
+        }
+
+        .demo-bar-track{
+            position:relative;
+            flex:1;
+            height:5px;
+            border-radius:999px;
+            background:rgba(255,255,255,.08);
+            overflow:hidden;
+        }
+
+        .demo-bar-fill{
+            position:absolute;
+            inset:0 auto 0 0;
+            width:var(--pct);
+            border-radius:999px;
+        }
+
+        .demo-bar-ok{background:var(--live)}
+        .demo-bar-note{background:#7aa2ff}
+        .demo-bar-bad{background:#f87171}
+
+        .demo-slide{
+            position:absolute;
+            inset:0;
+            opacity:0;
+        }
+
+        /* Default (and reduced-motion) state: a still, finished frame, so the
+           illustration is still informative with no motion at all. */
+        .demo-results{opacity:1}
+
+        @media (prefers-reduced-motion:no-preference){
+            .demo-typing,
+            .demo-scanning,
+            .demo-results{
+                opacity:0;
+                animation-duration:12s;
+                animation-iteration-count:infinite;
+                animation-timing-function:ease-in-out;
+            }
+
+            .demo-typing{animation-name:demoTyping}
+            .demo-scanning{animation-name:demoScanning}
+            .demo-results{animation-name:demoResults}
+
+            @keyframes demoTyping{
+                0%,3%{opacity:0}
+                5%,28%{opacity:1}
+                30%,100%{opacity:0}
+            }
+
+            @keyframes demoScanning{
+                0%,32%{opacity:0}
+                34%,58%{opacity:1}
+                60%,100%{opacity:0}
+            }
+
+            @keyframes demoResults{
+                0%,62%{opacity:0}
+                65%,96%{opacity:1}
+                98%,100%{opacity:0}
+            }
+
+            /* The command appears one character at a time, like it's being typed */
+            .demo-typed{
+                width:0;
+                animation:demoType 12s steps(41,end) infinite;
+            }
+
+            @keyframes demoType{
+                0%,5%{width:0}
+                22%,100%{width:41ch}
+            }
+
+            .demo-cursor{animation:demoBlink 1s steps(2) infinite}
+
+            @keyframes demoBlink{50%{opacity:0}}
+
+            /* Each scanning line fades and lifts in a little after the one before it */
+            .demo-scanning .demo-line{
+                opacity:0;
+                transform:translateY(4px);
+                animation:demoScanLine 12s ease-out infinite;
+            }
+
+            .demo-scanning .demo-line:nth-of-type(1){animation-delay:0s}
+            .demo-scanning .demo-line:nth-of-type(2){animation-delay:.4s}
+            .demo-scanning .demo-line:nth-of-type(3){animation-delay:.8s}
+
+            @keyframes demoScanLine{
+                0%,32%{opacity:0;transform:translateY(4px)}
+                38%,60%{opacity:1;transform:none}
+                62%,100%{opacity:0}
+            }
+
+            /* Bars fill out one after another with a gentle ease, not a straight line */
+            .demo-bar-fill{
+                width:0;
+                animation-duration:12s;
+                animation-timing-function:ease-out;
+                animation-iteration-count:infinite;
+            }
+
+            .demo-bar-ok{animation-name:demoBar1}
+            .demo-bar-note{animation-name:demoBar2}
+            .demo-bar-bad{animation-name:demoBar3}
+
+            @keyframes demoBar1{
+                0%,66%{width:0}
+                82%,100%{width:var(--pct)}
+            }
+
+            @keyframes demoBar2{
+                0%,70%{width:0}
+                86%,100%{width:var(--pct)}
+            }
+
+            @keyframes demoBar3{
+                0%,74%{width:0}
+                90%,100%{width:var(--pct)}
+            }
+        }
+
+        /* ---------------------------------------------------------
+           Card thumbnail: the same video frame, tilted like the other cards' screenshots, on the
+           same grid background, cropped the way object-fit: cover crops those (the stage is a
+           square as wide as the longer side of the box, centered). The corners were measured from
+           artifact-1, artifact-2 and side-project-1 against the background image: top-left
+           (105,465), top-right (870,336), bottom-right (1096,734), bottom-left (328,863) out of
+           1200. That is a flat parallelogram, so one matrix reproduces it:
+           a,b = top edge / width, c,d = left edge / height (the frame is 776 x 485 units).
+           --------------------------------------------------------- */
+        .card:not(.modal-card) .media:has(.demo-media){
+            background:#161616 url("images/Artifact%20Images%20Background.jpg") center / cover no-repeat;
+        }
+
+        .card:not(.modal-card) .demo-media{container-type:size}
+
+        .card:not(.modal-card) .demo-stage{
+            position:absolute;
+            top:50%;
+            left:50%;
+            width:max(100cqw,100cqh);
+            aspect-ratio:1 / 1;
+            margin:calc(max(100cqw,100cqh) / -2) 0 0 calc(max(100cqw,100cqh) / -2);
+            transition:transform .9s var(--ease);
+        }
+
+        .card.live:hover .demo-stage{transform:scale(1.045)}
+
+        .card:not(.modal-card) .demo-video{
+            position:absolute;
+            top:38.75%;
+            left:8.75%;
+            width:64.67%;
+            transform-origin:0 0;
+            transform:matrix(.98582,-.16624,.45979,.82062,0,0);
+            box-shadow:0 3cqw 7cqw -2cqw rgba(0,0,0,.7);
+        }
+
+        /* A real button inside a card that is itself a button would be nested controls; the
+           thumbnail's copy of the full screen button is just decoration. */
+        .card:not(.modal-card) .demo-fs{
+            visibility:hidden;
+            pointer-events:none;
+        }
+
+        /* The label stays pinned to the visible corner of the card, not the oversized stage */
+        .card:not(.modal-card) .demo-note{
+            position:absolute;
+            bottom:calc((max(100cqw,100cqh) - 100cqh) / 2 + 7px);
+            left:calc((max(100cqw,100cqh) - 100cqw) / 2 + 8px);
+            z-index:2;
+            max-width:calc(100cqw - 16px);
+            padding:2px 8px;
+            border-radius:999px;
+            background:rgba(7,11,20,.78);
+            font-size:.56rem;
+            letter-spacing:0;
+            text-align:left;
+        }
+
+        /* In the small crops (phones) the full sentence would cover the picture; the word
+           "Illustration" stays, and the full text is in the popup. */
+        @container (max-width:260px){
+            .card:not(.modal-card) .demo-note-more{display:none}
+        }
+
+        /* ---------------------------------------------------------
+           Video-style version of the demo. It only shows in the popup
+           (the card thumbnail keeps the compact laptop above). Everything
+           inside is sized in cqw, so it scales like a video would.
+           --------------------------------------------------------- */
+        .card.modal-card .demo-stage{
+            position:absolute;
+            inset:0;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            gap:14px;
+            padding:52px 20px 20px;
+            background-color:#0b111d;
+            background-image:radial-gradient(rgba(148,163,184,.16) 1px,transparent 1.3px);
+            background-size:22px 22px;
+        }
+
+        .demo-video{
+            position:relative;
+            width:100%;
+            aspect-ratio:16 / 10;
+            container-type:inline-size;
+            overflow:hidden;
+            border:1px solid rgba(255,255,255,.1);
+            border-radius:12px;
+            background:linear-gradient(180deg,#111a2d,#0a0f1b);
+            box-shadow:0 22px 44px -18px rgba(0,0,0,.85),0 0 0 1px rgba(0,0,0,.4);
+        }
+
+        .demo-window{
+            position:absolute;
+            left:6cqw;
+            right:6cqw;
+            top:5cqw;
+            bottom:17cqw;
+            display:flex;
+            flex-direction:column;
+            overflow:hidden;
+            border:1px solid rgba(255,255,255,.12);
+            border-radius:1.6cqw;
+            background:#070b14;
+            box-shadow:0 2cqw 5cqw -2cqw rgba(0,0,0,.9);
+        }
+
+        .demo-titlebar{
+            display:flex;
+            align-items:center;
+            gap:1.1cqw;
+            height:5.6cqw;
+            padding:0 2cqw;
+            border-bottom:1px solid rgba(255,255,255,.07);
+            background:#161e30;
+        }
+
+        .demo-wdot{
+            flex:none;
+            width:1.5cqw;
+            height:1.5cqw;
+            border-radius:50%;
+        }
+
+        .demo-wdot-r{background:#f87171}
+        .demo-wdot-y{background:#facc15}
+        .demo-wdot-g{background:#86efac}
+
+        .demo-wtitle{
+            flex:1;
+            padding-right:5cqw;
+            color:var(--muted);
+            font-size:1.9cqw;
+            text-align:center;
+        }
+
+        .demo-term{
+            position:relative;
+            flex:1;
+            font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+            font-size:13px;
+            font-size:2.9cqw;
+            line-height:1.6;
+            color:var(--text);
+            text-align:left;
+        }
+
+        .demo-term .demo-slide{inset:2.6cqw 3cqw}
+
+        .demo-tline{
+            margin:.6em 0 0;
+            color:#cbd5e1;
+        }
+
+        .demo-chip{
+            display:inline-block;
+            width:5.4em;
+            margin-right:.9em;
+            padding:0 .5em;
+            border-radius:.4em;
+            font-size:.82em;
+            font-weight:600;
+            letter-spacing:.04em;
+            text-align:center;
+        }
+
+        .demo-chip-gather{background:rgba(148,163,184,.22);color:#cbd5e1}
+        .demo-chip-model{background:rgba(122,162,255,.22);color:#a9c0ff}
+        .demo-chip-check{background:rgba(134,239,172,.2);color:#86efac}
+
+        .demo-term .demo-bar-label{width:9.2em}
+
+        .demo-fine{
+            margin:.8em 0 0;
+            color:var(--muted);
+            font-size:.9em;
+        }
+
+        .demo-controls{
+            position:absolute;
+            left:0;
+            right:0;
+            bottom:0;
+            padding:0 2.6cqw 2cqw;
+            background:linear-gradient(180deg,transparent,rgba(0,0,0,.75) 60%);
+        }
+
+        .demo-caps{
+            position:relative;
+            height:5cqw;
+        }
+
+        .demo-cap{
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:#e2e8f0;
+            font-size:2.4cqw;
+            text-align:center;
+        }
+
+        .demo-ctl-row{
+            display:flex;
+            align-items:center;
+            gap:1.8cqw;
+        }
+
+        .demo-ctl-row svg{
+            flex:none;
+            width:3cqw;
+            height:3cqw;
+            opacity:.9;
+        }
+
+        .demo-time{
+            position:relative;
+            flex:none;
+            width:13.5cqw;
+            height:3cqw;
+            color:#e2e8f0;
+            font-size:2.1cqw;
+        }
+
+        .demo-time .demo-slide{
+            display:flex;
+            align-items:center;
+        }
+
+        .demo-scrub{
+            position:relative;
+            flex:1;
+            height:.8cqw;
+            border-radius:999px;
+            background:rgba(255,255,255,.28);
+        }
+
+        .demo-scrub-fill{
+            position:absolute;
+            inset:0 auto 0 0;
+            width:100%;
+            border-radius:inherit;
+            background:#fff;
+        }
+
+        .demo-scrub-fill::after{
+            content:"";
+            position:absolute;
+            top:50%;
+            right:-.9cqw;
+            width:1.8cqw;
+            height:1.8cqw;
+            margin-top:-.9cqw;
+            border-radius:50%;
+            background:#fff;
+        }
+
+        .demo-note{
+            margin:0;
+            color:var(--muted);
+            font-size:.68rem;
+            letter-spacing:.02em;
+            text-align:center;
+        }
+
+        /* The one working control in the player bar: full screen. The hit area is bigger than the
+           icon, because the whole player scales down on small screens. */
+        .demo-fs{
+            position:relative;
+            display:grid;
+            flex:none;
+            place-items:center;
+            width:4.4cqw;
+            height:4.4cqw;
+            margin:-.7cqw;
+            padding:0;
+            border:0;
+            border-radius:.8cqw;
+            background:none;
+            cursor:pointer;
+        }
+
+        .demo-fs::before{
+            content:"";
+            position:absolute;
+            inset:-10px;
+        }
+
+        .demo-fs:hover{background:rgba(255,255,255,.14)}
+
+        .demo-fs:focus-visible{
+            outline:2px solid var(--accent);
+            outline-offset:1px;
+        }
+
+        /* Browsers that cannot full-screen a page element (iPhone Safari) get no button at all */
+        html.no-fs .demo-fs{display:none}
+
+        /* Full screen: the stage fills the screen on black and the video keeps its 16:10 shape
+           with bars on any screen. A strip below is kept for the illustration label. */
+        .card.modal-card .demo-stage:fullscreen{
+            justify-content:center;
+            gap:10px;
+            padding:0;
+            background:#000;
+        }
+
+        .card.modal-card .demo-stage:fullscreen .demo-video{
+            width:min(100vw,calc((100vh - 36px) * 1.6));
+            max-width:none;
+            height:auto;
+            border-radius:0;
+            border-color:transparent;
+            box-shadow:none;
+        }
+
+        @media (max-height:500px) and (orientation:landscape){
+            .card.modal-card .demo-stage{
+                justify-content:flex-start;
+                gap:6px;
+                padding:42px 12px 8px;
+            }
+
+            .card.modal-card .demo-video{
+                width:auto;
+                max-width:100%;
+                height:calc(92vh - 76px);
+                height:calc(92dvh - 76px);
+            }
+        }
+
+        @media (prefers-reduced-motion:no-preference){
+            .demo-scrub-fill{
+                width:0;
+                animation:demoScrub 12s linear infinite;
+            }
+
+            @keyframes demoScrub{
+                from{width:0}
+                to{width:100%}
+            }
+        }
+
         /* Card content */
         .card-body{
             display:flex;
@@ -984,6 +1514,61 @@
         }
 
         .modal-card .media{min-height:240px}
+
+        /* The Artifact 3 popup puts the video-style demo in a wider column */
+        @media (min-width:901px), (max-height:500px) and (orientation:landscape){
+            .modal-card:has(.demo-media) .modal-scroll{
+                grid-template-columns:58% 42%;
+            }
+        }
+
+        /* Text blocks must never be squashed below their content: when they did, the next block
+           painted over the overflow. */
+        .modal-card .card-body > *{flex-shrink:0}
+
+        /* Real screenshots are square (1200x1200). Side by side (wide screens and short landscape
+           phones), --sq is both the popup's height cap and the image column's width, so the box is
+           square by construction instead of cropping the photo into the illustration's 38% slot.
+           It stays smaller than the full popup so the text column keeps a readable width (a 720px
+           square left only 358px for text). The whole text column scrolls like a page, so the
+           reflection is never squeezed into a tiny box, and the link buttons stay pinned. */
+        @media (min-width:901px), (max-height:500px) and (orientation:landscape){
+            .card.modal-card:has(.media > img){
+                --sq:min(86vh,600px,48vw);
+                width:min(1120px,100%);
+                max-height:var(--sq);
+            }
+
+            @supports (height:1dvh){
+                .card.modal-card:has(.media > img){--sq:min(86dvh,600px,48vw)}
+            }
+
+            .modal-card:has(.media > img) .modal-scroll{
+                grid-template-columns:var(--sq) minmax(0,1fr);
+            }
+
+            .modal-card:has(.media > img) .card-body{
+                padding-bottom:0;
+                overflow-y:auto;
+                overscroll-behavior:contain;
+                scrollbar-width:thin;
+                scrollbar-color:rgba(255,255,255,.28) transparent;
+            }
+
+            .card.modal-card:has(.media > img) .reflection{
+                flex:none;
+                overflow:visible;
+            }
+
+            .modal-card:has(.media > img) .links{
+                position:sticky;
+                bottom:0;
+                z-index:2;
+                margin:auto calc(var(--pad) * -1) 0;
+                padding:20px var(--pad) var(--pad);
+                background:linear-gradient(180deg,rgba(18,27,46,0),rgba(18,27,46,.96) 40%);
+            }
+        }
 
         /* The status pill floats over the image's top-left corner */
         .modal-card .status{
@@ -1351,6 +1936,37 @@
                 border-right:0;
                 border-bottom:1px solid var(--line);
             }
+
+            /* Stacked on top, a real screenshot is shown whole. Phones get the true square; tablets
+               cap the height and fill the spare width with the screenshot's own dark background. */
+            .modal-card:has(.media > img) .media{
+                width:100%;
+                height:auto;
+                aspect-ratio:1 / 1;
+                max-height:min(60vh,520px);
+                max-height:min(60dvh,520px);
+                background:#181818;
+            }
+
+            .modal-card:has(.media > img) .media img{object-fit:contain}
+
+            /* The video-style demo sizes itself: the media box grows to fit it */
+            .modal-card:has(.demo-media) .media{
+                aspect-ratio:auto;
+                height:auto;
+            }
+
+            .card.modal-card .demo-media{
+                position:relative;
+                inset:auto;
+            }
+
+            .card.modal-card .demo-stage{
+                position:relative;
+                inset:auto;
+                padding:46px 10px 12px;
+                gap:10px;
+            }
         }
 
         @media (max-width:520px){
@@ -1428,6 +2044,7 @@
             .btn,
             .social a,
             .media img,
+            .demo-stage,
             .toolkit-pill,
             .hover-link,
             .hover-link::after{transition:none}
@@ -1784,8 +2401,8 @@
                             </p>
 
                             <p class="links">
-                                <a class="hover-link" href="https://midi-companion.vercel.app">Visit MIDI Companion</a>
-                                <a class="hover-link build-log-link" href="https://midi-companion.vercel.app/logs/">View Build Log</a>
+                                <a class="hover-link" href="https://midi-companion.vercel.app" target="_blank" rel="noopener">Visit MIDI Companion</a>
+                                <a class="hover-link build-log-link" href="https://midi-companion.vercel.app/logs/" target="_blank" rel="noopener">View Build Log</a>
                             </p>
 
                         </div>
@@ -1794,31 +2411,95 @@
 
                 <!-- Artifact 3 -->
                 <div class="card-entrance" style="--card-i:2">
-                    <article class="card locked" id="artifact-3">
+                    <article class="card live" id="artifact-3">
 
                         <div class="media">
-                            <img src="images/artifact-3.jpg" alt="Image coming soon" width="1200" height="1200" loading="lazy" decoding="async">
+                            <div class="demo-media" role="group" aria-label="Illustration of a terminal running a readme-architect check on another project, then showing 188 claims checked: 167 supported by code, 4 only by notes, 17 unsupported, 0 with bad evidence.">
+                                <div class="demo-stage">
+                                    <div class="demo-video">
+                                        <div class="demo-window" aria-hidden="true">
+                                            <div class="demo-titlebar">
+                                                <span class="demo-wdot demo-wdot-r"></span><span class="demo-wdot demo-wdot-y"></span><span class="demo-wdot demo-wdot-g"></span>
+                                                <span class="demo-wtitle">readme-architect &mdash; terminal</span>
+                                            </div>
+                                            <div class="demo-term">
+                                                <div class="demo-slide demo-typing">
+                                                    <p class="demo-line demo-prompt">$ <span class="demo-typed">/readme-architect check ../midi-companion<span class="demo-cursor"></span></span></p>
+                                                </div>
+                                                <div class="demo-slide demo-scanning">
+                                                    <p class="demo-line demo-tline"><b class="demo-chip demo-chip-gather">gather</b>Collecting the repo's files</p>
+                                                    <p class="demo-line demo-tline"><b class="demo-chip demo-chip-model">model</b>Listing each claim with a file and quote</p>
+                                                    <p class="demo-line demo-tline"><b class="demo-chip demo-chip-check">check</b>Verifying every quote in the files</p>
+                                                </div>
+                                                <div class="demo-slide demo-results">
+                                                    <p class="demo-line demo-results-head">Claims: 188 total</p>
+                                                    <div class="demo-bar">
+                                                        <span class="demo-bar-label">Supported 167</span>
+                                                        <span class="demo-bar-track"><span class="demo-bar-fill demo-bar-ok" style="--pct:88.8%"></span></span>
+                                                    </div>
+                                                    <div class="demo-bar">
+                                                        <span class="demo-bar-label">Notes only 4</span>
+                                                        <span class="demo-bar-track"><span class="demo-bar-fill demo-bar-note" style="--pct:2.1%"></span></span>
+                                                    </div>
+                                                    <div class="demo-bar">
+                                                        <span class="demo-bar-label">Unsupported 17</span>
+                                                        <span class="demo-bar-track"><span class="demo-bar-fill demo-bar-bad" style="--pct:9%"></span></span>
+                                                    </div>
+                                                    <p class="demo-line demo-fine">0 with bad evidence</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="demo-controls">
+                                            <div class="demo-caps" aria-hidden="true">
+                                                <span class="demo-slide demo-typing demo-cap">Type the check command</span>
+                                                <span class="demo-slide demo-scanning demo-cap">Scripts gather files, the model lists claims, a script checks them</span>
+                                                <span class="demo-slide demo-results demo-cap">188 claims checked against the repo&rsquo;s real files</span>
+                                            </div>
+                                            <div class="demo-ctl-row">
+                                                <svg width="16" height="16" fill="#e2e8f0" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                                                <span class="demo-time" aria-hidden="true">
+                                                    <span class="demo-slide demo-typing">0:02 / 0:12</span>
+                                                    <span class="demo-slide demo-scanning">0:06 / 0:12</span>
+                                                    <span class="demo-slide demo-results">0:10 / 0:12</span>
+                                                </span>
+                                                <span class="demo-scrub" aria-hidden="true"><span class="demo-scrub-fill"></span></span>
+                                                <svg width="16" height="16" fill="#e2e8f0" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+                                                <button type="button" class="demo-fs" aria-label="Full screen"><svg width="16" height="16" fill="#e2e8f0" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button>
+                                                <svg width="16" height="16" fill="#e2e8f0" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm0 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="demo-note" aria-hidden="true">Illustration<span class="demo-note-more">, not a recording &middot; real numbers from one run</span></p>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="card-body">
 
                             <div class="meta">
                                 <span>Artifact 3 &middot; AI Agent Integration &middot; Due Oct 25</span>
-                                <span class="status">Coming soon</span>
+                                <span class="status live">Live</span>
                             </div>
 
-                            <h3>README.md Architect</h3>
+                            <h3>README Architect</h3>
 
                             <p class="desc">
-                                A Claude Code skill that analyzes a project's codebase and generates a README
-                                based on its actual structure, technologies, and functionality.
+                                A Claude Code skill that fact-checks a README against a project's real files, citing a
+                                file and exact quote for every claim, and can draft a new README the same way.
                             </p>
 
                             <div class="toolkit" aria-label="Toolkit">
-                                <span class="toolkit-pill">Toolkit: TBA</span>
+                                <span class="toolkit-pill">Claude Code</span>
+                                <span class="toolkit-pill">Node.js</span>
                             </div>
 
-                            <p class="reflection">Link and reflection coming soon.</p>
+                            <p class="reflection">Reflection coming soon.</p>
+
+                            <p class="links">
+                                <a class="hover-link" href="https://github.com/kevlam1/readme-architect" target="_blank" rel="noopener">View on GitHub</a>
+                                <a class="hover-link build-log-link" href="https://github.com/kevlam1/readme-architect/blob/main/log.md" target="_blank" rel="noopener">View Build Log</a>
+                            </p>
 
                         </div>
                     </article>
@@ -2522,6 +3203,37 @@
                     openCard(card);
                 }
             });
+        });
+    })();
+</script>
+
+
+<!-- =========================================================
+     DEMO FULL SCREEN
+     The popup is a clone of the card, so one listener on the document handles the clone's button.
+     ========================================================= -->
+<script>
+    (() => {
+        // iPhone Safari cannot full-screen a page element; hide the button rather than leave a dead one
+        if (!document.fullscreenEnabled) {
+            document.documentElement.classList.add('no-fs');
+            return;
+        }
+
+        document.addEventListener('click', e => {
+            const btn = e.target.closest('.demo-fs');
+            if (!btn) return;
+
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                btn.closest('.demo-stage').requestFullscreen().catch(() => {});
+            }
+        });
+
+        document.addEventListener('fullscreenchange', () => {
+            const label = document.fullscreenElement ? 'Exit full screen' : 'Full screen';
+            document.querySelectorAll('.demo-fs').forEach(b => b.setAttribute('aria-label', label));
         });
     })();
 </script>
