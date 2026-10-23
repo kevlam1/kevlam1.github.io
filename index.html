@@ -2499,14 +2499,16 @@
                             </div>
 
                             <p class="reflection">
-                                Building readme-architect taught me that splitting work between a model and plain code
-                                is as much about watching what happens as it is about design. I gave the model a small
-                                job: list the claims and find evidence for each. The real problems only showed up when I
-                                tested it. The gather script wasn't scanning every text file for secrets, and the checker
-                                failed on its own README because it read example output as commands to run. Both fixes
-                                went in the code, not the prompt. The biggest lesson was about reliability: code can be
-                                tested on its own, but a model run is a black box until I check its output. I spent more
-                                time writing tests than writing the model part, and it paid off.
+                                I built readme-architect to check a README against the real files in a project. The
+                                model has one small job: list the claims and point to the evidence for each. The real
+                                problems only showed up when I ran the tool myself. My gather script wasn't checking
+                                every text file for secrets, and the checker failed on its own README because it mistook
+                                example output for commands. Both fixes went in the code, not the prompt. Claude also
+                                told me early on that secrets would be filtered out before the model reads anything, but
+                                that isn't guaranteed, because the script only controls what it hands over. What I
+                                learned is that I can test code by itself, but I can't test a model run until I look at
+                                what it gave back. I spent more time writing tests than on the model part, and it was
+                                worth it.
                             </p>
 
                             <p class="links">
