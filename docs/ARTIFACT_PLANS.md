@@ -85,16 +85,15 @@ Keep the list short so the project does not mirror midee's dependency list.
 - Test on Kevin's own repos: the portfolio, Cardex, and PokéGuess. Compare the output to the real READMEs and the real code. Record every wrong claim in the log.
 - Do not let it include secrets from `.env` files or config.
 
-## Artifact 4: Service Booking Tool (due Nov 8; for someone outside the team; pair or trio)
-**Idea:** a booking system for a service provider to manage availability, appointments, and customer requests.
-- Read the Artifact 4 page first. The "someone" must be a real person outside the team. Find that person before designing anything, and ask how they take bookings today, what annoys them, and what a first version must do.
-- Customers' personal details will be involved. Decide early what is stored, where, and who can see it.
-- Plan the smallest version the client would actually use, and have the client try it. A pair or trio means agreeing on a repo, branches, and who owns what.
+## Artifact 4: Game Reference Tool (due Nov 8; for someone outside the team; pair or trio)
+**Swapped on 2026-10-25:** this slot used to hold the Service Booking Tool, and the Game Reference Tool used to be Artifact 5. Kevin's friends who play the same games are the intended users. The Artifact 4 page has not been read, and it asks for a real person outside the team, so check that the friends fit before designing anything.
+- Read the Artifact 4 page first. Ask the friends what they look up today, what annoys them, and what a first version must do.
+- A pair or trio means agreeing on a repo, branches, and who owns what. Due Nov 8, so scope the phases below down to what fits.
+- The phases, architecture and data sources below were written for a five-week moonshot (it was Artifact 5). With less time, expect to keep phase 1 and perhaps phase 2.
 
-## Artifact 5: Game Reference Tool (due Dec 13; the moonshot)
 **Idea:** a fast, no-bloat reference for the games Kevin and his friends play: **League of Legends** (champions and items: base stats, ability text, item stats and effects), then **Valorant** (agents, weapons, skins, maybe a model viewer), then **Overwatch** (heroes, perks, player lookup, win/loss by hero and mode). A 3x3 grid of picks that "represent" the user for each game. Information only. No lore, no ads, no wiki sprawl.
 
-This started as Artifact 2 and was moved here because three games is far larger than 8 to 12 hours. A scoped plan was written when it was Artifact 2 (League only, phase 1). With about five weeks, the scope can grow. Read the Artifact 5 page for what it requires (the overview says it may be deployed to real users).
+This started as Artifact 2, was moved to Artifact 5 because three games is far larger than 8 to 12 hours, and moved again to Artifact 4 on 2026-10-25. A scoped plan was written when it was Artifact 2 (League only, phase 1).
 
 **Suggested phases**
 1. League champions and items from a local snapshot of Data Dragon data (champion list and search, champion page with base stats and growth values, ability text as given, item list and search, item page with stats and effect text, patch version shown).
@@ -123,7 +122,13 @@ This started as Artifact 2 and was moved here because three games is far larger 
 
 **Non-goals for the first version:** exact ability damage numbers (the data is unreliable), accounts, a backend, anything needing a key.
 
+## Artifact 5: Overloaded (due Dec 13; the moonshot)
+**Idea:** a browser-based virtual Magic: The Gathering tabletop simulator: build a deck, join a table, and play with friends in real time. Chosen on 2026-10-25, replacing the Game Reference Tool, which moved to Artifact 4. About 5 to 7 weeks.
+- It has its own repo and folder, `../Overloaded/` (`github.com/kevlam1/Overloaded`), with its own `CLAUDE.md`. The vision, phases, architecture and open questions live there, so they are not repeated here.
+- The Artifact 5 page has not been read. Nothing is built yet.
+
 ## Ideas considered and not chosen (in case plans change)
+- Service Booking Tool (was Artifact 4): a booking system for a service provider to manage availability, appointments, and customer requests. Dropped on 2026-10-25 when the Game Reference Tool took Artifact 4. If it comes back, it needs a real person outside the team, and decide early what customer data is stored, where, and who can see it.
 - Weekly dev summary: reads git history across local repos and writes a markdown report. A plain script can only collect and format; real prose summaries need an AI call (Artifact 3 territory).
 - Duplicate and clutter finder with a dry-run mode (compare size, then partial hash, then full hash, and measure speedup).
 - Card price watcher for a Pokémon wishlist (Pokémon TCG API, Discord webhook alert).
