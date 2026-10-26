@@ -718,6 +718,31 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ---
 
+## 31. Swapping Artifacts 4 and 5
+
+**Date:** 2026-10-25
+**Summary:** Artifact 5 is now a Magic: The Gathering simulator called Overloaded, and the game reference tool moved to Artifact 4.
+
+**What I asked for**
+- Told Claude Code that my Artifact 5 is now a browser-based virtual Magic: The Gathering tabletop simulator, and that my old Artifact 5 idea moves to Artifact 4. I asked it to update my docs and the portfolio files to match, and to set up a folder for the new project.
+
+**What changed**
+- The Artifact 4 card now says "Game Reference Tool" with the description that used to be on Artifact 5. The Artifact 5 card now says "Overloaded" with a new description. Both cards are still locked, and the course titles ("Client Focused", "The Moonshot") and due dates did not change.
+- `docs/ARTIFACT_PLANS.md`: the two sections are swapped. Artifact 5 is a short stub that points to the new repo's own `CLAUDE.md`. The Service Booking Tool moved to "Ideas considered and not chosen". Claude added a note that the Artifact 4 course page asks for a real person outside the team, and that I said my friends who play the same games fit that.
+- `docs/PROJECT_CONTEXT.md` (local only): the table rows now match.
+- I left the placeholder list in section 10 and the Artifact 2 decision above as they were written, because they record what I thought at the time. This section is the record of the swap.
+- The new project's folder is `Overloaded/` next to the Portfolio. Its log is in that repo.
+
+**What I checked**
+- Searched the Portfolio folder for every mention of the old titles. The only other places were the log lines above.
+- Not checked: how the two cards look in a browser after the text change. I have not opened them.
+
+**Decisions**
+- Dropped the Service Booking Tool for now. It is not an artifact idea any more.
+- The card titles come from the course, so only the project names and descriptions changed.
+
+---
+
 ## Where AI misread me, or I had to correct course
 
 **Claude**
