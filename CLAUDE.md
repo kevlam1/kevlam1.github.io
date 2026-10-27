@@ -51,6 +51,7 @@ Read this file first. Longer background is in `docs/` (index at the bottom). Kee
 - Kevin keeps `log.md` as the course-required record of what he planned, asked for, decided, and abandoned. After a meaningful change, add to the log directly, in his first-person voice and matching the existing entries, and mention it in your summary so he can review it in the diff.
 - Structure: `# title`, tool lines, then `## What I set out to build` (a plain always-open card), then numbered `## N. Title` sections (shown under "The build"), then the unnumbered reflection sections.
 - Use bold labels (`**What I asked for**`, `**What changed**`, `**Decisions**`). Never add scratch headings or loose bullets at the bottom, because every `##` becomes a box and a menu entry on the log page.
+- For every new artifact, its own `log.md` starts with the full list of planned features, written before the first prompt, as a checkbox list inside "What I set out to build". Each log entry checks off what it finished and names itself. Keep dropped items on the list, marked dropped. When unlocking a card, check that the artifact's log has this list.
 - Update "Not yet verified" when its state changes. There is no "Still to do" section in the log; open items go in `docs/TODO.md`. Record where an AI got something wrong, including you.
 - Do not claim you tested something you did not.
 
