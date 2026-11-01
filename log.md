@@ -743,6 +743,30 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ---
 
+## 32. Artifact 4 is Scrawdle, and the Artifact 4 and 5 cards get links
+
+**Date:** 2026-10-31
+**Summary:** Pointed the Artifact 4 card at Scrawdle and the Artifact 5 card at Overloaded, with links to each live site and repo.
+
+**What I asked for**
+- Told Claude Code to change Artifact 4 to `scrawdle.vercel.app` and its GitHub repo, and Artifact 5 to `overloaded-spell.vercel.app` and its repo.
+
+**What changed**
+- The Artifact 4 card now says "Scrawdle". Claude read the Scrawdle README to write the description: a daily drawing game built by a team of three, with a new prompt each day, a canvas with drawing tools, and a way to see what others drew. I did not write the description myself.
+- Both cards now show a yellow "In progress" tag (a style that was already in the CSS), and each has two links that open in a new tab: the live site and the repo on GitHub. The Artifact 5 card is still locked and does not open. I then asked for the Artifact 4 card to be clickable, so it was changed from locked to live: it tilts on hover and opens the popup like Artifacts 1 to 3, and keeps the "In progress" tag. Their toolkit still says "TBA" and the reflection says "Reflection coming soon", because I haven't written either.
+- `docs/ARTIFACT_PLANS.md` and the local `docs/PROJECT_CONTEXT.md` now say Artifact 4 is Scrawdle. The Game Reference Tool is kept there as an idea that is not an artifact right now.
+
+**What I checked**
+- All four addresses returned HTTP 200 (the two sites and the two repos).
+- Claude read the diff of `index.html`: only the two cards changed, and the new tags match the ones the live cards use.
+- Not checked: how the two cards look. Claude could not start headless Chrome in this session (it isn't on the PATH, and it was not allowed to check the usual install folders), so there are no screenshots at desktop or phone width, and the Artifact 4 popup has never been opened. I need to look at them myself.
+- The Scrawdle README says its live page is still a placeholder canvas, and Overloaded's says it is an early build. The cards link to both as they are.
+
+**What went wrong**
+- Section 31 says my Artifact 4 is the Game Reference Tool. That is wrong: Artifact 4 is Scrawdle. I had told Claude to move my old Artifact 5 idea to Artifact 4, and it did that without asking what Artifact 4 was by then. I don't know when Scrawdle was chosen, so I can't say who had the facts first. I left section 31 as written, and this section is the correction.
+
+---
+
 ## Where AI misread me, or I had to correct course
 
 **Claude**
