@@ -767,6 +767,35 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ---
 
+## 33. Finishing the Artifact 4 card and its Week 2 reflection
+
+**Date:** 2026-11-08
+**Summary:** Marked the Scrawdle card as live, made its card image from a screenshot, filled in the toolkit and added my Week 2 reflection.
+
+**What I asked for**
+- Told Claude Code that Artifact 4 is basically done, and asked it to update the card, make a Week 2 reflection, turn my screenshot of `scrawdle.vercel.app` into the card image like the other cards, and update the toolkit.
+- Gave it my Week 2 points: I lowered the Supabase costs because images take up a lot of room, I took extra care that Claude wrote good schemas, and I updated `CLAUDE.md` so every teammate's Claude was on the same page.
+
+**What changed**
+- The Artifact 4 card now has the green "Live" tag instead of "In progress", and a third link, "View Build Log", pointing at `scrawdle.vercel.app/logs`, next to "Visit Scrawdle" and "View on GitHub".
+- The description now says a team of four, with a line about the animal parts, drawing in the browser, seeing what others drew, and private lobbies. All of it is from the Scrawdle README. Entry 32 said a team of three, which was wrong.
+- The toolkit is JavaScript, HTML5 Canvas, Supabase, Vercel and Claude Code, from the Scrawdle README's Stack section. "Claude Code" is there because the repo has an IntelliJ Claude Code tab file and `CLAUDE.md` is shared by four Claude sessions.
+- `images/artifact-4.jpg` replaces the old placeholder. Claude put my screenshot on the same grid background as my other card images, with the same tilt. It used the corner positions measured from `artifact-1.jpg`, `artifact-2.jpg` and `side-project-1.jpg`, adjusted for my 16:9 screenshot, and drew it with PowerShell's built-in `System.Drawing` at twice the size, then shrank it to 1200 by 1200 (about 105 KB). No new dependency.
+- I added a Week 2 part after my Week 1 text. At first it was one paragraph with "Week 1:" and "Week 2:" run together, so I asked for it to be better organized. The popup's reflection box now has two labeled parts, "Week 1" and "Week 2", with a thin line between them (a few new CSS rules next to the reflection box, and `reflection-week` and `week-tag` classes on the card). Claude wrote the Week 2 text from my three points and left my Week 1 words exactly as they were (it checked that by comparing the text before and after). Where it added detail, it checked it against the Scrawdle repo: a daily wipe deletes old drawings and their files (log entry 27, at my request), only finished drawings are stored, the SQL updates 001, 002, 003 and 005 were tested on a real Postgres (004 was not), and `CLAUDE.md` says it is shared by four people's Claude sessions.
+
+**What I checked**
+- Claude read the Scrawdle README, `backend/README.md`, `CLAUDE.md`, parts of `log.md`, `publish.js` and `schema.sql` on GitHub, and all of the card's addresses returned HTTP 200 (the site, `/logs`, and the repo).
+- Claude looked at the finished image. It checked that the grid lines sit on the same rows as my background and `artifact-2.jpg` at one column (rows 75, 153 and 231).
+- Not checked: how the card and popup look in a browser, at desktop or phone width. Claude could not run a browser in this session. I need to look at them myself, including whether three links fit on the collapsed card.
+- Not checked: any real Supabase usage or cost numbers. "Lowered" is my word. Claude only confirmed that the wipe exists and that published drawings are stored as PNG files (the WebP files are lobby messages that are never stored).
+
+**What went wrong**
+- Entry 32 and the first version of the card said "a team of three". The README says four people. My own Week 1 text still says "three people", and I left it, since it is in my words and I have not decided whether to change it.
+- Claude first tried to write the image script as a file and then to find Chrome, and I turned both down. It ran the same steps in one command and previewed the result in my Temp folder, which it deleted afterward.
+- `images/scrawdle frontpage.png` (about 900 KB) is still in the images folder and nothing uses it.
+
+---
+
 ## Where AI misread me, or I had to correct course
 
 **Claude**
