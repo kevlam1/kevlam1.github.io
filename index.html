@@ -1668,6 +1668,25 @@
             scrollbar-color:rgba(255,255,255,.28) transparent;
         }
 
+        /* A reflection written in weeks (Artifact 4): each week gets its own small label, and a
+           thin line separates the weeks. The label copies the "Reflection" label above. */
+        .card.modal-card .reflection-week{margin:0}
+
+        .card.modal-card .reflection-week + .reflection-week{
+            margin-top:16px;
+            padding-top:16px;
+            border-top:1px solid rgba(255,255,255,.08);
+        }
+
+        .card.modal-card .week-tag{
+            display:block;
+            margin-bottom:6px;
+            color:var(--muted);
+            font-size:.72rem;
+            letter-spacing:.12em;
+            text-transform:uppercase;
+        }
+
         /* Links become buttons below the reflection */
         .modal-card .links{
             display:flex;
@@ -2524,35 +2543,48 @@
                     <article class="card live" id="artifact-4">
 
                         <div class="media">
-                            <img src="images/artifact-4.jpg" alt="Image coming soon" width="1200" height="1200" loading="lazy" decoding="async">
+                            <img src="images/artifact-4.jpg" alt="Scrawdle's home screen with the Daily, Multiplayer, Free Play and Time Challenge buttons" width="1200" height="1200" loading="lazy" decoding="async">
                         </div>
 
                         <div class="card-body">
 
                             <div class="meta">
                                 <span>Artifact 4 &middot; Client Focused &middot; Due Nov 8</span>
-                                <span class="status in-progress">In progress</span>
+                                <span class="status live">Live</span>
                             </div>
 
                             <h3>Scrawdle</h3>
 
                             <p class="desc">
-                                A daily drawing game built with a team of three: a new prompt each day, a browser canvas
-                                with drawing tools, and a chance to see what other players drew once you finish your own.
+                                A daily drawing game built with a team of four. Everyone gets the same animal parts each
+                                day to combine into a creature, draws in the browser, and sees what other players drew.
+                                Friends can also play in private lobbies.
                             </p>
 
                             <div class="toolkit" aria-label="Toolkit">
-                                <span class="toolkit-pill">Toolkit: TBA</span>
+                                <span class="toolkit-pill">JavaScript</span>
+                                <span class="toolkit-pill">HTML5 Canvas</span>
+                                <span class="toolkit-pill">Supabase</span>
+                                <span class="toolkit-pill">Vercel</span>
+                                <span class="toolkit-pill">Claude Code</span>
                             </div>
 
-                            <p class="reflection">Week 1: With three people working on this, it was important everybody's ideas and thoughts
-                                were seen and discussed. With the previous artifacts I added whatever I thought was need but for this
-                                artifact to succeed I knew I had to do it differently. Giving everybody their part to do was fine as all
-                                roles were balanced and hope to come together in one well polished project.</p>
+                            <div class="reflection">
+                                <p class="reflection-week"><span class="week-tag">Week 1</span>With three people working on this, it was important everybody's ideas and thoughts
+                                    were seen and discussed. With the previous artifacts I added whatever I thought was need but for this
+                                    artifact to succeed I knew I had to do it differently. Giving everybody their part to do was fine as all
+                                    roles were balanced and hope to come together in one well polished project.</p>
+                                <p class="reflection-week"><span class="week-tag">Week 2</span>I owned the Supabase backend. Drawings are images, and images can fill up a database fast,
+                                    so I kept storage and costs down: a daily wipe deletes old drawings and their files, and only finished
+                                    drawings are stored. I took extra care that Claude wrote good schemas, and I tested most of the SQL
+                                    changes on a real Postgres before running them on the live project. I also kept updating CLAUDE.md so
+                                    all four of our Claudes stayed on the same page.</p>
+                            </div>
 
                             <p class="links">
                                 <a class="hover-link" href="https://scrawdle.vercel.app" target="_blank" rel="noopener">Visit Scrawdle</a>
                                 <a class="hover-link" href="https://github.com/kevlam1/Scrawdle" target="_blank" rel="noopener">View on GitHub</a>
+                                <a class="hover-link build-log-link" href="https://scrawdle.vercel.app/logs" target="_blank" rel="noopener">View Build Log</a>
                             </p>
 
                         </div>
