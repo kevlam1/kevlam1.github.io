@@ -796,6 +796,29 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ---
 
+## 34. Making the Artifact 5 card clickable
+
+**Date:** 2026-11-15
+**Summary:** Set up the Overloaded card the same way as Scrawdle's, with a real toolkit, my Week 1 reflection, and a trimmed-down set of links.
+
+**What I asked for**
+- Told Claude Code to make the Artifact 5 card clickable, said it's still in progress, and asked for it to be set up like Artifact 4, since I'll have five weeks of reflections to write for it. Gave it the build-log link, `overloaded-spell.vercel.app/logs`.
+- Added my reflection from my Unit 6 PDF.
+- Asked to drop the "View on GitHub" button from every card except Artifact 3, since the three-button cards (Visit, GitHub, Build Log) were cramped and bumping a button to its own line.
+
+**What changed**
+- The card changed from `locked` to `live`, so it now tilts on hover and opens the popup like the other cards. It keeps the yellow "In progress" tag, since the project isn't done.
+- The toolkit went from "TBA" to JavaScript, Vite, Firebase, Vercel and Claude Code, read from the real `package.json` and `CLAUDE.md` in the Overloaded repo.
+- The reflection now has a labeled "Week 1" part, ready for more weeks later, with my reflection written into it.
+- "View on GitHub" is gone from both Scrawdle's and Overloaded's popups, leaving Visit and View Build Log on each. Artifact 3 keeps its GitHub link, since that's its only way to reach the project (it has no separate live site).
+
+**What I checked**
+- `package.json` in the Overloaded repo lists `firebase` and `vite`, which is where the toolkit pills came from.
+- The logs link returned HTTP 200.
+- Not checked: how the card looks rendered, since Claude still has no browser in this session.
+
+---
+
 ## Where AI misread me, or I had to correct course
 
 **Claude**
