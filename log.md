@@ -819,7 +819,20 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ---
 
-## Where AI misread me, or I had to correct course
+## 35. Putting the GitHub link back, popup-only
+
+**Date:** 2026-11-15
+**Summary:** Entry 34 removed "View on GitHub" everywhere. I only meant the front of the card, so it's back in the popup.
+
+**What I asked for**
+- Told Claude Code I only meant to drop the GitHub button from the front of the card, not from the opened popup.
+
+**What changed**
+- Scrawdle's and Overloaded's GitHub links are back, now hidden on the collapsed card and shown only once the popup opens, the same way the "View Build Log" button already works. Artifact 3's GitHub link is unchanged, since it already showed in both places.
+- The popup's three-button row (Visit, GitHub, Build Log) is a little tighter and centers itself, so a button that wraps to its own line looks balanced instead of stray.
+
+**What I checked**
+- Not checked: how it looks rendered. Claude still has no browser in this session.
 
 **Claude**
 - **Jumped ahead:** built a three-theme comparison page before I understood GitHub Pages hosting. I said we were jumping the gun, so we stopped and learned hosting first.
