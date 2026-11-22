@@ -834,6 +834,17 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 **What I checked**
 - Not checked: how it looks rendered. Claude still has no browser in this session.
 
+---
+
+## 36. Artifact 5's Week 2 reflection
+
+**Date:** 2026-11-21
+**Summary:** Added my Week 2 reflection for Overloaded.
+
+---
+
+## Where AI misread me, or I had to correct course
+
 **Claude**
 - **Jumped ahead:** built a three-theme comparison page before I understood GitHub Pages hosting. I said we were jumping the gun, so we stopped and learned hosting first.
 - **Accent color:** using #0f172a as the accent would have made links and buttons nearly invisible, so it became the background color.
