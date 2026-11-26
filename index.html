@@ -1675,8 +1675,10 @@
             scrollbar-color:rgba(255,255,255,.28) transparent;
         }
 
-        /* A reflection written in weeks (Artifact 4): each week gets its own small label, and a
-           thin line separates the weeks. The label copies the "Reflection" label above. */
+        /* A reflection written in weeks (Artifacts 4 and 5): each week is its own <details>,
+           closed by default, with a thin line between weeks. The label copies the "Reflection"
+           label above. Native <details>/<summary> needs no JS, and survives the popup's
+           clone-the-card trick (see LESSONS_LEARNED.md) with no extra wiring. */
         .card.modal-card .reflection-week{margin:0}
 
         .card.modal-card .reflection-week + .reflection-week{
@@ -1685,14 +1687,42 @@
             border-top:1px solid rgba(255,255,255,.08);
         }
 
+        .card.modal-card .reflection-week summary{
+            display:flex;
+            align-items:center;
+            list-style:none;
+            cursor:pointer;
+        }
+
+        .card.modal-card .reflection-week summary::-webkit-details-marker{display:none}
+
+        .card.modal-card .reflection-week summary:focus-visible{
+            outline:2px solid var(--accent);
+            outline-offset:3px;
+        }
+
         .card.modal-card .week-tag{
-            display:block;
-            margin-bottom:6px;
             color:var(--muted);
             font-size:.72rem;
             letter-spacing:.12em;
             text-transform:uppercase;
         }
+
+        .card.modal-card .week-chevron{
+            display:inline-block;
+            width:.4em;
+            height:.4em;
+            margin-left:8px;
+            border:solid currentColor;
+            border-width:0 1.5px 1.5px 0;
+            color:var(--muted);
+            transform:rotate(-45deg);
+            transition:transform .25s var(--ease);
+        }
+
+        .card.modal-card .reflection-week[open] .week-chevron{transform:rotate(45deg)}
+
+        .card.modal-card .reflection-week p{margin:10px 0 0}
 
         /* Links become buttons below the reflection */
         .modal-card .links{
@@ -2090,7 +2120,8 @@
             .demo-stage,
             .toolkit-pill,
             .hover-link,
-            .hover-link::after{transition:none}
+            .hover-link::after,
+            .week-chevron{transition:none}
 
             dialog.modal::backdrop,
             .card.modal-card,
@@ -2590,15 +2621,21 @@
                             </div>
 
                             <div class="reflection">
-                                <p class="reflection-week"><span class="week-tag">Week 1</span>With three people working on this, it was important everybody's ideas and thoughts
-                                    were seen and discussed. With the previous artifacts I added whatever I thought was need but for this
-                                    artifact to succeed I knew I had to do it differently. Giving everybody their part to do was fine as all
-                                    roles were balanced and hope to come together in one well polished project.</p>
-                                <p class="reflection-week"><span class="week-tag">Week 2</span>I owned the Supabase backend. Drawings are images, and images can fill up a database fast,
-                                    so I kept storage and costs down: a daily wipe deletes old drawings and their files, and only finished
-                                    drawings are stored. I took extra care that Claude wrote good schemas, and I tested most of the SQL
-                                    changes on a real Postgres before running them on the live project. I also kept updating CLAUDE.md so
-                                    all four of our Claudes stayed on the same page.</p>
+                                <details class="reflection-week">
+                                    <summary><span class="week-tag">Week 1</span><span class="week-chevron" aria-hidden="true"></span></summary>
+                                    <p>With three people working on this, it was important everybody's ideas and thoughts
+                                        were seen and discussed. With the previous artifacts I added whatever I thought was need but for this
+                                        artifact to succeed I knew I had to do it differently. Giving everybody their part to do was fine as all
+                                        roles were balanced and hope to come together in one well polished project.</p>
+                                </details>
+                                <details class="reflection-week">
+                                    <summary><span class="week-tag">Week 2</span><span class="week-chevron" aria-hidden="true"></span></summary>
+                                    <p>I owned the Supabase backend. Drawings are images, and images can fill up a database fast,
+                                        so I kept storage and costs down: a daily wipe deletes old drawings and their files, and only finished
+                                        drawings are stored. I took extra care that Claude wrote good schemas, and I tested most of the SQL
+                                        changes on a real Postgres before running them on the live project. I also kept updating CLAUDE.md so
+                                        all four of our Claudes stayed on the same page.</p>
+                                </details>
                             </div>
 
                             <p class="links">
@@ -2642,24 +2679,34 @@
                             </div>
 
                             <div class="reflection">
-                                <p class="reflection-week"><span class="week-tag">Week 1</span>I started Overloaded two weeks before the artifact officially opened. The first week went
-                                    into planning, writing CLAUDE.md so Claude knew exactly what I was building, and going back and
-                                    forth with Claude on database schemas to keep the cost of storing tens of thousands of Magic: The
-                                    Gathering cards & data low using TCSS 460 experience. I caught several mistakes in what Claude proposed before we landed on a schema
-                                    I was happy with. After a proof-of-concept site and live player lobbies that live and die in the
-                                    database, this week I focused on how cards interact and the solo table UI. Steering Claude toward
-                                    the feel I wanted took quite a lot of work in being precise with what I would be satisfied with,
-                                    but feedback from friends allowed me to improve upon my lacking areas with different perspectives.
-                                    A full UI overhaul is planned, while keeping what already works.</p>
-                                <p class="reflection-week"><span class="week-tag">Week 2</span>I spent this week finishing as much of the solo table as I could before starting on
-                                    multiplayer, instead of building both at once. I'm mostly happy with where the solo table landed,
-                                    though I'm running low on my own ideas, so I'm having friends test it next week for whatever I
-                                    missed. Multiplayer was the part I dreaded most: I sketched out a few layouts, looked at other
-                                    sites, and tried to balance clarity and detail. Claude felt noticeably worse to work with this week even with detailed plans &mdash; it
-                                    missed things I'd call obvious, like one player's board being longer than the other's. I also lost
-                                    two to three hours to Claude's poor attempts at foil card treatments before scrapping the idea for
-                                    something simpler; I'll likely finish that one by hand in Photoshop later, once I'm done focusing
-                                    on the rest of the artifact.</p>
+                                <details class="reflection-week">
+                                    <summary><span class="week-tag">Week 1</span><span class="week-chevron" aria-hidden="true"></span></summary>
+                                    <p>I started Overloaded two weeks before the artifact officially opened. The first week went
+                                        into planning, writing CLAUDE.md so Claude knew exactly what I was building, and going back and
+                                        forth with Claude on database schemas to keep the cost of storing tens of thousands of Magic: The
+                                        Gathering cards & data low using TCSS 460 experience. I caught several mistakes in what Claude proposed before we landed on a schema
+                                        I was happy with. After a proof-of-concept site and live player lobbies that live and die in the
+                                        database, this week I focused on how cards interact and the solo table UI. Steering Claude toward
+                                        the feel I wanted took quite a lot of work in being precise with what I would be satisfied with,
+                                        but feedback from friends allowed me to improve upon my lacking areas with different perspectives.
+                                        A full UI overhaul is planned, while keeping what already works.</p>
+                                </details>
+                                <details class="reflection-week">
+                                    <summary><span class="week-tag">Week 2</span><span class="week-chevron" aria-hidden="true"></span></summary>
+                                    <p>I spent this week finishing as much of the solo table as I could before starting on
+                                        multiplayer, instead of building both at once. I'm mostly happy with where the solo table landed,
+                                        though I'm running low on my own ideas, so I'm having friends test it next week for whatever I
+                                        missed. Multiplayer was the part I dreaded most: I sketched out a few layouts, looked at other
+                                        sites, and tried to balance clarity and detail. Claude felt noticeably worse to work with this week even with detailed plans &mdash; it
+                                        missed things I'd call obvious, like one player's board being longer than the other's. I also lost
+                                        two to three hours to Claude's poor attempts at foil card treatments before scrapping the idea for
+                                        something simpler; I'll likely finish that one by hand in Photoshop later, once I'm done focusing
+                                        on the rest of the artifact.</p>
+                                </details>
+                                <details class="reflection-week">
+                                    <summary><span class="week-tag">Week 3</span><span class="week-chevron" aria-hidden="true"></span></summary>
+                                    <p>Reflection coming soon.</p>
+                                </details>
                             </div>
 
                             <p class="links">

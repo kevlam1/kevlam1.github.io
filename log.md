@@ -843,6 +843,28 @@ A small front-end portfolio with a card for each of the five course artifacts. O
 
 ---
 
+## 37. Weeks as a collapsible menu
+
+**Date:** 2026-11-26
+**Summary:** Each week in a reflection is now its own collapsed-by-default section instead of one long block of text.
+
+**What I asked for**
+- Told Claude Code to add my Week 3 reflection for Artifact 5, and to make the weeks collapsible, closed by default.
+
+**What changed**
+- Each week's paragraph is now a native `<details>` element with a small arrow next to its "Week N" label; clicking the label opens or closes just that week. All weeks start closed. Applied to both Artifact 4 and Artifact 5, since they share the same reflection styling.
+- Artifact 5 has a Week 3 slot, but no text in it yet: there's no Unit 8 reflection PDF on my machine yet, so Claude left it as "Reflection coming soon" rather than invent something. I'll give it my Week 3 points once I have them.
+- My existing Week 1 and Week 2 words, for both artifacts, were moved into the new structure unchanged.
+
+**What I checked**
+- Claude counted the opening and closing tags in both reflection blocks and they balance.
+- Not checked: how it looks or behaves rendered. Claude still has no browser in this session.
+
+**Decisions**
+- Used plain `<details>`/`<summary>`, which opens and closes with no JavaScript, instead of building a custom toggle.
+
+---
+
 ## Where AI misread me, or I had to correct course
 
 **Claude**
